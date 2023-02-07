@@ -15,6 +15,17 @@ router.post("/payment", async (req, res) => {
       if (!amount || !name)
         return res.status(400).json({ message: "All fields are required" });
       amount = parseInt(amount);
+      // const session = await stripe.checkout.sessions.create({
+      //   submit_type: 'donate',
+      //   payment_method_types: ['card'],
+      //   line_items: [{
+      //     price: '{{PRICE_ID}}',
+      //     quantity: 1,
+      //   }],
+      //   mode: 'payment',
+      //   success_url: 'https://example.com/success',
+      //   cancel_url: 'https://example.com/cancel',
+      // });
       // Initiate payment
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100),
@@ -24,12 +35,13 @@ router.post("/payment", async (req, res) => {
       });
       // Extracting the client secret
       const clientSecret = paymentIntent.client_secret;
+      console.log(clientSecret);
       // Sending the client secret as response
-      res.json({ message: "Payment initiated", clientSecret });
+      res.json({message: "payment in progress", client_secret: clientSecret});
     } catch (err) {
       // Catch any error and send error 500 to client
       console.error(err);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json(err);
     }
   });
   
