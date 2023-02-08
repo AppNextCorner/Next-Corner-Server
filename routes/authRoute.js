@@ -8,8 +8,8 @@ const userModel = require('../models/userModel')
 authRouter.post('/signup', async (req, res) => {
   try {
     // get user data (1.email 2.password)
-    const payload = req.body
-
+    const payload = req.body.firstName
+    console.log(payload)
     // check if another user already has the same email
     const check = await userModel.findOne({ email: payload.email })
     if (check !== null) {
@@ -22,12 +22,11 @@ authRouter.post('/signup', async (req, res) => {
     const newUser = await userModel.create({
         email: payload.email,
         password: payload.password,
-        name: payload.name,
         firstName: payload.firstName,
         lastName: payload.lastName,
         phoneNumber: payload.phoneNumber
       })
-  
+  console.log('new user: ' + newUser)
       // create new user in firebase
       await firebase.createUser(
         payload.email,
@@ -43,7 +42,10 @@ authRouter.post('/signup', async (req, res) => {
     }
 
 
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+    res.status(401).send({ message: e })
+  }
 })
 
 authRouter.get('/', async (req, res) => {
