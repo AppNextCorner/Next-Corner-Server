@@ -17,7 +17,7 @@ const cartSchema = new mongoose.Schema({
   location: [],
   logo: {type: Object},
   
-}
+}, {timestamps: true}
 
 )
 cartSchema.set('toJSON', {
