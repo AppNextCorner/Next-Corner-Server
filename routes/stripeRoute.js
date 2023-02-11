@@ -15,6 +15,12 @@ router.post("/payment", async (req, res) => {
       if (!amount || !name)
         return res.status(400).json({ message: "All fields are required" });
       amount = parseInt(amount);
+
+      const customer = await stripe.customers.create();
+      const ephemeralKey = await stripe.ephemeralKeys.create(
+        {customer: customer.id},
+        {apiVersion: '2022-11-15'}
+      );
       // const session = await stripe.checkout.sessions.create({
       //   submit_type: 'donate',
       //   payment_method_types: ['card'],
@@ -31,13 +37,14 @@ router.post("/payment", async (req, res) => {
         amount: Math.round(amount * 100),
         currency: "USD",
         payment_method_types: ["card"],
+        setup_future_usage: 'off_session',
         metadata: { name },
       });
       // Extracting the client secret
       const clientSecret = paymentIntent.client_secret;
       console.log(clientSecret);
       // Sending the client secret as response
-      res.json({message: "payment in progress", client_secret: clientSecret});
+      res.json({message: "payment in progress", client_secret: clientSecret, customer: customer.id, ephemeralKey: ephemeralKey.secret,});
     } catch (err) {
       // Catch any error and send error 500 to client
       console.error(err);
