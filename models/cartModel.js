@@ -10,6 +10,8 @@ const cartSchema = new mongoose.Schema({
         price: {type: Number, required: true},
         options: [],
         amountInCart: {type: Number, required: true},
+        type: {type: String, required: true},
+        rating: {type: Number, required: true}
     }
   ,
   businessOrderedFrom: {type: String, required: true},
