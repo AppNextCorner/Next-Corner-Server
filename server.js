@@ -10,6 +10,8 @@ const cartRouter = require("./routes/cartRoute");
 const authRouter = require("./routes/authRoute");
 const bearerToken = require('express-bearer-token');
 const orderRouter = require("./routes/ordersRoute");
+const businessRouter = require("./routes/businessRoute");
+const bodyParser = require('body-parser')
 //const decodeIDToken = require('./authenticateToken');
 
 const PORT = process.env.PORT || 4020;
@@ -17,11 +19,7 @@ const PORT = process.env.PORT || 4020;
 async function connectToDb() {
   try {
     // this line of code stop everything until its
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      
-      useUnifiedTopology: true,
-    })
+    await mongoose.connect(process.env.MONGO_URI)
     console.log('we connected')
   } catch (error) {
     console.log(error)
@@ -32,8 +30,9 @@ async function connectToDb() {
 connectToDb()
 
 
-
+app.use(express.static('images'));
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 app.use(bearerToken());
 
@@ -46,5 +45,7 @@ app.use('/api', cartRouter)
 app.use('/auth', authRouter)
 // routes for orders
 app.use('/orders', orderRouter);
+// routes for business side 
+app.use('/business', businessRouter)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
