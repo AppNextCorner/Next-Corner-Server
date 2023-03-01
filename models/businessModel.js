@@ -11,6 +11,18 @@ const announcementsSchema = new mongoose.Schema({
   description: { type: String },
   image: [{ type: String }],
 })
+const optionCustomSchema = new mongoose.Schema({
+  property: {type: String},
+   label: {type: String},
+   selected: {type: Boolean},
+})
+const optionSchema = new mongoose.Schema({
+  property: {type: String},
+   name: {type: String},
+   type: {type: String},
+   itemId: {type: Number},
+   optionCustomizations: [optionCustomSchema],
+})
 
 const menuSchema = new mongoose.Schema({
   property: { type: String,  },
@@ -20,8 +32,12 @@ const menuSchema = new mongoose.Schema({
   image: [{ type: String }],
   price: { type: Number },
   description: { type: String },
-  customizations: [],
+  customizations: [optionSchema],
+  category: { type: String },
   featured: { type: Boolean },
+  amountInCart: { type: Number },
+  rating: { type: Number },
+  location: { type: Object}
 })
 const businessSchema = new mongoose.Schema(
   {

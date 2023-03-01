@@ -56,11 +56,11 @@ businessRouter.post('/', decodeIDToken,cpUpload, async (req, res) => {
   for (let n = 1; n < req.files.length; n++) {
      // adding the filename as an array due to files being an array of all files added
     if(req.files[n].fieldname.indexOf('menu') >= 0){
-      req.body.menu[a].image = req.files[n].filename;
+      req.body.menu[menuImageIndex].image = req.files[n].filename;
       menuImageIndex++;
     }
     else if(req.files[n].fieldname.indexOf('announcementCards') >= 0){
-      req.body.announcementCards[b].image = req.files[n].filename;
+      req.body.announcementCards[announcementImageIndex].image = req.files[n].filename;
       announcementImageIndex++;
     }
     
@@ -84,6 +84,7 @@ businessRouter.post('/', decodeIDToken,cpUpload, async (req, res) => {
       })
 
       const savedbusiness = await business.save()
+     
       return res.status(201).json(savedbusiness)
     } catch (error) {
       console.log(error)
@@ -98,7 +99,7 @@ businessRouter.get('/', decodeIDToken, async (req, res) => {
   console.log('Auth: ', req.currentUser)
   if (auth) {
     const business = await Business.find({})
-    console.log(business)
+    console.log('business', business)
     return res.json(business.map((business) => business.toJSON()))
   } else {
     return res.status(403).send('Not authorized')

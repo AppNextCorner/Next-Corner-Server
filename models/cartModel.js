@@ -1,22 +1,37 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
+  /**
+   * property: { type: String,  },
+  name: { type: String },
+  itemId: { type: Number },
+  time: { type: Number },
+  image: [{ type: String }],
+  price: { type: Number },
+  description: { type: String },
+  customizations: [optionSchema],
+  category: { type: String },
+  featured: { type: Boolean },
+  
+   */
   cartData: 
     {
+        property: { type: String,  },
         name: {type: String, required: true},
         itemId: {type: Number, required: true},
-        timeToMake: {type: Number, required: true},
+        time: {type: Number, required: true},
         image: {type: Object, required: true},
         price: {type: Number, required: true},
-        options: [],
+        customizations: [],
+        description: { type: String },
         amountInCart: {type: Number, required: true},
-        type: {type: String, required: true},
+        category: {type: String, required: true},
         rating: {type: Number, required: true}
     }
   ,
   businessOrderedFrom: {type: String, required: true},
   userId: {type: String, required: true},
-  location: [],
+  location: {type: Object},
   logo: {type: Object},
   
 }, {timestamps: true}
