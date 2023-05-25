@@ -3,6 +3,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const rateLimit = require('express-rate-limit');
+const requestIp = require('request-ip'); // Don't want to block all requests for all users
+
 
 // grabbing the routes for the Stripe API 
 const stripe = require("./routes/stripeRoute");
@@ -29,14 +32,23 @@ async function connectToDb() {
 // run the function to connect
 connectToDb()
 
+app.use(requestIp.mw());
 
+app.use(rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 50, // limit each IP to 30 requests per windowMs
+  keyGenerator: (req, res) => {
+    return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
+  }
+}));
 app.use(express.static('images'));
 app.use(express.json());
 app.use(bodyParser.json());
+// Allow transfer of data
 app.use(cors({ origin: true }));
-app.use(bearerToken());
+app.use(bearerToken()); // Be able to access the token in our backend
 
-// app.use(decodeIDToken)
+
 // setting routes for stripe
 app.use('/', stripe)
 // routes for cart

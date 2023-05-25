@@ -9,6 +9,7 @@ authRouter.post('/signup', async (req, res) => {
   try {
     // get user data (1.email 2.password)
     const payload = req.body.firstName
+  console.log(req.body)
     console.log(payload)
     // check if another user already has the same email
     const check = await userModel.findOne({ email: payload.email })

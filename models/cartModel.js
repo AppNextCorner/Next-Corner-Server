@@ -1,19 +1,6 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
-  /**
-   * property: { type: String,  },
-  name: { type: String },
-  itemId: { type: Number },
-  time: { type: Number },
-  image: [{ type: String }],
-  price: { type: Number },
-  description: { type: String },
-  customizations: [optionSchema],
-  category: { type: String },
-  featured: { type: Boolean },
-  
-   */
   cartData: 
     {
         property: { type: String,  },
@@ -35,7 +22,6 @@ const cartSchema = new mongoose.Schema({
   logo: {type: Object},
   
 }, {timestamps: true}
-
 )
 cartSchema.set('toJSON', {
     virtuals: true,
