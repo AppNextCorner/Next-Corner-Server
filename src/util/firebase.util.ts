@@ -4,7 +4,7 @@ const admin = require('firebase-admin')
 
 const  config = {
     projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') ?? "",
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL
 }
 const app = admin.initializeApp(
@@ -13,7 +13,7 @@ const app = admin.initializeApp(
  }
 )
  
-const createUser = async(email, password, uid)=>{
+const createUser = async(email: string, password: string, uid: string)=>{
     return await app.auth().createUser({
         email,
         password,
@@ -21,10 +21,11 @@ const createUser = async(email, password, uid)=>{
     })
 }
 
-const verifyToken = async(token) => {
+const verifyToken = async(token: string) => {
     return await app.auth().verifyIdToken(token);
 }
 
+export {}
 module.exports = {
     createUser,
     verifyToken

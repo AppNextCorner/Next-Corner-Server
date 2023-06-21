@@ -25,7 +25,7 @@ const cartSchema = new mongoose.Schema({
 )
 cartSchema.set('toJSON', {
     virtuals: true,
-    transform: (doc, ret, options) => {
+    transform: (_doc: any, ret: any, _options: any) => {
         delete ret.__v;
         ret.id = ret._id.toString();
         delete ret._id;
@@ -34,4 +34,5 @@ cartSchema.set('toJSON', {
 
 const cartModel = mongoose.model('cart', cartSchema)
 
+export {}
 module.exports = cartModel

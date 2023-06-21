@@ -4,8 +4,6 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const rateLimit = require('express-rate-limit');
-const requestIp = require('request-ip'); // Don't want to block all requests for all users
-
 
 // grabbing the routes for the Stripe API 
 const stripe = require("./routes/stripeRoute");
@@ -15,7 +13,6 @@ const bearerToken = require('express-bearer-token');
 const orderRouter = require("./routes/ordersRoute");
 const businessRouter = require("./routes/businessRoute");
 const bodyParser = require('body-parser')
-//const decodeIDToken = require('./authenticateToken');
 
 const PORT = process.env.PORT || 4020;
 
@@ -32,20 +29,11 @@ async function connectToDb() {
 // run the function to connect
 connectToDb()
 
-app.use(requestIp.mw());
-
-app.use(rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 50, // limit each IP to 30 requests per windowMs
-  keyGenerator: (req, res) => {
-    return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
-  }
-}));
 app.use(express.static('images'));
 app.use(express.json());
 app.use(bodyParser.json());
 // Allow transfer of data
-app.use(cors({ origin: true }));
+app.use(cors());
 app.use(bearerToken()); // Be able to access the token in our backend
 
 
@@ -59,5 +47,5 @@ app.use('/auth', authRouter)
 app.use('/orders', orderRouter);
 // routes for business side 
 app.use('/business', businessRouter)
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const hostname = '192.168.1.19'
+app.listen(PORT,hostname, () => console.log(`Server running at http://${hostname}:${PORT}/`));

@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
 }, {timestamps: true})
 orderSchema.set('toJSON', {
     virtuals: true,
-    transform: (doc, ret, options) => {
+    transform: (_doc: any, ret: any, options: any) => {
         delete ret.__v;
         ret.id = ret._id.toString();
         delete ret._id;
@@ -16,4 +16,5 @@ orderSchema.set('toJSON', {
 })
 const orderModel = mongoose.model('order', orderSchema);
 
+export {}
 module.exports = orderModel;

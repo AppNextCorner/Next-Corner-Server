@@ -3,7 +3,7 @@ const express = require('express')
 const orderRouter = express.Router()
 // const decodeIDToken = require('../authenticateToken')
 const Orders = require('../models/orderModel')
-const firebase = require('../util/firebase')
+const firebase = require('../util/firebase.util')
 
 async function decodeIDToken(req, res, next) {
   console.log('Token Request', req.token)

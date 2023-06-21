@@ -7,7 +7,7 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 router.use("/stripe", express.raw({ type: "*/*" }));
 
 router.post("/payment", async (req, res) => {
-    
+     //
     try {
       // Getting data from client
       let { amount, name } = req.body;

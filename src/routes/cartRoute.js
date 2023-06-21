@@ -3,7 +3,7 @@ const express = require('express')
 const cartRouter = express.Router()
 // const decodeIDToken = require('../authenticateToken')
 const Cart = require('../models/cartModel')
-const firebase = require('../util/firebase')
+const firebase = require('../util/firebase.util')
 
 async function decodeIDToken(req, res, next) {
   console.log('Token Request', req.token)
@@ -40,7 +40,7 @@ cartRouter.get('/', decodeIDToken, async (req, res) => {
   console.log('Auth: ', req.currentUser)
   if (auth) {
     const cart = await Cart.find({})
-    console.log(cart)
+    console.log("cart:",cart)
     return res.json(cart.map((cart) => cart.toJSON()))
   } else {
     return res.status(403).send('Not authorized')
