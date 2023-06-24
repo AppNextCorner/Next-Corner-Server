@@ -13,4 +13,4 @@ async function decodeIDToken(req: any, res: any, next: any) {
     }
   } 
 export {}
-module.exports = decodeIDToken
+module.exports = {decodeIDToken}

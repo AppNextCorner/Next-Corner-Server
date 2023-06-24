@@ -6,8 +6,6 @@ require("dotenv").config();
 const { Request, Response } = require("express");
 const express = require("express");
 const businessRouter = express.Router();
-
-const decodeIDToken = require("../helpers/auth");
 const upload = require("../helpers/multer");
 const { createCard } = require("../controllers/business");
 const { imageHelper } = require("../helpers/uploadImages");
@@ -19,6 +17,20 @@ const {
   optionLabelModel,
   optionModel,
 } = require("../models/businessModel");
+const firebase = require("../util/firebase.util");
+
+async function decodeIDToken(req: any, res: any, next: any) {
+    console.log("Token Request", req.token);
+    if (req.token) {
+      try {
+        const decodedToken = await firebase.verifyToken(req.token);
+        req["currentUser"] = decodedToken;
+        next();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  } 
 
 const uploadAny = upload.any();
 

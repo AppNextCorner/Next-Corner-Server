@@ -48,6 +48,7 @@ router.post("/payment", async (req, res) => {
     } catch (err) {
       // Catch any error and send error 500 to client
       console.error(err);
+      console.log('error in payment: ', err)
       res.status(500).json(err);
     }
   });

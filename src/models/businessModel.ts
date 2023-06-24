@@ -35,6 +35,11 @@ const itemSchema = new mongoose.Schema({
   amountInCart: { type: Number },
   rating: { type: Number },
 });
+
+const statusSchema = new mongoose.Schema({
+  text: {type: String},
+  color: {type: String}
+})
 // BUSINESS
 const vendorSchema = new mongoose.Schema(
   {
@@ -50,6 +55,7 @@ const vendorSchema = new mongoose.Schema(
     categoryId: { type: Number },
     rating: { type: Number },
     trending: { type: String },
+    status: statusSchema,
   },
   { timestamps: true }
 );

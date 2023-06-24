@@ -20,7 +20,7 @@ async function decodeIDToken(req, res, next) {
 
 orderRouter.post('/', decodeIDToken, async (req, res) => {
   const auth = req.currentUser
-  console.log(req)
+  console.log("current user: ", req.currentUser)
   if (auth) {
     try {
       const order = new Orders(req.body)
