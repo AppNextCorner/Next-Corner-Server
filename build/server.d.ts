@@ -12,4 +12,3 @@ declare const businessRouter: any;
 declare const bodyParser: any;
 declare const PORT: string | number;
 declare function connectToDb(): Promise<void>;
-declare const hostname = "192.168.1.24";
