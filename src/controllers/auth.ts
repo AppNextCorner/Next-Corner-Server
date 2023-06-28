@@ -5,7 +5,8 @@ const userModel = require("../models/userModel");
 const signUp = async (res: typeof Response,req: typeof Request) => {
   try {
     // get user data (1.email 2.password)
-    const payload = req.body.firstName;
+    const payload = req.body;
+    console.log('payload: ',payload)
     // check if another user already has the same email
     const check = await userModel.findOne({ email: payload.email });
     if (check !== null) {
