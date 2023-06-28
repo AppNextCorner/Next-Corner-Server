@@ -1,11 +1,12 @@
 require('dotenv').config()
 const express = require('express')
+const { Request, Response, Next } = require("express");
 const cartRouter = express.Router()
 // const decodeIDToken = require('../authenticateToken')
 const Cart = require('../models/cartModel')
 const firebase = require('../util/firebase.util')
 
-async function decodeIDToken(req, res, next) {
+async function decodeIDToken(req: typeof Request, _res: typeof Response, next: typeof Next) {
   console.log('Token Request', req.token)
   if (req.token) {
     try {
@@ -18,9 +19,8 @@ async function decodeIDToken(req, res, next) {
   }
 }
 
-cartRouter.post('/', decodeIDToken, async (req, res) => {
+cartRouter.post('/', decodeIDToken, async (req: typeof Request, res: typeof Response) => {
   const auth = req.currentUser
-  console.log(req)
   if (auth) {
     try {
       const cart = new Cart(req.body)
@@ -35,20 +35,20 @@ cartRouter.post('/', decodeIDToken, async (req, res) => {
   }
 })
 
-cartRouter.get('/', decodeIDToken, async (req, res) => {
+cartRouter.get('/', decodeIDToken, async (req: typeof Request, res: typeof Response) => {
   const auth = req.currentUser
   console.log('Auth: ', req.currentUser)
   if (auth) {
     const cart = await Cart.find({})
     console.log("cart:",cart)
-    return res.json(cart.map((cart) => cart.toJSON()))
+    return res.json(cart.map((cart: any) => cart.toJSON()))
   } else {
     return res.status(403).send('Not authorized')
   }
 })
 
 // Update ONE document score with an ID and data that wants to be updated
-cartRouter.put('/item-amount/:id', (req, res) => {
+cartRouter.put('/item-amount/:id', (req: typeof Request, res: typeof Response) => {
   // grab the new score info
   const data = req.body
   const auth = req.currentUser
@@ -84,7 +84,7 @@ cartRouter.put('/item-amount/:id', (req, res) => {
       )
       res.status(200).send(updatedProduct)
       console.log(updatedProduct)
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({ message: err.message })
     }
   }
@@ -96,7 +96,7 @@ cartRouter.put('/item-amount/:id', (req, res) => {
 })
 
 // deleting ONE item document from leaderboard from an ID
-cartRouter.delete('/delete-item/:id', (req, res) => {
+cartRouter.delete('/delete-item/:id', (req: typeof Request, res: typeof Response) => {
   async function deleteItem() {
     try {
       // find the document with the ID input on an API for it to perform the delete action with .findByIdAndDelete
@@ -122,4 +122,5 @@ cartRouter.delete('/delete-item/:id', (req, res) => {
   deleteItem()
 })
 
+export {}
 module.exports = cartRouter

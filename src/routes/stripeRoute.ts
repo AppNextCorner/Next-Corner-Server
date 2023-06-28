@@ -2,21 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const Stripe = require("stripe");
+const { Request, Response, Next } = require("express");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 router.use("/stripe", express.raw({ type: "*/*" }));
 
-router.post("/payment", async (req, res) => {
+interface IClientData {
+  amount: string,
+  name: string
+}
+router.post("/payment", async (req: typeof Request, res: typeof Response) => {
   //
   try {
     const merchantDisplayName = req.headers["merchantdisplayname"];
     console.log(merchantDisplayName)
     // Getting data from client
-    let { amount, name } = req.body;
+    const { amount, name }: IClientData = req.body;
     // Simple validation
     if (!amount || !name || !merchantDisplayName)
       return res.status(400).json({ message: "All fields are required" });
-    amount = parseInt(amount);
+    const parsedAmount: number = parseInt(amount);
 
     const customer = await stripe.customers.create();
     const ephemeralKey = await stripe.ephemeralKeys.create(
@@ -36,7 +41,7 @@ router.post("/payment", async (req, res) => {
     // });
     // Initiate payment
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100),
+      amount: Math.round(parsedAmount * 100),
       currency: "USD",
       payment_method_types: ["card"],
       setup_future_usage: "off_session",
@@ -60,9 +65,11 @@ router.post("/payment", async (req, res) => {
   }
 });
 
-router.get("/secret", async (req, res) => {
+router.get("/secret", async (req: typeof Request, res: typeof Response) => {
+  const { amount, name }: IClientData = req.body;
+  const parsedAmount: number = parseInt(amount);
   const paymentIntent = await stripe.paymentIntents.find({
-    amount: Math.round(amount * 100),
+    amount: Math.round(parsedAmount * 100),
     currency: "USD",
     payment_method_types: ["card"],
     metadata: { name },
@@ -72,7 +79,7 @@ router.get("/secret", async (req, res) => {
 });
 
 // Webhook endpoint
-router.post("/stripe", async (req, res) => {
+router.post("/stripe", async (req: typeof Request, res: typeof Response) => {
   // Get the signature from the headers
   const sig = req.headers["stripe-signature"];
 
@@ -86,7 +93,7 @@ router.post("/stripe", async (req, res) => {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-  } catch (err) {
+  } catch (err: any) {
     // Handle what happens if the event is not from Stripe
     console.log(err);
     return res.status(400).json({ message: err.message });
@@ -103,4 +110,5 @@ router.post("/stripe", async (req, res) => {
   res.json({ ok: true });
 });
 
+export {}
 module.exports = router;

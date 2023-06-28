@@ -1,0 +1,15 @@
+declare const express: any;
+declare const app: any;
+declare const cors: any;
+declare const mongoose: any;
+declare const rateLimit: any;
+declare const stripe: any;
+declare const cartRouter: any;
+declare const authRouter: any;
+declare const bearerToken: any;
+declare const orderRouter: any;
+declare const businessRouter: any;
+declare const bodyParser: any;
+declare const PORT: string | number;
+declare function connectToDb(): Promise<void>;
+declare const hostname = "192.168.1.24";

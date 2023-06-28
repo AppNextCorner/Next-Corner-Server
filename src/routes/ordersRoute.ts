@@ -1,11 +1,12 @@
 require('dotenv').config()
 const express = require('express')
 const orderRouter = express.Router()
+const { Request, Response, Next } = require("express");
 // const decodeIDToken = require('../authenticateToken')
 const Orders = require('../models/orderModel')
 const firebase = require('../util/firebase.util')
 
-async function decodeIDToken(req, res, next) {
+async function decodeIDToken(req: typeof Request, _res: typeof Response, next: typeof Next) {
   console.log('Token Request', req.token)
   if (req.token) {
     try {
@@ -18,7 +19,7 @@ async function decodeIDToken(req, res, next) {
   }
 }
 
-orderRouter.post('/', decodeIDToken, async (req, res) => {
+orderRouter.post('/', decodeIDToken, async (req: typeof Request, res: typeof Response) => {
   const auth = req.currentUser
   console.log("current user: ", req.currentUser)
   if (auth) {
@@ -35,18 +36,18 @@ orderRouter.post('/', decodeIDToken, async (req, res) => {
   }
 })
 
-orderRouter.get('/', decodeIDToken, async (req, res) => {
+orderRouter.get('/', decodeIDToken, async (req: typeof Request, res: typeof Response) => {
   const auth = req.currentUser
   //console.log("Auth: ", req)
   if (auth) {
     const orders = await Orders.find({})
     console.log(orders)
-    return res.json(orders.map((order) => order.toJSON()))
+    return res.json(orders.map((order: any) => order.toJSON()))
   } else {
     return res.status(403).send('Not authorized')
   }
 })
-orderRouter.patch('/order-status/:id', (req, res) => {
+orderRouter.patch('/order-status/:id', (req: typeof Request, res: typeof Response) => {
     // grab the new score info
     const data = req.body
     const auth = req.currentUser
@@ -69,7 +70,7 @@ orderRouter.patch('/order-status/:id', (req, res) => {
         console.log(newStatus)
         // grab _id from body -> then add what data to update
         return res.status(201).send(newStatus)
-      } catch (err) {
+      } catch (err: any) {
         res.status(403).send(err.message)
       }
     }
@@ -79,5 +80,5 @@ orderRouter.patch('/order-status/:id', (req, res) => {
     //   return res.status(403).send('Not authorized')
     // }
   })
-
+export {}
 module.exports = orderRouter
