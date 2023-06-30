@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const orderSchema = new mongoose.Schema({
     singleOrderList: [],
@@ -16,5 +16,4 @@ orderSchema.set('toJSON', {
 })
 const orderModel = mongoose.model('order', orderSchema);
 
-export {}
-module.exports = orderModel;
+export {orderModel}

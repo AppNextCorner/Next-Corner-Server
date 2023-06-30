@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
   category: { type: String },
@@ -37,14 +37,14 @@ const itemSchema = new mongoose.Schema({
 });
 
 const statusSchema = new mongoose.Schema({
-  text: {type: String},
-  color: {type: String}
-})
+  text: { type: String },
+  color: { type: String },
+});
 // BUSINESS
 const vendorSchema = new mongoose.Schema(
   {
     name: { type: String },
-    image: [{type: String || null}],
+    image: [{ type: String || null }],
     announcements: [announcementsSchema],
     location: { type: Object },
     open: { type: String },
@@ -75,8 +75,7 @@ const optionLabelModel = mongoose.model("OptionLabel", optionlabelSchema);
 const optionModel = mongoose.model("Option", optionsSchema);
 const itemModel = mongoose.model("Item", itemSchema);
 
-export {}
-module.exports = {
+export {
   vendorModel,
   categoryModel,
   announcementModel,

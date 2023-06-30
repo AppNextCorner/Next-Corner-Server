@@ -1,18 +1,16 @@
-require('dotenv').config();
-const {Express} = require("express");
-const express: typeof Express = require('express');
+require("dotenv").config();
+import { Express } from "express";
+import express from "express";
 const authRouter = express.Router();
-const { Request, Response } = require("express");
-const { signUp, fetchUsers } = require('../controllers/auth')
+import { Request, Response } from "express";
+import { signUp, fetchUsers } from "../controllers/auth.controller";
 
-authRouter.post('/signup', async(req: typeof Request,res: typeof Response) =>{
-  signUp(res, req)
-})
+authRouter.post("/signup", signUp);
 
-authRouter.get('/', async(req: typeof Request,res: typeof Response) =>{
-  fetchUsers(res, req)
-})
+authRouter.get("/", async (req: Request, res: Response) => {
+  fetchUsers(res, req);
+  console.log("FEFJWIOEFJE");
+});
 
-export {}
-module.exports = authRouter
+export { authRouter };
 //(res: typeof Response, req: typeof Request)

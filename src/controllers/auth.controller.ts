@@ -1,8 +1,8 @@
-const { Request, Response } = require("express");
-const firebase = require("../util/firebase.util");
-const userModel = require("../models/userModel");
+import { Request, Response } from "express";
+import { createUser } from "../util/firebase.util";
+import { userModel } from "../models/userModel";
 
-const signUp = async (res: typeof Response,req: typeof Request) => {
+const signUp = async (res: Response, req: Request) => {
   try {
     // get user data (1.email 2.password)
     const payload = req.body;
@@ -24,7 +24,7 @@ const signUp = async (res: typeof Response,req: typeof Request) => {
         phoneNumber: payload.phoneNumber,
       });
       // create new user in firebase
-      await firebase.createUser(
+      await createUser(
         payload.email,
         payload.password,
         // make the UID unique for the user and matches that of the userModel id
@@ -42,13 +42,9 @@ const signUp = async (res: typeof Response,req: typeof Request) => {
   }
 };
 
-const fetchUsers = async (res: typeof Response,_req: typeof Request) => {
-    const users = await userModel.find();
-    console.log(users);
-    return res.json(users.map((user: any) => user.toJSON()));
+const fetchUsers = async (res: Response, _req: Request) => {
+  const users = await userModel.find();
+  console.log(users);
+  return res.json(users.map((user: any) => user.toJSON()));
 };
-export {};
-module.exports = {
-  signUp,
-  fetchUsers,
-};
+export { signUp, fetchUsers };

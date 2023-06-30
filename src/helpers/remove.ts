@@ -1,19 +1,18 @@
 // Accessing the file system to delte the file that contains the duplicated user
-const fs = require('fs')
+import fs from "fs";
 
-const removeFile = function (filePath:any) {
+const removeFile = function (filePath: any) {
   try {
     // get the file path and remove it from the filesystem
-    fs.unlink(filePath, (err:any) => {
+    fs.unlink(filePath, (err: any) => {
       if (err) {
-        console.error(err)
-        return
+        console.error(err);
+        return;
       }
-    })
-    console.log('File"' + filePath + '" removed!')
+    });
+    console.log('File"' + filePath + '" removed!');
   } catch (err) {
-    throw err
+    throw err;
   }
-}
-export {};
-module.exports = removeFile;
+};
+export { removeFile };

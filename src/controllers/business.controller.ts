@@ -1,7 +1,11 @@
-const { Request, Response } = require("express");
-const { vendorModel, announcementModel } = require("../models/businessModel");
+import { Response } from "express";
 
-const createCard = async (req: typeof Request, res: typeof Response, Model: any, savedData: any) => {
+const createCard = async (
+  req: any,
+  res: Response,
+  Model: any,
+  savedData: any
+) => {
   const auth = req.currentUser;
   if (auth) {
     try {
@@ -18,7 +22,4 @@ const createCard = async (req: typeof Request, res: typeof Response, Model: any,
   }
 };
 
-export {};
-module.exports = {
-  createCard,
-};
+export { createCard };

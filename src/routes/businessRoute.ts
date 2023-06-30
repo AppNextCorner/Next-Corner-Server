@@ -3,34 +3,34 @@
  */
 
 require("dotenv").config();
-const { Request, Response } = require("express");
-const express = require("express");
+import { Request, Response } from "express";
+import express from "express";
 const businessRouter = express.Router();
-const upload = require("../helpers/multer");
-const { createCard } = require("../controllers/business");
-const { imageHelper } = require("../helpers/uploadImages");
-const {
+import { upload } from "../helpers/multer";
+import { createCard } from "../controllers/business.controller";
+import { imageHelper } from "../helpers/uploadImages";
+import {
   vendorModel,
   announcementModel,
   itemModel,
   categoryModel,
   optionLabelModel,
   optionModel,
-} = require("../models/businessModel");
-const firebase = require("../util/firebase.util");
+} from "../models/businessModel";
+import { verifyToken } from "../util/firebase.util";
 
 async function decodeIDToken(req: any, res: any, next: any) {
-    console.log("Token Request", req.token);
-    if (req.token) {
-      try {
-        const decodedToken = await firebase.verifyToken(req.token);
-        req["currentUser"] = decodedToken;
-        next();
-      } catch (err) {
-        console.log(err);
-      }
+  console.log("Token Request", req.token);
+  if (req.token) {
+    try {
+      const decodedToken = await verifyToken(req.token);
+      req["currentUser"] = decodedToken;
+      next();
+    } catch (err) {
+      console.log(err);
     }
-  } 
+  }
+}
 
 const uploadAny = upload.any();
 
@@ -38,7 +38,7 @@ businessRouter.patch(
   "/upload-announcement-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, announcementModel);
   }
 );
@@ -47,7 +47,7 @@ businessRouter.patch(
   "/upload-vendor-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, vendorModel);
   }
 );
@@ -56,7 +56,7 @@ businessRouter.patch(
   "/upload-item-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, itemModel);
   }
 );
@@ -65,7 +65,7 @@ businessRouter.patch(
   "/upload-category-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, categoryModel);
   }
 );
@@ -74,7 +74,7 @@ businessRouter.patch(
   "/upload-option-label-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, optionLabelModel);
   }
 );
@@ -83,7 +83,7 @@ businessRouter.patch(
   "/upload-option-image",
   decodeIDToken,
   uploadAny,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     imageHelper(res, req, optionModel);
   }
 );
@@ -91,7 +91,7 @@ businessRouter.patch(
 businessRouter.post(
   "/upload-vendor-card",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, vendorModel, {
       name: req.body.name,
       image: null,
@@ -112,7 +112,7 @@ businessRouter.post(
 businessRouter.post(
   "/create-category",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, categoryModel, {
       category: req.body.category,
     });
@@ -122,7 +122,7 @@ businessRouter.post(
 businessRouter.post(
   "/create-announcement",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, announcementModel, {
       color: req.body.color,
       header: req.body.header,
@@ -135,7 +135,7 @@ businessRouter.post(
 businessRouter.post(
   "/create-option-label",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, optionLabelModel, {
       label: req.body.label,
       selected: req.body.selected,
@@ -147,7 +147,7 @@ businessRouter.post(
 businessRouter.post(
   "/create-option",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, optionModel, {
       name: req.body.name,
       type: req.body.type,
@@ -159,7 +159,7 @@ businessRouter.post(
 businessRouter.post(
   "/create-item",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     createCard(req, res, itemModel, {
       name: req.body.name,
       time: req.body.time,
@@ -178,7 +178,7 @@ businessRouter.post(
 businessRouter.get(
   "/get-vendors",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -194,7 +194,7 @@ businessRouter.get(
 businessRouter.get(
   "/get-announcements",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -212,7 +212,7 @@ businessRouter.get(
 businessRouter.get(
   "/get-items",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -228,7 +228,7 @@ businessRouter.get(
 businessRouter.get(
   "/get-categories",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -244,7 +244,7 @@ businessRouter.get(
 businessRouter.get(
   "/get-option-labels",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -262,7 +262,7 @@ businessRouter.get(
 businessRouter.get(
   "/get-options",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: any, res: Response) => {
     const auth = req.currentUser;
     console.log("Auth: ", req.currentUser);
     if (auth) {
@@ -278,7 +278,7 @@ businessRouter.get(
 businessRouter.patch(
   "/update-vendor/:id",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     const vendorId = req.params.id;
     const updatedVendor = req.body;
 
@@ -302,7 +302,7 @@ businessRouter.patch(
 businessRouter.patch(
   "/update-announcement/:id",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     const announcementId = req.params.id;
     const updatedAnnouncement = req.body;
 
@@ -326,7 +326,7 @@ businessRouter.patch(
 businessRouter.patch(
   "/update-item/:id",
   decodeIDToken,
-  async (req: typeof Request, res: typeof Response) => {
+  async (req: Request, res: Response) => {
     const itemId = req.params.id;
     const updatedItem = req.body;
 
