@@ -180,10 +180,10 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth2: ", req.currentUser);
+    // console.log("Auth2: ", req.currentUser);
     if (auth) {
       const vendors = await vendorModel.find({});
-      console.log("vendors", vendors);
+      // console.log("vendors", vendors);
       return res.json(vendors.map((vendor: any) => vendor.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -196,7 +196,7 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const announcements = await announcementModel.find({});
       return res.json(
@@ -213,7 +213,7 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const items = await itemModel.find({});
       return res.json(items.map((item: any) => item.toJSON()));
@@ -228,7 +228,7 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const categories = await categoryModel.find({});
       console.log("categories", categories);

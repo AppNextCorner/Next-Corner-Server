@@ -21,12 +21,12 @@ async function decodeIDToken(req: any, _res: Response, next: NextFunction) {
 
 orderRouter.post("/", decodeIDToken, async (req: any, res: Response) => {
   const auth = req.currentUser;
-  console.log("current user: ", req.currentUser);
+  // console.log("current user: ", req.currentUser);
   if (auth) {
     try {
       const order = new Orders(req.body);
       const saveOrder = await order.save();
-      console.log(saveOrder);
+      // console.log(saveOrder);
       return res.status(201).json(saveOrder);
     } catch (error) {
       console.log(error);
@@ -41,7 +41,7 @@ orderRouter.get("/", decodeIDToken, async (req: any, res: Response) => {
   //console.log("Auth: ", req)
   if (auth) {
     const orders = await Orders.find({});
-    console.log(orders);
+    // console.log(orders);
     return res.json(orders.map((order: any) => order.toJSON()));
   } else {
     return res.status(403).send("Not authorized");
@@ -57,9 +57,9 @@ orderRouter.patch("/order-status/:id", (req: any, res: Response) => {
   // create a new score in the database
   async function updateStatus() {
     try {
-      console.log(req.currentUser);
-      console.log(req.params.id);
-      console.log(req.body);
+      // console.log(req.currentUser);
+      // console.log(req.params.id);
+      // console.log(req.body);
 
       const newStatus = await Orders.findOneAndUpdate(
         { _id: req.params.id },
@@ -67,7 +67,7 @@ orderRouter.patch("/order-status/:id", (req: any, res: Response) => {
           orderStatus: data.status,
         }
       );
-      console.log(newStatus);
+      // console.log(newStatus);
       // grab _id from body -> then add what data to update
       return res.status(201).send(newStatus);
     } catch (err: any) {

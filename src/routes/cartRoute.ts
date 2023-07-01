@@ -25,7 +25,7 @@ cartRouter.post("/", decodeIDToken, async (req: any, res: Response) => {
     try {
       const cart = new cartModel(req.body);
       const savedCart = await cart.save();
-      console.log(savedCart);
+      // console.log(savedCart);
       return res.status(201).json(savedCart);
     } catch (error) {
       console.log(error);
@@ -37,10 +37,10 @@ cartRouter.post("/", decodeIDToken, async (req: any, res: Response) => {
 
 cartRouter.get("/", decodeIDToken, async (req: any, res: Response) => {
   const auth = req.currentUser;
-  console.log("Auth: ", req.currentUser);
+  // console.log("Auth: ", req.currentUser);
   if (auth) {
     const cart = await cartModel.find({});
-    console.log("cart:", cart);
+    // console.log("cart:", cart);
     return res.json(cart.map((cart: any) => cart.toJSON()));
   } else {
     return res.status(403).send("Not authorized");
@@ -83,7 +83,7 @@ cartRouter.put("/item-amount/:id", (req: any, res: Response) => {
         }
       );
       res.status(200).send(updatedProduct);
-      console.log(updatedProduct);
+      // console.log(updatedProduct);
     } catch (err: any) {
       res.status(400).json({ message: err.message });
     }

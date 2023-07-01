@@ -12,7 +12,9 @@ import authRouter from "./routes/authRoute";
 import bearerToken from "express-bearer-token";
 import orderRouter from "./routes/ordersRoute";
 import businessRouter from "./routes/businessRoute";
+import reviewsRouter from "./routes/reviews.route";
 import bodyParser from "body-parser";
+
 import { error } from "console";
 
 const PORT = process.env.PORT || 4020;
@@ -49,5 +51,7 @@ app.use("/auth", authRouter);
 app.use("/orders", orderRouter);
 // routes for business side
 app.use("/business", businessRouter);
+// routes for the reviews
+app.use("/reviews", reviewsRouter);
 // const hostname = '192.168.1.24'
 app.listen(PORT, () => console.log(`Server running at PORT`));
