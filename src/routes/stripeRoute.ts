@@ -1,9 +1,15 @@
 require("dotenv").config();
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Stripe = require("stripe");
-const { Request, Response, Next } = require("express");
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+import Stripe from "stripe";
+import { Request, Response } from "express";
+
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
+const stripeSecretWebhook = process.env.STRIPE_WEBHOOK__SECRET!;
+
+const stripe = new Stripe(stripeSecretKey, {
+  apiVersion: "2022-11-15",
+});
 
 router.use("/stripe", express.raw({ type: "*/*" }));
 
@@ -11,7 +17,7 @@ interface IClientData {
   amount: string;
   name: string;
 }
-router.post("/payment", async (req: typeof Request, res: typeof Response) => {
+router.post("/payment", async (req: Request, res: Response) => {
   //
   try {
     const merchantDisplayName = req.headers["merchantdisplayname"];
@@ -65,49 +71,55 @@ router.post("/payment", async (req: typeof Request, res: typeof Response) => {
   }
 });
 
-router.get("/secret", async (req: typeof Request, res: typeof Response) => {
+router.get("/secret", async (req: Request, res: Response) => {
   const { amount, name }: IClientData = req.body;
   const parsedAmount: number = parseInt(amount);
-  const paymentIntent = await stripe.paymentIntents.find({
-    amount: Math.round(parsedAmount * 100),
-    currency: "USD",
-    payment_method_types: ["card"],
-    metadata: { name },
-  });
-  const intent = paymentIntent;
-  res.json({ client_secret: intent.client_secret });
+
+  /**
+   * FOR LATER
+   */
+
+  // const paymentIntent = await stripe.paymentIntents.retrieve({
+  //   amount: Math.round(parsedAmount * 100),
+  //   currency: "USD",
+  //   payment_method_types: ["card"],
+  //   metadata: { name },
+  // });
+  // const intent = paymentIntent;
+  // res.json({ client_secret: intent.client_secret });
 });
 
 // Webhook endpoint
-router.post("/stripe", async (req: typeof Request, res: typeof Response) => {
+router.post("/stripe", async (req: Request, res: Response) => {
   // Get the signature from the headers
   const sig = req.headers["stripe-signature"];
+  if (sig) {
+    let event: any;
 
-  let event;
-
-  try {
-    // Check if the event is sent from Stripe or a third party
-    // And parse the event
-    event = await stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err: any) {
-    // Handle what happens if the event is not from Stripe
-    console.log(err);
-    return res.status(400).json({ message: err.message });
+    try {
+      // Check if the event is sent from Stripe or a third party
+      // And parse the event
+      event = await stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        stripeSecretWebhook
+      );
+    } catch (err: any) {
+      // Handle what happens if the event is not from Stripe
+      console.log(err);
+      return res.status(400).json({ message: err.message });
+    }
+    // Event when a payment is initiated
+    if (event.type === "payment_intent.created") {
+      console.log(`${event.data.object.metadata.name} initated payment!`);
+    }
+    // Event when a payment is succeeded
+    if (event.type === "payment_intent.succeeded") {
+      console.log(`${event.data.object.metadata.name} succeeded payment!`);
+      // fulfilment
+    }
+    res.json({ ok: true });
   }
-  // Event when a payment is initiated
-  if (event.type === "payment_intent.created") {
-    console.log(`${event.data.object.metadata.name} initated payment!`);
-  }
-  // Event when a payment is succeeded
-  if (event.type === "payment_intent.succeeded") {
-    console.log(`${event.data.object.metadata.name} succeeded payment!`);
-    // fulfilment
-  }
-  res.json({ ok: true });
 });
 
 export default router;
