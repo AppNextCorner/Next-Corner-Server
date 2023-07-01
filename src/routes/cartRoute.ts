@@ -122,5 +122,4 @@ cartRouter.delete("/delete-item/:id", (req: Request, res: Response) => {
   deleteItem();
 });
 
-export {};
-module.exports = cartRouter;
+export default cartRouter;

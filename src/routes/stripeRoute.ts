@@ -8,14 +8,14 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 router.use("/stripe", express.raw({ type: "*/*" }));
 
 interface IClientData {
-  amount: string,
-  name: string
+  amount: string;
+  name: string;
 }
 router.post("/payment", async (req: typeof Request, res: typeof Response) => {
   //
   try {
     const merchantDisplayName = req.headers["merchantdisplayname"];
-    console.log(merchantDisplayName)
+    console.log(merchantDisplayName);
     // Getting data from client
     const { amount, name }: IClientData = req.body;
     // Simple validation
@@ -110,5 +110,4 @@ router.post("/stripe", async (req: typeof Request, res: typeof Response) => {
   res.json({ ok: true });
 });
 
-export {}
-module.exports = router;
+export default router;

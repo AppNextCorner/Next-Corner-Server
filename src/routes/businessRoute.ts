@@ -180,7 +180,7 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    console.log("Auth2: ", req.currentUser);
     if (auth) {
       const vendors = await vendorModel.find({});
       console.log("vendors", vendors);
@@ -199,7 +199,6 @@ businessRouter.get(
     console.log("Auth: ", req.currentUser);
     if (auth) {
       const announcements = await announcementModel.find({});
-      console.log("announcements", announcements);
       return res.json(
         announcements.map((announcement: any) => announcement.toJSON())
       );
@@ -217,7 +216,6 @@ businessRouter.get(
     console.log("Auth: ", req.currentUser);
     if (auth) {
       const items = await itemModel.find({});
-      console.log("items", items);
       return res.json(items.map((item: any) => item.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -246,7 +244,6 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
     if (auth) {
       const optionLabels = await optionLabelModel.find({});
       console.log("optionLabels", optionLabels);
@@ -264,10 +261,8 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
     if (auth) {
       const options = await optionModel.find({});
-      console.log("options", options);
       return res.json(options.map((option: any) => option.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -345,5 +340,4 @@ businessRouter.patch(
   }
 );
 
-export {};
-module.exports = businessRouter;
+export default businessRouter;

@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 
 const imageHelper = async (
   res: Response,
-  req: Request,
+  req: any,
   model: any,
   name?: string
 ) => {

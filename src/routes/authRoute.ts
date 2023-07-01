@@ -12,5 +12,5 @@ authRouter.get("/", async (req: Request, res: Response) => {
   console.log("FEFJWIOEFJE");
 });
 
-export { authRouter };
+export default authRouter;
 //(res: typeof Response, req: typeof Request)
