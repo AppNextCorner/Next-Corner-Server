@@ -12,6 +12,10 @@ const schema = new Schema(
       ref: "Next Corner User",
       required: true,
     },
+
+    // The id of the item being reviewed
+    idOfItem: { type: String, required: true },
+
   },
   {
     timeStamps: {

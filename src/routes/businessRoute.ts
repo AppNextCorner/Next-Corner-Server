@@ -3,11 +3,14 @@
  */
 
 require("dotenv").config();
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import express from "express";
 const businessRouter = express.Router();
 import { upload } from "../helpers/multer";
-import { createCard } from "../controllers/business.controller";
+import {
+  createCard,
+  getVendorByName,
+} from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import {
   vendorModel,
@@ -191,6 +194,17 @@ businessRouter.get(
   }
 );
 
+businessRouter.post(
+  "/getVendorByName",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    const auth = req.currentUser;
+    if (auth) {
+      getVendorByName(req.body, res, next);
+    }
+  }
+);
 businessRouter.get(
   "/get-announcements",
   decodeIDToken,

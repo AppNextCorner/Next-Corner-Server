@@ -6,6 +6,7 @@ import { userInterface } from "./user.interface";
  */
 export interface reviewInterface extends Document {
   _id: Types.ObjectId;
+  idOfItem: string;
   review: string;
   rating: number;
   user: userInterface;
