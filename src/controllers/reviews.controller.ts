@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { findAllVendors } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
 import * as helper from "../helpers/modelHelpers/reviews.helper";
 import * as userHelper from "../helpers/modelHelpers/user.helper";
-import { userInterface } from "../interfaces/user.interface";
 
 /**
  *
@@ -20,6 +18,9 @@ const createReview = async (
   try {
     // Let the helper function handle the create review
     helper.createReview(req.body);
+
+    // Update the item Rating
+    helper.updateItemRating(req.body.idOfItem.toString());
   } catch (err) {
     next(err);
   }
