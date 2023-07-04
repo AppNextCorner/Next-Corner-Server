@@ -3,11 +3,14 @@
  */
 
 require("dotenv").config();
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import express from "express";
 const businessRouter = express.Router();
 import { upload } from "../helpers/multer";
-import { createCard } from "../controllers/business.controller";
+import {
+  createCard,
+  getVendorByName,
+} from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import {
   vendorModel,
@@ -180,10 +183,10 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth2: ", req.currentUser);
     if (auth) {
       const vendors = await vendorModel.find({});
-      console.log("vendors", vendors);
+      // console.log("vendors", vendors);
       return res.json(vendors.map((vendor: any) => vendor.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -191,15 +194,25 @@ businessRouter.get(
   }
 );
 
+businessRouter.post(
+  "/getVendorByName",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    const auth = req.currentUser;
+    if (auth) {
+      getVendorByName(req.body, res, next);
+    }
+  }
+);
 businessRouter.get(
   "/get-announcements",
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const announcements = await announcementModel.find({});
-      console.log("announcements", announcements);
       return res.json(
         announcements.map((announcement: any) => announcement.toJSON())
       );
@@ -214,10 +227,9 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const items = await itemModel.find({});
-      console.log("items", items);
       return res.json(items.map((item: any) => item.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -230,7 +242,7 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
+    // console.log("Auth: ", req.currentUser);
     if (auth) {
       const categories = await categoryModel.find({});
       console.log("categories", categories);
@@ -246,7 +258,6 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
     if (auth) {
       const optionLabels = await optionLabelModel.find({});
       console.log("optionLabels", optionLabels);
@@ -264,10 +275,8 @@ businessRouter.get(
   decodeIDToken,
   async (req: any, res: Response) => {
     const auth = req.currentUser;
-    console.log("Auth: ", req.currentUser);
     if (auth) {
       const options = await optionModel.find({});
-      console.log("options", options);
       return res.json(options.map((option: any) => option.toJSON()));
     } else {
       return res.status(403).send("Not authorized");
@@ -345,5 +354,4 @@ businessRouter.patch(
   }
 );
 
-export {};
-module.exports = businessRouter;
+export default businessRouter;

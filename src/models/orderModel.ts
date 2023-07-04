@@ -16,4 +16,4 @@ orderSchema.set('toJSON', {
 })
 const orderModel = mongoose.model('order', orderSchema);
 
-export {orderModel}
+export default orderModel

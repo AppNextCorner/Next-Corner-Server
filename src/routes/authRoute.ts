@@ -1,16 +1,28 @@
 require("dotenv").config();
-import { Express } from "express";
+import { Express, NextFunction } from "express";
 import express from "express";
 const authRouter = express.Router();
 import { Request, Response } from "express";
-import { signUp, fetchUsers } from "../controllers/auth.controller";
+import {
+  signUp,
+  fetchUsers,
+  getSingleUser,
+} from "../controllers/auth.controller";
 
 authRouter.post("/signup", signUp);
 
 authRouter.get("/", async (req: Request, res: Response) => {
   fetchUsers(res, req);
-  console.log("FEFJWIOEFJE");
 });
 
-export { authRouter };
-//(res: typeof Response, req: typeof Request)
+/**
+ * This CRUD operation recieves an email and sends back a user
+ */
+authRouter.post(
+  "/getUser",
+  async (req: any, res: Response, next: NextFunction) => {
+    getSingleUser(req, res, next);
+  }
+);
+
+export default authRouter;

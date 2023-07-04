@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { userInterface } from "../interfaces/user.interface";
 
 const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
@@ -8,6 +9,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model<userInterface & mongoose.Document>("user", userSchema);
 
 export { userModel };
