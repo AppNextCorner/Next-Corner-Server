@@ -9,7 +9,9 @@ import {
   getSingleUser,
 } from "../controllers/auth.controller";
 
-authRouter.post("/signup", signUp);
+authRouter.post("/signup",  async (req: Request, res: Response, next: NextFunction) => {
+  signUp(res, req, next);
+});
 
 authRouter.get("/", async (req: Request, res: Response) => {
   fetchUsers(res, req);

@@ -3,11 +3,10 @@ import { createUser } from "../util/firebase.util";
 import { userModel } from "../models/userModel";
 import * as user from "../helpers/modelHelpers/user.helper";
 import { userInterface } from "../interfaces/user.interface";
-const signUp = async (res: Response, req: Request) => {
+const signUp = async (res: Response, req: Request, next: NextFunction) => {
   try {
     // get user data (1.email 2.password)
     const payload = req.body;
-    console.log("payload: ", payload);
     // check if another user already has the same email
     const check = await userModel.findOne({ email: payload.email });
     if (check !== null) {
@@ -31,15 +30,13 @@ const signUp = async (res: Response, req: Request) => {
         // make the UID unique for the user and matches that of the userModel id
         newUser._id.toString()
       );
-
       res.status(200).send({
         message: "User created successfully",
         payload: newUser,
       });
     }
   } catch (e) {
-    console.log(e);
-    res.status(401).send({ message: e });
+    next(e);
   }
 };
 
