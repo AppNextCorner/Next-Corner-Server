@@ -13,6 +13,8 @@ declare const createReview: (req: Request, _res: Response, next: NextFunction) =
  * @param req Incoming Request
  * @param res Sent response
  * @param next  Next function
+ *
+ * req.params.id = idOfTheItem
  */
 declare const getReviews: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export { createReview, getReviews };

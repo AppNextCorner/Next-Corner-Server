@@ -180,4 +180,17 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
 } & {
     _id: import("mongoose").Types.ObjectId;
 }, never>) | null>;
-export { createReview, findAll, findReviewByItemId, updateItemRating };
+declare const deleteReviewByItemId: (id: string) => Promise<(import("mongoose").Document<unknown, any, {
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+}> & Omit<{
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+} & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>) | null>;
+export { createReview, findAll, findReviewByItemId, updateItemRating, deleteReviewByItemId };

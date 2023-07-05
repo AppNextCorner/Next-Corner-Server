@@ -48,6 +48,19 @@ const updateItemRatingByVendorId = async (vendorId: string, itemId: string) => {
    */
   const newRating = await average(ratingList, ratingList.length);
 
+  if (isNaN(newRating)) {
+    /**
+     * Force the rating to 0
+     */
+    return await businessModel.findByIdAndUpdate(
+      vendorId,
+      {
+        $set: { "menu.$[item].rating": 0 },
+      },
+      { arrayFilters: [{ "item._id": itemId }], new: true }
+    );
+  }
+
   /**
    * Update the item rating
    */
