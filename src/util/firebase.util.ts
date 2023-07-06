@@ -11,11 +11,20 @@ const app = admin.initializeApp({
 });
 
 const createUser = async (email: string, password: string, uid: string) => {
-  return await app.auth().createUser({
-    email,
-    password,
-    uid,
-  });
+  try{
+    const user = await app.auth().createUser({
+      email,
+      password,
+      uid,
+    });
+    return user;
+    
+  } catch(err) {
+    console.log(err)
+    
+    throw err;
+  }
+ 
 };
 
 const verifyToken = async (token: string) => {
