@@ -14,6 +14,7 @@ authRouter.post("/signup",  async (req: Request, res: Response, next: NextFuncti
 });
 
 authRouter.get("/", async (req: Request, res: Response) => {
+  
   fetchUsers(res, req);
 });
 
