@@ -25,11 +25,18 @@ const app = firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(config),
 });
 const createUser = (email, password, uid) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield app.auth().createUser({
-        email,
-        password,
-        uid,
-    });
+    try {
+        const user = yield app.auth().createUser({
+            email,
+            password,
+            uid,
+        });
+        return user;
+    }
+    catch (err) {
+        console.log(err);
+        throw err;
+    }
 });
 exports.createUser = createUser;
 const verifyToken = (token) => __awaiter(void 0, void 0, void 0, function* () {

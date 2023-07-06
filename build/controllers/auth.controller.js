@@ -43,13 +43,13 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
         // check if another user already has the same email
         const check = yield userModel_1.userModel.findOne({ email: payload.email });
         if (check !== null) {
-            // return error. 'user with email already exists"
+            // return error: 'user with email already exists'
             res.status(400).send({
                 message: "User with email already exists",
             });
         }
         else {
-            // create user document using the mondogb schema
+            // create user document using the MongoDB schema
             const newUser = yield userModel_1.userModel.create({
                 email: payload.email,
                 password: payload.password,
@@ -57,18 +57,39 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
                 lastName: payload.lastName,
                 phoneNumber: payload.phoneNumber,
             });
-            // create new user in firebase
-            yield (0, firebase_util_1.createUser)(payload.email, payload.password, 
-            // make the UID unique for the user and matches that of the userModel id
-            newUser._id.toString());
-            res.status(200).send({
-                message: "User created successfully",
-                payload: newUser,
-            });
+            try {
+                // create new user in Firebase
+                yield (0, firebase_util_1.createUser)(payload.email, payload.password, 
+                // make the UID unique for the user and matches that of the userModel id
+                newUser._id.toString());
+                res.status(200).send({
+                    message: "User created successfully",
+                    payload: newUser,
+                });
+            }
+            catch (error) {
+                // Handle the Firebase error
+                console.error("Firebase user creation error:", error);
+                // Delete the user document in MongoDB if Firebase user creation fails
+                yield userModel_1.userModel.deleteOne({ _id: newUser._id });
+                res.status(400).send({
+                    message: error.message,
+                    payload: error,
+                });
+                // Pass the error to the error-handling middleware
+                next(error);
+            }
         }
     }
-    catch (e) {
-        next(e);
+    catch (error) {
+        // Handle other errors
+        console.error("An error occurred:", error);
+        res.status(400).send({
+            message: "Missing Credentials",
+            payload: error,
+        });
+        // Pass the error to the error-handling middleware
+        next(error);
     }
 });
 exports.signUp = signUp;
