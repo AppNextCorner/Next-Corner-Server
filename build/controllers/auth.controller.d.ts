@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { userInterface } from "../interfaces/user.interface";
-
 declare const signUp: (res: Response, req: Request, next: NextFunction) => Promise<void>;
-
 /**
  * This function gets a singleUser with the email and returns the entire data of that user in
  *
