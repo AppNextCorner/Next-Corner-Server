@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReviewByItemId = exports.updateItemRating = exports.findReviewByItemId = exports.findAll = exports.createReview = void 0;
+exports.updateItemRating = exports.findReviewByItemId = exports.findAll = exports.createReview = void 0;
 const reviews_model_1 = require("../../models/reviews.model");
 /**
  * Other helper functions
@@ -69,7 +69,3 @@ const updateItemRating = (id) => __awaiter(void 0, void 0, void 0, function* () 
     return updatedInfo;
 });
 exports.updateItemRating = updateItemRating;
-const deleteReviewByItemId = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield model.findByIdAndDelete(id).exec();
-});
-exports.deleteReviewByItemId = deleteReviewByItemId;

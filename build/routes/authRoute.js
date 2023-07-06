@@ -16,7 +16,9 @@ require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const authRouter = express_1.default.Router();
 const auth_controller_1 = require("../controllers/auth.controller");
-authRouter.post("/signup", auth_controller_1.signUp);
+authRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, auth_controller_1.signUp)(res, req, next);
+}));
 authRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     (0, auth_controller_1.fetchUsers)(res, req);
 }));

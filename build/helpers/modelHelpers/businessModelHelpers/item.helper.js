@@ -55,14 +55,6 @@ const updateItemRatingByVendorId = (vendorId, itemId) => __awaiter(void 0, void 
      * ratingList.length is for the number of elements
      */
     const newRating = yield (0, average_math_1.default)(ratingList, ratingList.length);
-    if (isNaN(newRating)) {
-        /**
-         * Force the rating to 0
-         */
-        return yield businessModel.findByIdAndUpdate(vendorId, {
-            $set: { "menu.$[item].rating": 0 },
-        }, { arrayFilters: [{ "item._id": itemId }], new: true });
-    }
     /**
      * Update the item rating
      */

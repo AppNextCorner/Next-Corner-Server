@@ -36,11 +36,11 @@ exports.getSingleUser = exports.fetchUsers = exports.signUp = void 0;
 const firebase_util_1 = require("../util/firebase.util");
 const userModel_1 = require("../models/userModel");
 const user = __importStar(require("../helpers/modelHelpers/user.helper"));
-const signUp = (res, req) => __awaiter(void 0, void 0, void 0, function* () {
+const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // get user data (1.email 2.password)
         const payload = req.body;
-        console.log("payload: ", payload);
+
         // check if another user already has the same email
         const check = yield userModel_1.userModel.findOne({ email: payload.email });
         if (check !== null) {
@@ -69,8 +69,7 @@ const signUp = (res, req) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (e) {
-        console.log(e);
-        res.status(401).send({ message: e });
+        next(e);
     }
 });
 exports.signUp = signUp;

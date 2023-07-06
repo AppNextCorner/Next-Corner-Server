@@ -13,7 +13,7 @@ exports.decodeIDToken = void 0;
 const firebase_util_1 = require("../util/firebase.util");
 function decodeIDToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("Token Request", req.token);
+
         if (req.token) {
             try {
                 const decodedToken = yield (0, firebase_util_1.verifyToken)(req.token);
