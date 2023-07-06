@@ -23,59 +23,69 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
+import { reviewInterface } from "../../interfaces/reviews.interface";
 /**
- * This function returns all items
- * @param selections Any selections
+ *
+ * This function creates a review in the reviews schema
+ *
+ * @param incomingReview An incoming review in reviewInterface type
  * @returns
  */
-declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    image: string[];
-    customizations: import("mongoose").Types.DocumentArray<{
-        optionCustomizations: import("mongoose").Types.DocumentArray<{
-            label?: string | undefined;
-            selected?: boolean | undefined;
-            optionId?: string | undefined;
-        }>;
-        type?: string | undefined;
-        name?: string | undefined;
-    }>;
-    name?: string | undefined;
-    time?: number | undefined;
-    price?: number | undefined;
-    description?: string | undefined;
-    amountInCart?: number | undefined;
-    category?: string | undefined;
-    rating?: number | undefined;
-    featured?: boolean | undefined;
+declare const createReview: (incomingReview: reviewInterface) => Promise<import("mongoose").Document<unknown, any, {
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
 }> & Omit<{
-    image: string[];
-    customizations: import("mongoose").Types.DocumentArray<{
-        optionCustomizations: import("mongoose").Types.DocumentArray<{
-            label?: string | undefined;
-            selected?: boolean | undefined;
-            optionId?: string | undefined;
-        }>;
-        type?: string | undefined;
-        name?: string | undefined;
-    }>;
-    name?: string | undefined;
-    time?: number | undefined;
-    price?: number | undefined;
-    description?: string | undefined;
-    amountInCart?: number | undefined;
-    category?: string | undefined;
-    rating?: number | undefined;
-    featured?: boolean | undefined;
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+} & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>>;
+/**
+ * This function returns all reviews
+ * @param selections any selections
+ * @returns
+ */
+declare const findAll: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+}> & Omit<{
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
 } & {
     _id: import("mongoose").Types.ObjectId;
 }, never>)[]>;
 /**
- * This function updates the rating of an item by using the itemId and vendorId
- * @param vendorId the id of the vendor
- * @param itemId  the id of the menu item
+ * This function returns reviews[] of a specific itemId
+ * @param id Id of the item not the review
+ * @param selections any selections
  * @returns
  */
-declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => Promise<(import("mongoose").Document<unknown, any, {
+declare const findReviewByItemId: (id: string, selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+}> & Omit<{
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+} & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>)[]>;
+/**
+ * This function updates the rating of an item
+ * @param id menuItemId
+ */
+declare const updateItemRating: (id: string) => Promise<(import("mongoose").Document<unknown, any, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
@@ -170,4 +180,17 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
 } & {
     _id: import("mongoose").Types.ObjectId;
 }, never>) | null>;
-export { findAllItems, updateItemRatingByVendorId };
+declare const deleteReviewByItemId: (id: string) => Promise<(import("mongoose").Document<unknown, any, {
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+}> & Omit<{
+    rating: number;
+    user: import("mongoose").Types.ObjectId;
+    review: string;
+    idOfItem: string;
+} & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>) | null>;
+export { createReview, findAll, findReviewByItemId, updateItemRating, deleteReviewByItemId };
