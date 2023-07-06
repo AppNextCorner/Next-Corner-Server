@@ -60,10 +60,13 @@ exports.createReview = createReview;
  * @param req Incoming Request
  * @param res Sent response
  * @param next  Next function
+
  */
 const getReviews = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const reviews = yield helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+        yield helper.updateItemRating(req.params.id);
+
         const usersList = yield Promise.all(
         // Map through the reviews and get the userId,
         reviews.map((review) => __awaiter(void 0, void 0, void 0, function* () {

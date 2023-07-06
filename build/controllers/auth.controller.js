@@ -40,6 +40,7 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
     try {
         // get user data (1.email 2.password)
         const payload = req.body;
+
         // check if another user already has the same email
         const check = yield userModel_1.userModel.findOne({ email: payload.email });
         if (check !== null) {

@@ -31,10 +31,20 @@ const createReview = async (
  * @param req Incoming Request
  * @param res Sent response
  * @param next  Next function
+ *
+ * req.params.id = idOfTheItem
  */
 const getReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reviews: any = await helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+    await helper.updateItemRating(req.params.id);
+
+    // Incase comments are over flooding, delete all
+    // await new Promise(() =>
+    //   reviews.array.forEach((element: any) => {
+    //     helper.deleteReviewByItemId(element._id.toString());
+    //   })
+    // );
     const usersList: any = await Promise.all(
       // Map through the reviews and get the userId,
       reviews.map(async (review: any) => {

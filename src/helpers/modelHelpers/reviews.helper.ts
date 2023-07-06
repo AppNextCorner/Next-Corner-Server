@@ -63,4 +63,8 @@ const updateItemRating = async (id: string) => {
   return updatedInfo;
 };
 
-export { createReview, findAll, findReviewByItemId, updateItemRating };
+const deleteReviewByItemId = async (id: string) => {
+  return await model.findByIdAndDelete(id).exec();
+};
+
+export { createReview, findAll, findReviewByItemId, updateItemRating, deleteReviewByItemId };
