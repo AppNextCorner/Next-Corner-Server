@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 // Allow transfer of data
 app.use(cors());
 app.use(bearerToken()); // Be able to access the token in our backend
-
+//
 // setting routes for stripe
 app.use("/", stripe);
 // routes for cart
