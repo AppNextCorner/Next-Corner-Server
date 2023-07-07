@@ -7,8 +7,12 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: Number, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  role: { type: String, required: true, default: "user" },
 });
 
-const userModel = mongoose.model<userInterface & mongoose.Document>("user", userSchema);
+const userModel = mongoose.model<userInterface & mongoose.Document>(
+  "user",
+  userSchema
+);
 
 export { userModel };

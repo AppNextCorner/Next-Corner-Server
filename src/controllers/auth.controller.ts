@@ -63,7 +63,6 @@ const signUp = async (res: Response, req: Request, next: NextFunction) => {
   }
 };
 
-
 /**
  * This function gets a singleUser with the email and returns the entire data of that user in
  *
@@ -85,7 +84,7 @@ const getSingleUser = async (
     // findByEmail is given the data.email param
     const payload = await user.findByEmail(data.email);
 
-    // send back the the user data in the forme of userInterface
+    // send barck the the user data in the forme of userInterface
     res.status(200).send({
       payload: payload,
       message: "User data sent!",
@@ -101,4 +100,19 @@ const fetchUsers = async (res: Response, _req: Request) => {
   return res.json(users.map((user: any) => user.toJSON()));
 };
 
-export { signUp, fetchUsers, getSingleUser };
+const updateRole = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body;
+
+    const newUser = await user.updateRoleByUserId(data.userId, data.role);
+
+    res.status(200).send({
+      message: "User is updated!",
+      payload: newUser,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { signUp, fetchUsers, getSingleUser, updateRole };
