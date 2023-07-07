@@ -10,4 +10,8 @@ const findByEmail = async (email: string, selections: any = {}) => {
   return await model.findOne({ email: email }).select(selections).exec();
 };
 
-export { findById, findByEmail };
+const updateRoleByUserId = async (userId: string, role: string) => {
+  return await model.findByIdAndUpdate(userId, { role: role }, { new: true });
+};
+
+export { findById, findByEmail, updateRoleByUserId };

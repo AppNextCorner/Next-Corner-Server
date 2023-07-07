@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSingleUser = exports.fetchUsers = exports.signUp = void 0;
+exports.updateRole = exports.getSingleUser = exports.fetchUsers = exports.signUp = void 0;
 const firebase_util_1 = require("../util/firebase.util");
 const userModel_1 = require("../models/userModel");
 const user = __importStar(require("../helpers/modelHelpers/user.helper"));
@@ -108,7 +108,7 @@ const getSingleUser = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const data = req.body;
         // findByEmail is given the data.email param
         const payload = yield user.findByEmail(data.email);
-        // send back the the user data in the forme of userInterface
+        // send barck the the user data in the forme of userInterface
         res.status(200).send({
             payload: payload,
             message: "User data sent!",
@@ -125,3 +125,17 @@ const fetchUsers = (res, _req) => __awaiter(void 0, void 0, void 0, function* ()
     return res.json(users.map((user) => user.toJSON()));
 });
 exports.fetchUsers = fetchUsers;
+const updateRole = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = req.body;
+        const newUser = yield user.updateRoleByUserId(data.userId, data.role);
+        res.status(200).send({
+            message: "User is updated!",
+            payload: newUser,
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.updateRole = updateRole;

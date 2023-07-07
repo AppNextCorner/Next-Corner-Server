@@ -12,4 +12,5 @@ declare const signUp: (res: Response, req: Request, next: NextFunction) => Promi
  */
 declare const getSingleUser: (req: Request & userInterface, res: Response, next: NextFunction) => Promise<void>;
 declare const fetchUsers: (res: Response, _req: Request) => Promise<Response<any, Record<string, any>>>;
-export { signUp, fetchUsers, getSingleUser };
+declare const updateRole: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export { signUp, fetchUsers, getSingleUser, updateRole };
