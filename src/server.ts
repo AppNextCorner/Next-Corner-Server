@@ -34,13 +34,13 @@ async function connectToDb() {
 // run the function to connect
 connectToDb();
 
-app.use(express.static("images"));
+app.use(express.static(process.env.NODE_ENV === "local" ? "src/images" : 'build/images'));
 app.use(express.json());
 app.use(bodyParser.json());
 // Allow transfer of data
 app.use(cors());
 app.use(bearerToken()); // Be able to access the token in our backend
-
+//
 // setting routes for stripe
 app.use("/", stripe);
 // routes for cart

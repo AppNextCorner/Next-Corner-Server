@@ -46,7 +46,7 @@ function connectToDb() {
 }
 // run the function to connect
 connectToDb();
-app.use(express_1.default.static("images"));
+app.use(express_1.default.static(process.env.NODE_ENV === "local" ? "src/images" : 'build/images'));
 app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 // Allow transfer of data
