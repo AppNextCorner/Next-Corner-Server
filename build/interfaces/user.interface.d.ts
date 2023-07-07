@@ -9,4 +9,5 @@ export interface userInterface extends Document {
     phoneNumber: number;
     email: string;
     password: string;
+    role: string;
 }

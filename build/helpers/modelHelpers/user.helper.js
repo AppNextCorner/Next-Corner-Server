@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findByEmail = exports.findById = void 0;
+exports.updateRoleByUserId = exports.findByEmail = exports.findById = void 0;
 const userModel_1 = require("../../models/userModel");
 const model = userModel_1.userModel;
 const findById = (id, selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,3 +20,7 @@ const findByEmail = (email, selections = {}) => __awaiter(void 0, void 0, void 0
     return yield model.findOne({ email: email }).select(selections).exec();
 });
 exports.findByEmail = findByEmail;
+const updateRoleByUserId = (userId, role) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield model.findByIdAndUpdate(userId, { role: role }, { new: true });
+});
+exports.updateRoleByUserId = updateRoleByUserId;

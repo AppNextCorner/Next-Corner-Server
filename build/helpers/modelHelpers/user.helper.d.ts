@@ -29,4 +29,7 @@ declare const findById: (id: string, selections?: any) => Promise<(import("../..
 declare const findByEmail: (email: string, selections?: any) => Promise<(import("../../interfaces/user.interface").userInterface & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
 }) | null>;
-export { findById, findByEmail };
+declare const updateRoleByUserId: (userId: string, role: string) => Promise<(import("../../interfaces/user.interface").userInterface & import("mongoose").Document<any, any, any> & {
+    _id: import("mongoose").Types.ObjectId;
+}) | null>;
+export { findById, findByEmail, updateRoleByUserId };
