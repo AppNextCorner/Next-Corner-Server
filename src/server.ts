@@ -34,7 +34,7 @@ async function connectToDb() {
 // run the function to connect
 connectToDb();
 
-app.use(express.static("images"));
+app.use(express.static("src/images"));
 app.use(express.json());
 app.use(bodyParser.json());
 // Allow transfer of data
