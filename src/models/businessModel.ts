@@ -8,7 +8,8 @@ const announcementsSchema = new mongoose.Schema({
   color: { type: String },
   header: { type: String },
   description: { type: String },
-  image: [{ type: String }],
+  image: { type: String },
+
 });
 
 const optionlabelSchema = new mongoose.Schema({
@@ -26,7 +27,7 @@ const optionsSchema = new mongoose.Schema({
 const itemSchema = new mongoose.Schema({
   name: { type: String },
   time: { type: Number },
-  image: [{ type: String }],
+  image: { type: String },
   price: { type: Number },
   description: { type: String },
   customizations: [optionsSchema],
@@ -44,17 +45,20 @@ const statusSchema = new mongoose.Schema({
 const vendorSchema = new mongoose.Schema(
   {
     name: { type: String },
-    image: [{ type: String || null }],
-    announcements: [announcementsSchema],
+    image: { type: String || null },
+    announcements: {
+      cards: [announcementsSchema],
+      toggle: {type: Boolean}
+    },
     location: { type: Object },
-    open: { type: String },
-    close: { type: String },
+    times: [{type: Object}],
     categories: [categorySchema],
     menu: [itemSchema],
-    userId: { type: String },
+    uid: { type: String },
     categoryId: { type: Number },
     rating: { type: Number },
     trending: { type: String },
+    storeStatus: { type: String, required: true, default: "Not Approved"},
     status: statusSchema,
   },
   { timestamps: true }

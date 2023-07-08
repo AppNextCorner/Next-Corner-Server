@@ -12,3 +12,4 @@ export interface userInterface extends Document {
   password: string;
   role: string;
 }
+}

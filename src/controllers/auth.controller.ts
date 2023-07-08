@@ -100,9 +100,17 @@ const fetchUsers = async (res: Response, _req: Request) => {
   return res.json(users.map((user: any) => user.toJSON()));
 };
 
+
+
+
+/**
+ * This function updates the role of the user based on the role given
+ */
 const updateRole = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
+    // data,userId = userId
+    // data.role = desired role
 
     const newUser = await user.updateRoleByUserId(data.userId, data.role);
 

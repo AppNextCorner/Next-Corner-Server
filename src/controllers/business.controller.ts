@@ -1,5 +1,8 @@
 import { NextFunction, Response } from "express";
 import { findVendorByName } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
+import { removeFile } from "../helpers/remove";
+import { cloudinary } from "../helpers/cloudinary";
+
 const createCard = async (
   req: any,
   res: Response,
@@ -44,4 +47,26 @@ const getVendorByName = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export { createCard, getVendorByName };
+const uploadStore = async (req: any, _res: Response, next: NextFunction) => {
+  try {
+    const request_data = JSON.parse(req.body.payload)
+    console.log('parsed: ', request_data)
+    // Replace the previous file with the new one uploaded from the user
+    // const result = await cloudinary.uploader.upload(req.file.path, {
+    //   public_id: `${req.file.path}_banner`,
+    //   width: 500,
+    //   height: 500,
+    //   crop: "fill",
+    // });
+
+    console.log(req.file)
+
+  
+    //removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    // res.status(201).send({})
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { createCard, getVendorByName, uploadStore };

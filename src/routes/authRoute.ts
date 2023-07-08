@@ -21,6 +21,9 @@ authRouter.get("/", async (req: Request, res: Response) => {
   fetchUsers(res, req);
 });
 
+/**
+ * This CRUD operation recieves user and desired role to update
+ */
 authRouter.put(
   "/switchRoles",
   async (req: Request, res: Response, next: NextFunction) => {
