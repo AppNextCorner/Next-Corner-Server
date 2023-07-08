@@ -1,6 +1,25 @@
+import { IBusiness } from "../../../interfaces/store.interface";
 import { vendorModel } from "../../../models/businessModel";
 
 const model = vendorModel;
+
+const createVendor = async (storeData: IBusiness) => {
+  return await model.create({
+    name: storeData.name,
+    image: storeData.image,
+    announcements: storeData.announcements,
+    location: storeData.location,
+    times: storeData.times,
+    categories: storeData.categories,
+    menu: storeData.menu,
+    uid: storeData.uid,
+    categoryId: storeData.categoryId,
+    rating: storeData.rating,
+    trending: storeData.trending,
+    storeStatus: storeData.storeStatus,
+    status: storeData.status,
+  });
+};
 
 /**
  *
@@ -43,4 +62,9 @@ const findVendorByMenuItemId = async (id: string, selections: any = {}) => {
   return vendor;
 };
 
-export { findAllVendors, findVendorByName, findVendorByMenuItemId };
+export {
+  createVendor,
+  findAllVendors,
+  findVendorByName,
+  findVendorByMenuItemId,
+};

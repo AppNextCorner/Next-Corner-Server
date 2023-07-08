@@ -1,7 +1,11 @@
 import { NextFunction, Response } from "express";
-import { findVendorByName } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
+import {
+  findVendorByName,
+  createVendor,
+} from "../helpers/modelHelpers/businessModelHelpers/business.helper";
 import { removeFile } from "../helpers/remove";
 import { cloudinary } from "../helpers/cloudinary";
+import { IBusiness } from "../interfaces/store.interface";
 
 const createCard = async (
   req: any,
@@ -49,8 +53,8 @@ const getVendorByName = async (req: any, res: Response, next: NextFunction) => {
 
 const uploadStore = async (req: any, _res: Response, next: NextFunction) => {
   try {
-    const request_data = JSON.parse(req.body.payload)
-    console.log('parsed: ', request_data)
+    const storeData = JSON.parse(req.body.payload);
+
     // Replace the previous file with the new one uploaded from the user
     // const result = await cloudinary.uploader.upload(req.file.path, {
     //   public_id: `${req.file.path}_banner`,
@@ -59,10 +63,25 @@ const uploadStore = async (req: any, _res: Response, next: NextFunction) => {
     //   crop: "fill",
     // });
 
-    console.log(req.file)
+    const data: IBusiness = {
+      name: storeData.name,
+      image: storeData.image,
+      announcements: storeData.announcements,
+      location: storeData.location,
+      times: storeData.times,
+      categories: [storeData.category.name],
+      menu: storeData.menu,
+      uid: storeData.uid,
+      categoryId: storeData.category.id,
+      rating: storeData.rating,
+      trending: storeData.trending,
+      storeStatus: storeData.storeStatus,
+      status: storeData.status,
+    };
 
-  
-    //removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    createVendor(data);
+
+    // removeFile(req.file.path); // Remove the file from storage to prevent overflow
     // res.status(201).send({})
   } catch (err) {
     next(err);

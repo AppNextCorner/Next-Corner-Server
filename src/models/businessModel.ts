@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
+import { IBusiness } from "../interfaces/store.interface";
 
 const categorySchema = new mongoose.Schema({
   category: { type: String },
@@ -9,7 +10,6 @@ const announcementsSchema = new mongoose.Schema({
   header: { type: String },
   description: { type: String },
   image: { type: String },
-
 });
 
 const optionlabelSchema = new mongoose.Schema({
@@ -48,17 +48,17 @@ const vendorSchema = new mongoose.Schema(
     image: { type: String || null },
     announcements: {
       cards: [announcementsSchema],
-      toggle: {type: Boolean}
+      toggle: { type: Boolean },
     },
     location: { type: Object },
-    times: [{type: Object}],
+    times: [{ type: Object }],
     categories: [categorySchema],
     menu: [itemSchema],
     uid: { type: String },
     categoryId: { type: Number },
     rating: { type: Number },
     trending: { type: String },
-    storeStatus: { type: String, required: true, default: "Not Approved"},
+    storeStatus: { type: String, required: true, default: "Not Approved" },
     status: statusSchema,
   },
   { timestamps: true }
@@ -72,7 +72,10 @@ vendorSchema.set("toJSON", {
   },
 });
 
-const vendorModel = mongoose.model("business", vendorSchema);
+const vendorModel = mongoose.model<IBusiness & Document>(
+  "business",
+  vendorSchema
+);
 const categoryModel = mongoose.model("Category", categorySchema);
 const announcementModel = mongoose.model("Announcement", announcementsSchema);
 const optionLabelModel = mongoose.model("OptionLabel", optionlabelSchema);
