@@ -3,18 +3,11 @@ declare const vendorModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: mongoose.Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: mongoose.Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: mongoose.Types.DocumentArray<{
-        image: string[];
         customizations: mongoose.Types.DocumentArray<{
             optionCustomizations: mongoose.Types.DocumentArray<{
                 label?: string | undefined;
@@ -26,6 +19,7 @@ declare const vendorModel: mongoose.Model<{
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -33,16 +27,25 @@ declare const vendorModel: mongoose.Model<{
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: mongoose.Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, mongoose.ResolveSchemaOptions<{
@@ -51,18 +54,11 @@ declare const vendorModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: mongoose.Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: mongoose.Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: mongoose.Types.DocumentArray<{
-        image: string[];
         customizations: mongoose.Types.DocumentArray<{
             optionCustomizations: mongoose.Types.DocumentArray<{
                 label?: string | undefined;
@@ -74,6 +70,7 @@ declare const vendorModel: mongoose.Model<{
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -81,16 +78,25 @@ declare const vendorModel: mongoose.Model<{
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: mongoose.Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }>>;
@@ -100,12 +106,12 @@ declare const categoryModel: mongoose.Model<{
     category?: string | undefined;
 }>>;
 declare const announcementModel: mongoose.Model<{
-    image: string[];
+    image?: string | undefined;
     description?: string | undefined;
     color?: string | undefined;
     header?: string | undefined;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
-    image: string[];
+    image?: string | undefined;
     description?: string | undefined;
     color?: string | undefined;
     header?: string | undefined;
@@ -137,7 +143,6 @@ declare const optionModel: mongoose.Model<{
     name?: string | undefined;
 }>>;
 declare const itemModel: mongoose.Model<{
-    image: string[];
     customizations: mongoose.Types.DocumentArray<{
         optionCustomizations: mongoose.Types.DocumentArray<{
             label?: string | undefined;
@@ -149,6 +154,7 @@ declare const itemModel: mongoose.Model<{
     }>;
     name?: string | undefined;
     time?: number | undefined;
+    image?: string | undefined;
     price?: number | undefined;
     description?: string | undefined;
     amountInCart?: number | undefined;
@@ -156,7 +162,6 @@ declare const itemModel: mongoose.Model<{
     rating?: number | undefined;
     featured?: boolean | undefined;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
-    image: string[];
     customizations: mongoose.Types.DocumentArray<{
         optionCustomizations: mongoose.Types.DocumentArray<{
             label?: string | undefined;
@@ -168,6 +173,7 @@ declare const itemModel: mongoose.Model<{
     }>;
     name?: string | undefined;
     time?: number | undefined;
+    image?: string | undefined;
     price?: number | undefined;
     description?: string | undefined;
     amountInCart?: number | undefined;

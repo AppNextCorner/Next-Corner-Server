@@ -33,18 +33,11 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -56,6 +49,7 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -63,34 +57,36 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }> & Omit<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -102,6 +98,7 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -109,16 +106,25 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 } & {
@@ -136,18 +142,11 @@ declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Pr
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -159,6 +158,7 @@ declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Pr
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -166,34 +166,36 @@ declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Pr
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }> & Omit<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -205,6 +207,7 @@ declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Pr
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -212,16 +215,25 @@ declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Pr
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 } & {
@@ -237,18 +249,11 @@ declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -260,6 +265,7 @@ declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -267,34 +273,36 @@ declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }> & Omit<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -306,6 +314,7 @@ declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -313,16 +322,25 @@ declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 } & {

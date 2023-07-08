@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVendorByName = exports.createCard = void 0;
+exports.uploadStore = exports.getVendorByName = exports.createCard = void 0;
 const business_helper_1 = require("../helpers/modelHelpers/businessModelHelpers/business.helper");
 const createCard = (req, res, Model, savedData) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = req.currentUser;
@@ -51,3 +51,23 @@ const getVendorByName = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getVendorByName = getVendorByName;
+const uploadStore = (req, _res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const request_data = JSON.parse(req.body.payload);
+        console.log('parsed: ', request_data);
+        // Replace the previous file with the new one uploaded from the user
+        // const result = await cloudinary.uploader.upload(req.file.path, {
+        //   public_id: `${req.file.path}_banner`,
+        //   width: 500,
+        //   height: 500,
+        //   crop: "fill",
+        // });
+        console.log(req.file);
+        //removeFile(req.file.path); // Remove the file from storage to prevent overflow
+        // res.status(201).send({})
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.uploadStore = uploadStore;

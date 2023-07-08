@@ -89,18 +89,11 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -112,6 +105,7 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -119,34 +113,36 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }> & Omit<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -158,6 +154,7 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -165,16 +162,25 @@ declare const updateItemRating: (id: string) => Promise<(import("mongoose").Docu
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 } & {

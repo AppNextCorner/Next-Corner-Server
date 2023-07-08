@@ -11,4 +11,5 @@ declare const createCard: (req: any, res: Response, Model: any, savedData: any) 
  * @returns
  */
 declare const getVendorByName: (req: any, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
-export { createCard, getVendorByName };
+declare const uploadStore: (req: any, _res: Response, next: NextFunction) => Promise<void>;
+export { createCard, getVendorByName, uploadStore };

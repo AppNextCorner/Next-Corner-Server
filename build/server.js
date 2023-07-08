@@ -52,6 +52,7 @@ app.use(body_parser_1.default.json());
 // Allow transfer of data
 app.use((0, cors_1.default)());
 app.use((0, express_bearer_token_1.default)()); // Be able to access the token in our backend
+//
 // setting routes for stripe
 app.use("/", stripeRoute_1.default);
 // routes for cart

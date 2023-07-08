@@ -3,21 +3,19 @@
  * Multer middleware configuration for handling file uploads.
  * @module upload
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.upload = void 0;
-const multer_1 = __importDefault(require("multer"));
-const uuid_1 = require("uuid");
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
 let path = require("path");
-const fs_1 = __importDefault(require("fs"));
+const fs = require("fs");
+const { Request } = require("express");
 /**
  * Disk storage configuration for multer.
  * Determines the destination directory and filename for uploaded files.
  * @type {multer.DiskStorage}
  */
-const storage = multer_1.default.diskStorage({
+const storage = multer.diskStorage({
     /**
      * Sets the destination path for uploaded files.
      * If the environment is not in production, the path is set to "../../src/images".
@@ -33,8 +31,8 @@ const storage = multer_1.default.diskStorage({
             destinationPath = path.join(__dirname, "../../src/images");
         }
         // Check if the directory exists, if not, create it
-        if (!fs_1.default.existsSync(destinationPath)) {
-            fs_1.default.mkdirSync(destinationPath, { recursive: true });
+        if (!fs.existsSync(destinationPath)) {
+            fs.mkdirSync(destinationPath, { recursive: true });
         }
         cb(null, destinationPath);
     },
@@ -46,7 +44,8 @@ const storage = multer_1.default.diskStorage({
      * @param {function} cb - Callback function.
      */
     filename: function (_req, file, cb) {
-        cb(null, (0, uuid_1.v4)() + "-" + Date.now() + path.extname(file.originalname));
+        const { ext } = path.parse(file.originalname);
+        cb(null, `${uuidv4()}-${Date.now()}${ext}`);
     },
 });
 /**
@@ -56,7 +55,7 @@ const storage = multer_1.default.diskStorage({
  * @param {any} file - Uploaded file.
  * @param {function} cb - Callback function.
  */
-const fileFilter = (_req, file, cb) => {
+const fileFilter = (req, file, cb) => {
     const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
     if (allowedFileTypes.includes(file.mimetype)) {
         cb(null, true);
@@ -69,7 +68,7 @@ const fileFilter = (_req, file, cb) => {
  * Multer middleware configuration for handling file uploads.
  * @type {multer.Multer}
  */
-const upload = (0, multer_1.default)({
+const upload = multer({
     storage,
     limits: {
         fileSize: 9000000, // 9MB file size limit

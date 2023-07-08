@@ -29,7 +29,6 @@
  * @returns
  */
 declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    image: string[];
     customizations: import("mongoose").Types.DocumentArray<{
         optionCustomizations: import("mongoose").Types.DocumentArray<{
             label?: string | undefined;
@@ -41,6 +40,7 @@ declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Do
     }>;
     name?: string | undefined;
     time?: number | undefined;
+    image?: string | undefined;
     price?: number | undefined;
     description?: string | undefined;
     amountInCart?: number | undefined;
@@ -48,7 +48,6 @@ declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Do
     rating?: number | undefined;
     featured?: boolean | undefined;
 }> & Omit<{
-    image: string[];
     customizations: import("mongoose").Types.DocumentArray<{
         optionCustomizations: import("mongoose").Types.DocumentArray<{
             label?: string | undefined;
@@ -60,6 +59,7 @@ declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Do
     }>;
     name?: string | undefined;
     time?: number | undefined;
+    image?: string | undefined;
     price?: number | undefined;
     description?: string | undefined;
     amountInCart?: number | undefined;
@@ -79,18 +79,11 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -102,6 +95,7 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -109,34 +103,36 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 }> & Omit<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
+    times: any[];
     categories: import("mongoose").Types.DocumentArray<{
         category?: string | undefined;
     }>;
     menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
         customizations: import("mongoose").Types.DocumentArray<{
             optionCustomizations: import("mongoose").Types.DocumentArray<{
                 label?: string | undefined;
@@ -148,6 +144,7 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
         }>;
         name?: string | undefined;
         time?: number | undefined;
+        image?: string | undefined;
         price?: number | undefined;
         description?: string | undefined;
         amountInCart?: number | undefined;
@@ -155,16 +152,25 @@ declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => 
         rating?: number | undefined;
         featured?: boolean | undefined;
     }>;
-    close?: string | undefined;
+    storeStatus: string;
     name?: string | undefined;
-    userId?: string | undefined;
     location?: any;
+    image?: string | undefined;
     rating?: number | undefined;
     status?: {
         text?: string | undefined;
         color?: string | undefined;
     } | undefined;
-    open?: string | undefined;
+    announcements?: {
+        cards: import("mongoose").Types.DocumentArray<{
+            image?: string | undefined;
+            description?: string | undefined;
+            color?: string | undefined;
+            header?: string | undefined;
+        }>;
+        toggle?: boolean | undefined;
+    } | undefined;
+    uid?: string | undefined;
     categoryId?: number | undefined;
     trending?: string | undefined;
 } & {
