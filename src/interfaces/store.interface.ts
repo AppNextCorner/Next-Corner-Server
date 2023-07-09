@@ -8,15 +8,18 @@ import { Itime } from "./vendorTime.interface";
 
 export interface IBusiness {
   _id?: Types.ObjectId;
-  name: String;
-  image: String | null;
-  announcements: Iannouncements[];
+  name: string;
+  image: string | null;
+  announcements: {
+    cards: Iannouncements[];
+    toggle: boolean;
+  };
   location: Ilocation;
   times: Itime[];
-  categories: Icategory[];
+  itemCategories: string[];
+  category: Icategory;
   menu: Iitem[];
   uid: string;
-  categoryId: number;
   rating: number;
   trending: string;
   storeStatus: string;

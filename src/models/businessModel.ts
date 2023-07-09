@@ -2,7 +2,8 @@ import mongoose, { Document } from "mongoose";
 import { IBusiness } from "../interfaces/store.interface";
 
 const categorySchema = new mongoose.Schema({
-  category: { type: String },
+  name: { type: String },
+  id: { type: Number },
 });
 
 const announcementsSchema = new mongoose.Schema({
@@ -41,6 +42,7 @@ const statusSchema = new mongoose.Schema({
   text: { type: String },
   color: { type: String },
 });
+
 // BUSINESS
 const vendorSchema = new mongoose.Schema(
   {
@@ -52,10 +54,10 @@ const vendorSchema = new mongoose.Schema(
     },
     location: { type: Object },
     times: [{ type: Object }],
-    categories: [categorySchema],
+    itemCategories: [{ type: String }],
+    categories: categorySchema,
     menu: [itemSchema],
     uid: { type: String },
-    categoryId: { type: Number },
     rating: { type: Number },
     trending: { type: String },
     storeStatus: { type: String, required: true, default: "Not Approved" },
@@ -63,6 +65,7 @@ const vendorSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 vendorSchema.set("toJSON", {
   virtuals: true,
   transform: (_doc: any, ret: any, _options: any) => {
