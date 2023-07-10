@@ -1,9 +1,10 @@
+import { Document, ObjectId } from "mongoose";
 import { IBusiness } from "../../../interfaces/store.interface";
 import { vendorModel } from "../../../models/businessModel";
 
 const model = vendorModel;
 
-const createVendor = async (storeData: IBusiness) => {
+const createVendor = async (storeData: IBusiness): Promise<IBusiness> => {
   return await model.create({
     name: storeData.name,
     image: storeData.image,

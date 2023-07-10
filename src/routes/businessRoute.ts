@@ -66,7 +66,9 @@ businessRouter.post(
 );
 
 businessRouter.post("/uploadStore", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
+  console.log(req.body)
   uploadStore(req, res, next);
+  
 })
 
 export default businessRouter;
