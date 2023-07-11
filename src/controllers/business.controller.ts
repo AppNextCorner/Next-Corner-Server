@@ -54,14 +54,17 @@ const getVendorByName = async (req: any, res: Response, next: NextFunction) => {
 const uploadStore = async (req: any, res: Response, next: NextFunction) => {
   try {
     const storeData = JSON.parse(req.body.payload);
-
+    console.log(storeData)
+    console.log("file: ",req.file)
     // Replace the previous file with the new one uploaded from the user
     const result = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${req.file.path}_banner`,
       width: 500,
       height: 500,
       crop: "fill",
+      folder: 'NextCornerApp'
     });
+    console.log('result: ', result)
 
     const data: IBusiness = {
       name: storeData.name,
@@ -83,14 +86,18 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
 
     try {
       const business: IBusiness = await createVendor(data);
-      console.log(business);
       createdVendor = business;
+
     } catch (error) {
       console.error(error);
     }
+    console.log(createdVendor);
     // After uploading to cloudinary 
     removeFile(req.file.path); // Remove the file from storage to prevent overflow
-    //res.status(201).send({})
+    res.status(201).send({
+      newStore: createdVendor,
+      message: "New store created successfully"
+    })
   } catch (err) {
     res.status(401).send({
       message: "Missing: " + err
