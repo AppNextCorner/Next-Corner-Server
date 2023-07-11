@@ -1,10 +1,7 @@
 import mongoose, { Document } from "mongoose";
 import { IBusiness } from "../interfaces/store.interface";
 
-const categorySchema = new mongoose.Schema({
-  name: { type: String },
-  id: { type: Number },
-});
+
 
 const announcementsSchema = new mongoose.Schema({
   color: { type: String },
@@ -38,16 +35,11 @@ const itemSchema = new mongoose.Schema({
   rating: { type: Number },
 });
 
-const statusSchema = new mongoose.Schema({
-  text: { type: String },
-  color: { type: String },
-});
-
 // BUSINESS
 const vendorSchema = new mongoose.Schema(
   {
-    name: { type: String },
-    image: { type: String || null },
+    name: { type: String, required: true },
+    image: { type: String || null, required: true },
     announcements: {
       cards: [announcementsSchema],
       toggle: { type: Boolean },
@@ -55,13 +47,19 @@ const vendorSchema = new mongoose.Schema(
     location: { type: Object },
     times: [{ type: Object }],
     itemCategories: [{ type: String }],
-    categories: categorySchema,
+    category: {
+      name: { type: String, required: true },
+      id: { type: Number, required: true},
+    },
     menu: [itemSchema],
-    uid: { type: String },
-    rating: { type: Number },
+    uid: { type: String, required: true },
+    rating: { type: Number, default: 0 },
     trending: { type: String },
     storeStatus: { type: String, required: true, default: "Not Approved" },
-    status: statusSchema,
+    status: {
+      text: { type: String },
+      color: { type: String },
+    },
   },
   { timestamps: true }
 );
@@ -79,7 +77,6 @@ const vendorModel = mongoose.model<IBusiness & Document>(
   "business",
   vendorSchema
 );
-const categoryModel = mongoose.model("Category", categorySchema);
 const announcementModel = mongoose.model("Announcement", announcementsSchema);
 const optionLabelModel = mongoose.model("OptionLabel", optionlabelSchema);
 const optionModel = mongoose.model("Option", optionsSchema);
@@ -87,7 +84,6 @@ const itemModel = mongoose.model("Item", itemSchema);
 
 export {
   vendorModel,
-  categoryModel,
   announcementModel,
   optionLabelModel,
   optionModel,

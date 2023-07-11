@@ -64,8 +64,6 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       crop: "fill",
       folder: 'NextCornerApp'
     });
-    console.log('result: ', result)
-
     const data: IBusiness = {
       name: storeData.name,
       image: result.url,
@@ -81,24 +79,17 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       storeStatus: storeData.storeStatus,
       status: storeData.status,
     };
+    const business: IBusiness = await createVendor(data);
 
-    let createdVendor: IBusiness | null = null;
 
-    try {
-      const business: IBusiness = await createVendor(data);
-      createdVendor = business;
-
-    } catch (error) {
-      console.error(error);
-    }
-    console.log(createdVendor);
     // After uploading to cloudinary 
     removeFile(req.file.path); // Remove the file from storage to prevent overflow
     res.status(201).send({
-      newStore: createdVendor,
+      newStore: business,
       message: "New store created successfully"
     })
   } catch (err) {
+    console.log('error: ', err)
     res.status(401).send({
       message: "Missing: " + err
     })
