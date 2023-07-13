@@ -1,7 +1,10 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import {
   findVendorByName,
+  findVendorByUid, 
   createVendor,
+  updateProperty,
+  updateMenu,
 } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
 import { removeFile } from "../helpers/remove";
 import { cloudinary } from "../helpers/cloudinary";
@@ -51,22 +54,30 @@ const getVendorByName = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+const getVendorByuid = async( req: Request, res: Response, next: NextFunction ) => {
+  try{
+    const uid = req.params.uid;
+    const stores = await findVendorByUid(uid);
+    res.status(200).send({
+      stores,
+    })
+
+  } catch(err) {
+    console.log(err);
+    next(err);
+  }
+}
+
 const uploadStore = async (req: any, res: Response, next: NextFunction) => {
   try {
     const storeData = JSON.parse(req.body.payload);
     console.log(storeData)
     console.log("file: ",req.file)
     // Replace the previous file with the new one uploaded from the user
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      public_id: `${req.file.path}_banner`,
-      width: 500,
-      height: 500,
-      crop: "fill",
-      folder: 'NextCornerApp'
-    });
+    
     const data: IBusiness = {
       name: storeData.name,
-      image: result.url,
+      image: storeData.image,
       announcements: storeData.announcements,
       location: storeData.location,
       times: storeData.times,
@@ -81,11 +92,20 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
     };
     const business: IBusiness = await createVendor(data);
 
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${req.file.path}_banner`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+      folder: 'NextCornerApp'
+    });
+
+    const updatedBusiness = await updateProperty(business._id?.toString(), 'image', result.url)
 
     // After uploading to cloudinary 
     removeFile(req.file.path); // Remove the file from storage to prevent overflow
     res.status(201).send({
-      newStore: business,
+      newStore: updatedBusiness,
       message: "New store created successfully"
     })
   } catch (err) {
@@ -97,4 +117,22 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export { createCard, getVendorByName, uploadStore };
+const uploadItems = async(req: any, res: Response, next: NextFunction) => {
+  try{
+    const data = req.body;
+    const incomingData = JSON.parse(data.payload);
+    const vendorId = incomingData.store.id;
+    const incomingItem = incomingData.newMenu;
+    const updatedStore = await updateMenu(vendorId, incomingItem)
+    console.log(updatedStore);
+    // res.status(200).send(
+    //   updatedStore,
+    // );
+  } catch(err){
+    next(err);
+  }
+
+};
+
+
+export { createCard, getVendorByName, getVendorByuid, uploadStore, uploadItems };

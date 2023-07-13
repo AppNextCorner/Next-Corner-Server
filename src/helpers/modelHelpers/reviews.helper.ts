@@ -64,7 +64,7 @@ const updateItemRating = async (id: string) => {
 };
 
 const deleteReviewByItemId = async (id: string) => {
-  return await model.findByIdAndDelete(id).exec();
+  return await model.findByIdAndDelete({id: id}).exec();
 };
 
 export { createReview, findAll, findReviewByItemId, updateItemRating, deleteReviewByItemId };

@@ -1,7 +1,6 @@
 import mongoose, { Document } from "mongoose";
 import { IBusiness } from "../interfaces/store.interface";
-
-
+import { Iitem } from "../interfaces/item.interface";
 
 const announcementsSchema = new mongoose.Schema({
   color: { type: String },
@@ -24,7 +23,7 @@ const optionsSchema = new mongoose.Schema({
 
 const itemSchema = new mongoose.Schema({
   name: { type: String },
-  time: { type: Number },
+  time: { type: Object },
   image: { type: String },
   price: { type: Number },
   description: { type: String },
@@ -33,6 +32,7 @@ const itemSchema = new mongoose.Schema({
   featured: { type: Boolean },
   amountInCart: { type: Number },
   rating: { type: Number },
+  storeInfo: { type: Object },
 });
 
 // BUSINESS
@@ -80,7 +80,7 @@ const vendorModel = mongoose.model<IBusiness & Document>(
 const announcementModel = mongoose.model("Announcement", announcementsSchema);
 const optionLabelModel = mongoose.model("OptionLabel", optionlabelSchema);
 const optionModel = mongoose.model("Option", optionsSchema);
-const itemModel = mongoose.model("Item", itemSchema);
+const itemModel = mongoose.model<Iitem & Document>("Item", itemSchema);
 
 export {
   vendorModel,

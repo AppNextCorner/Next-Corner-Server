@@ -1,6 +1,8 @@
 import { Document, ObjectId } from "mongoose";
 import { IBusiness } from "../../../interfaces/store.interface";
+import * as itemHelpers from "./item.helper"
 import { vendorModel } from "../../../models/businessModel";
+import { Iitem } from "../../../interfaces/item.interface";
 
 const model = vendorModel;
 
@@ -51,20 +53,56 @@ const findVendorByName = async (
   return businessData;
 };
 
-/**
- * This function finds a vendor with the id of the item the vender offers
- * @param id menuItemid
- * @param selections Any selections
- * @returns vendor as an array for some reason?
- */
-const findVendorByMenuItemId = async (id: string, selections: any = {}) => {
-  const vendor = await model.find({ "menu._id": id }).select(selections).exec();
+// add comments
+const findVendorByMenuItemId = async(itemId: string) => {
+  const item = await itemHelpers.findItemById(itemId);
+  if(item){
+    const vendor = await findVendorByName(item.storeInfo.storeName);
+    return vendor;
+  }
+  return null;
+}
+
+// add comments
+const findVendorByUid = async(uid: string, selections: any ={} ) => {
+  const vendor = await model.find({"uid" : uid}).select(selections).exec();
   return vendor;
-};
+}
+
+const findVendorById = async(vendorId: string, selections: any = {} ) => {
+  const vendor = await model.findById(vendorId).select(selections).exec();
+  return vendor;
+}
+
+
+/**
+ * 
+ * @param id menu item id / vendor id / announcement id ...
+ * @param property what property we want to add to
+ * @param newData the data we want to replace with the property
+ * @returns 
+ */
+const updateProperty = async(id: string | undefined, property: string, newData: any) => {
+  const updated = await model.findByIdAndUpdate(id, {[property]: newData}, {new: true});
+  return updated;
+}
+
+// add comments
+const updateMenu = async(id: string, newMenu: Iitem[]) => {
+  const vendor = await findVendorById(id);
+  const payload = [...vendor?.menu!, ...newMenu];
+  const updatedVendor = updateProperty(id, "menu", payload );
+  return updatedVendor;
+}
+
 
 export {
   createVendor,
   findAllVendors,
   findVendorByName,
+  findVendorByUid,
+  findVendorById, 
   findVendorByMenuItemId,
+  updateProperty,
+  updateMenu,
 };

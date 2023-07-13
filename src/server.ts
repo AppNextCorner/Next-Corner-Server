@@ -3,8 +3,6 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
-import rateLimit from "express-rate-limit";
-
 // grabbing the routes for the Stripe API
 import stripe from "./routes/stripeRoute";
 import cartRouter from "./routes/cartRoute";

@@ -9,7 +9,9 @@ const businessRouter = express.Router();
 import { upload } from "../helpers/multer";
 import {
   getVendorByName,
+  getVendorByuid,
   uploadStore,
+  uploadItems,
 } from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import {
@@ -55,10 +57,17 @@ businessRouter.post(
   }
 );
 
+businessRouter.get("/get-stores-by-uid/:uid", decodeIDToken, async(req: Request, res: Response, next: NextFunction) => {
+  getVendorByuid(req, res, next)
+})
 
 businessRouter.post("/createStore", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
   uploadStore(req, res, next);
-  
+})
+
+
+businessRouter.put("/updateMenu", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
+  uploadItems(req,res,next);
 })
 
 export default businessRouter;

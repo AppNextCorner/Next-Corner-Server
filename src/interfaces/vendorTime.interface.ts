@@ -10,3 +10,8 @@ export interface Itime extends Document {
     time: schedule;
     status: boolean;
 }
+
+export interface clockFormat {
+    minutes: number;
+    seconds: number;
+}
