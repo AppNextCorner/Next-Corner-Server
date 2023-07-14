@@ -24,4 +24,5 @@ export interface IBusiness {
   trending: string;
   storeStatus: string;
   status: Istatus;
+  [key: string]: any
 }

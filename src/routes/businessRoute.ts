@@ -12,6 +12,7 @@ import {
   getVendorByuid,
   uploadStore,
   uploadItems,
+  deleteItemById,
 } from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import {
@@ -68,6 +69,10 @@ businessRouter.post("/createStore", upload.single('image'), async(req: any, res:
 
 businessRouter.put("/updateMenu", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
   uploadItems(req,res,next);
+})
+
+businessRouter.put("/items/deleteItem", decodeIDToken, async(req: any, res:Response, next: NextFunction) => {
+  deleteItemById(req, res, next);
 })
 
 export default businessRouter;

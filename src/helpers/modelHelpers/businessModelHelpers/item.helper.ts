@@ -14,6 +14,7 @@ import * as storeHelpers from "./business.helper";
  * Mathematical average function
  */
 import average from "../../../math/average.math";
+import { IBusiness } from "../../../interfaces/store.interface";
 const model = itemModel;
 const businessModel = vendorModel;
 
@@ -92,4 +93,8 @@ const updateItemRatingByVendorId = async (vendorId: string, itemId: string) => {
   );
 };
 
-export { findAllItems, findItemById, findItemsByVendorId, updateItemRatingByVendorId };
+
+
+
+
+export {  findAllItems, findItemById, findItemsByVendorId, updateItemRatingByVendorId };
