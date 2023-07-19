@@ -7,8 +7,7 @@ import {
   updateProperty,
   updateMenu,
 } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
-
-import * as itemHelpers from "../helpers/modelHelpers/businessModelHelpers/item.helper";
+import { extractPublicId } from 'cloudinary-build-url'
 import { removeFile } from "../helpers/remove";
 import { cloudinary } from "../helpers/cloudinary";
 import { IBusiness } from "../interfaces/store.interface";
@@ -79,8 +78,6 @@ const getVendorByuid = async (
 const uploadStore = async (req: any, res: Response, next: NextFunction) => {
   try {
     const storeData = JSON.parse(req.body.payload);
-    console.log(storeData);
-    console.log("file: ", req.file);
     // Replace the previous file with the new one uploaded from the user
 
     const data: IBusiness = {
@@ -121,7 +118,6 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       message: "New store created successfully",
     });
   } catch (err) {
-    console.log("error: ", err);
     res.status(401).send({
       message: "Missing: " + err,
     });
@@ -134,8 +130,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
     const data = req.body;
     const incomingData = JSON.parse(data.payload);
     const vendorId = incomingData.store.id;
-    const incomingItem = incomingData.newMenu;
-
+    const incomingItem : Iitem[] = incomingData.newMenu;
     // Check if the fields are valid before uploading to model
     const requiredFields = ["name", "time", "price", "image", "storeInfo"];
     const isAllFieldsPresent = checkForRequiredFields(
@@ -146,41 +141,70 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
       res.status(400).json({ payload: isAllFieldsPresent });
       return;
     }
-    const updatedStore = await updateMenu(vendorId, incomingItem);
-    console.log(updatedStore);
-    res.status(200).send({ payload: updatedStore });
+
+    // Test if the menu works
+    await updateMenu(vendorId, incomingItem, true);
+
+    // upload to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${req.file.path}_banner`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+      folder: "NextCornerApp",
+    });
+    incomingItem[0].image = result.url;
+
+    const updatedStore = await updateMenu(vendorId, incomingItem, false);
+
+    // After uploading to cloudinary
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    res.status(200).send({
+      updatedStore,
+    });
   } catch (err) {
     res.status(400).send({ payload: err });
     next(err);
   }
 };
 
-const deleteItemById = async(req: Request, res: Response, next: NextFunction) => {
+const deleteItemById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    /**
-     * Defining constansts
-     */
-    const data = req.body
+    const data = req.body;
     const vendorId = data.vendorId;
     const itemId = data.itemId;
     const vendor = await findVendorById(vendorId);
-    /**
-     * end of defining constants
-     */
-    if(vendor) {
-      const newMenu = await  Promise.all(
-        vendor.menu.filter((currentItem: Iitem) => currentItem.id !== itemId )
-      )
+
+    if (vendor) {
+      const isItem = (element: any) => element.id == itemId;
+
+      // Delete the image from cloudinary first
+      const findItem = vendor.menu.findIndex(isItem);
+      const publicId = extractPublicId(vendor.menu[findItem].image!);
+
+      await cloudinary.uploader.destroy(publicId + '.png_banner', function (error: any, result: any) {
+        if (error) {
+          return res.status(500).send("Image deletion failed. Please try again later."); // Return error response to the client
+        }
+      });
+
+
+      // Delete the menu item after deleting the image from the cloud service
+      const newMenu = await Promise.all(
+        vendor.menu.filter((currentItem: Iitem) => currentItem.id !== itemId)
+      );
+
       const newVendor = await updateProperty(vendorId, "menu", newMenu);
       res.status(200).send({
         newVendor,
         message: "Menu updated successfully"
-      })
-    } 
-  } catch(err) {
+      });
+    }
+  } catch (err) {
     next(err);
   }
-}
+};
+
 
 export {
   createCard,

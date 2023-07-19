@@ -1,19 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { cartSchema } from "./cartModel";
 
-const orderSchema = new mongoose.Schema({
-    singleOrderList: [],
-    timer: {type: Number, required: true},
-    orderStatus: {type: String, required: true},
-    userId: {type: String, required: true},
-}, {timestamps: true})
-orderSchema.set('toJSON', {
-    virtuals: true,
-    transform: (_doc: any, ret: any, options: any) => {
-        delete ret.__v;
-        ret.id = ret._id.toString();
-        delete ret._id;
-    },
-})
-const orderModel = mongoose.model('order', orderSchema);
+const orderSchema = new mongoose.Schema(
+  {
+    orders: [cartSchema],
+    minutesToDone: { type: Number, required: true },
+    status: { type: String, required: true },
+    accepted: { type: String, required: true, default: "pending"},
+    uid: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-export default orderModel
+const orderModel = mongoose.model("order", orderSchema);
+
+export default orderModel;

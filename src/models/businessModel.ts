@@ -15,13 +15,13 @@ const optionlabelSchema = new mongoose.Schema({
   optionId: { type: String },
 });
 
-const optionsSchema = new mongoose.Schema({
+export const optionsSchema = new mongoose.Schema({
   name: { type: String },
   type: { type: String },
   optionCustomizations: [optionlabelSchema],
 });
 
-const itemSchema = new mongoose.Schema<Iitem>({
+export const itemSchema = new mongoose.Schema<Iitem>({
   name: { type: String, required: true },
   time: { type: Object, required: true },
   image: {
@@ -37,7 +37,7 @@ const itemSchema = new mongoose.Schema<Iitem>({
   price: { type: Number, required: true },
   description: { type: String },
   customizations: [optionsSchema],
-  category: { type: String },
+  category: { type: String, default: "" },
   featured: { type: Boolean, required: true },
   amountInCart: { type: Number, default: 0 },
   rating: { type: Number, default: 0 },
@@ -55,8 +55,8 @@ itemSchema.pre<Iitem>("save", async function (next) {
       "time",
       "image",
       "price",
-      "category",
-      "featured",
+      // "category", 
+      //"featured",
       "storeInfo",
     ];
     for (const field of requiredFields) {

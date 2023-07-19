@@ -35,6 +35,12 @@ const findAllVendors = async (selections: any = {}) => {
   return vendorList;
 };
 
+const findAllVendorMenus = async(selections: any = {}) => {
+  const vendorList = await model.find().select(selections).exec();
+  const menuList = Promise.all(vendorList.map((currentVendor) => currentVendor.menu));
+  return menuList;
+}
+
 /**
  *
  * This helper function returns vendor (as an array for some reason) with just the name
@@ -57,11 +63,6 @@ const findVendorByName = async (
 // add comments
 const findVendorByMenuItemId = async (itemId: string) => {
   const item = await itemHelpers.findItemById(itemId);
-  if (item) {
-    const vendor = await findVendorByName(item.storeInfo.storeName);
-    return vendor;
-  }
-  return null;
 };
 
 // add comments
@@ -108,16 +109,22 @@ const updateProperty = async (
  */
 const updateMenu = async (
   id: string,
-  newMenu: Iitem[]
+  newMenu: Iitem[],
+  test?: boolean,
 ): Promise<
   (IBusiness & Document<any, any, any> & { _id: ObjectId }) | null
 > => {
   const vendor = await findVendorById(id);
-
   // Combine both the prev menu with the new menu item
-  const payload = [...vendor?.menu!, ...newMenu];
-  const updatedVendor = updateProperty(id, "menu", payload);
-  return updatedVendor;
+  if(!test){
+    const payload = [...vendor?.menu!, ...newMenu];
+    const updatedVendor = updateProperty(id, "menu", payload);
+    return updatedVendor;
+  }
+  else {
+    const testVendor = updateProperty(id, "menu", vendor?.menu);
+    return testVendor;
+  }
 };
 
 export {
