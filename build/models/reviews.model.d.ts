@@ -24,8 +24,8 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
 export declare const reviewsModel: import("mongoose").Model<{
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }, {}, {}, {}, Schema<any, import("mongoose").Model<any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").ResolveSchemaOptions<{
@@ -39,8 +39,8 @@ export declare const reviewsModel: import("mongoose").Model<{
         virtuals: boolean;
     };
 }>, {
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }>>;

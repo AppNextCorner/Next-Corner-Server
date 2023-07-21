@@ -26,9 +26,10 @@ router.post("/payment", (req, res) => __awaiter(void 0, void 0, void 0, function
     //
     try {
         const merchantDisplayName = req.headers["merchantdisplayname"];
-        console.log(merchantDisplayName);
+        console.log(req.headers);
         // Getting data from client
         const { amount, name } = req.body;
+        console.log('req body: ', amount, name);
         // Simple validation
         if (!amount || !name || !merchantDisplayName)
             return res.status(400).json({ message: "All fields are required" });
@@ -58,7 +59,7 @@ router.post("/payment", (req, res) => __awaiter(void 0, void 0, void 0, function
         const clientSecret = paymentIntent.client_secret;
         console.log(clientSecret);
         // Sending the client secret as response
-        res.json({
+        res.status(200).json({
             message: "payment in progress",
             client_secret: clientSecret,
             customer: customer.id,

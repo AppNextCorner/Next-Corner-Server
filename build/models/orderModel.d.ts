@@ -1,21 +1,4 @@
-import mongoose from 'mongoose';
-declare const orderModel: mongoose.Model<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    userId: string;
-    singleOrderList: any[];
-    timer: number;
-    orderStatus: string;
-}, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, mongoose.ResolveSchemaOptions<{
-    timestamps: true;
-}>, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    userId: string;
-    singleOrderList: any[];
-    timer: number;
-    orderStatus: string;
-}>>;
+import mongoose from "mongoose";
+import { Iorder } from "../interfaces/order.interface";
+declare const orderModel: mongoose.Model<Iorder & mongoose.Document<any, any, any>, {}, {}, {}, any>;
 export default orderModel;

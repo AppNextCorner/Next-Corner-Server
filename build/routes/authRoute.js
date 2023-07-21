@@ -22,6 +22,9 @@ authRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0,
 authRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     (0, auth_controller_1.fetchUsers)(res, req);
 }));
+/**
+ * This CRUD operation recieves user and desired role to update
+ */
 authRouter.put("/switchRoles", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     (0, auth_controller_1.updateRole)(req, res, next);
 }));

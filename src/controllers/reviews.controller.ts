@@ -37,6 +37,7 @@ const createReview = async (
 const getReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reviews: any = await helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+    console.log(reviews);
     await helper.updateItemRating(req.params.id);
 
     // Incase comments are over flooding, delete all

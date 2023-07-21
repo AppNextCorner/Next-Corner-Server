@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateItemRatingByVendorId = exports.findAllItems = void 0;
+exports.updateItemRatingByVendorId = exports.findItemsByVendorId = exports.findItemById = exports.findAllItems = void 0;
 const businessModel_1 = require("../../../models/businessModel");
 /**
  * Vendor model
@@ -22,6 +45,7 @@ const businessModel_2 = require("../../../models/businessModel");
  * Other helper functions
  */
 const reviews_helper_1 = require("../reviews.helper");
+const storeHelpers = __importStar(require("./business.helper"));
 /**
  * Mathematical average function
  */
@@ -35,10 +59,24 @@ const businessModel = businessModel_2.vendorModel;
  */
 const findAllItems = (selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield model.find().select(selections).exec();
-    console.log(data);
-    return yield model.find().select(selections);
+    return data;
 });
 exports.findAllItems = findAllItems;
+// add comments
+const findItemById = (itemId, selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
+    const item = yield model.findById(itemId).select(selections).exec();
+    return item;
+});
+exports.findItemById = findItemById;
+// add comments
+const findItemsByVendorId = (vendorId, selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
+    const vendor = yield storeHelpers.findVendorById(vendorId);
+    if (vendor) {
+        return vendor.menu;
+    }
+    return null;
+});
+exports.findItemsByVendorId = findItemsByVendorId;
 /**
  * This function updates the rating of an item by using the itemId and vendorId
  * @param vendorId the id of the vendor

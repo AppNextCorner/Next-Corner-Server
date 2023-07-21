@@ -8,11 +8,13 @@ import { vendorModel } from "../../../models/businessModel";
  * Other helper functions
  */
 import { findReviewByItemId } from "../reviews.helper";
+import * as storeHelpers from "./business.helper";
 
 /**
  * Mathematical average function
  */
 import average from "../../../math/average.math";
+import { IBusiness } from "../../../interfaces/store.interface";
 const model = itemModel;
 const businessModel = vendorModel;
 
@@ -23,9 +25,27 @@ const businessModel = vendorModel;
  */
 const findAllItems = async (selections: any = {}) => {
   const data = await model.find().select(selections).exec();
-  console.log(data);
-  return await model.find().select(selections);
+  return data;
 };
+
+
+// add comments
+const findItemById = async( itemId: string, selections: any = {}) => {
+  const item = await model.findById(itemId).select(selections).exec();
+  return item
+}
+
+
+// add comments
+const findItemsByVendorId = async( vendorId: any, selections: any = {}) => {
+  const vendor = await storeHelpers.findVendorById(vendorId);
+  if(vendor) {
+    return vendor.menu;
+  }
+  return null;
+}
+
+
 
 /**
  * This function updates the rating of an item by using the itemId and vendorId
@@ -73,4 +93,8 @@ const updateItemRatingByVendorId = async (vendorId: string, itemId: string) => {
   );
 };
 
-export { findAllItems, updateItemRatingByVendorId };
+
+
+
+
+export {  findAllItems, findItemById, findItemsByVendorId, updateItemRatingByVendorId };

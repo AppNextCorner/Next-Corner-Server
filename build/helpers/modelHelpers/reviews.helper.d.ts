@@ -32,13 +32,13 @@ import { reviewInterface } from "../../interfaces/reviews.interface";
  * @returns
  */
 declare const createReview: (incomingReview: reviewInterface) => Promise<import("mongoose").Document<unknown, any, {
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }> & Omit<{
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 } & {
@@ -50,13 +50,13 @@ declare const createReview: (incomingReview: reviewInterface) => Promise<import(
  * @returns
  */
 declare const findAll: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }> & Omit<{
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 } & {
@@ -69,13 +69,13 @@ declare const findAll: (selections?: any) => Promise<(import("mongoose").Documen
  * @returns
  */
 declare const findReviewByItemId: (id: string, selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }> & Omit<{
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 } & {
@@ -85,109 +85,17 @@ declare const findReviewByItemId: (id: string, selections?: any) => Promise<(imp
  * This function updates the rating of an item
  * @param id menuItemId
  */
-declare const updateItemRating: (id: string) => Promise<(import("mongoose").Document<unknown, any, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-}> & Omit<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-} & {
+declare const updateItemRating: (itemId: string) => Promise<(import("../../interfaces/store.interface").IBusiness & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>) | null>;
+}) | null>;
 declare const deleteReviewByItemId: (id: string) => Promise<(import("mongoose").Document<unknown, any, {
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 }> & Omit<{
-    rating: number;
     user: import("mongoose").Types.ObjectId;
+    rating: number;
     review: string;
     idOfItem: string;
 } & {

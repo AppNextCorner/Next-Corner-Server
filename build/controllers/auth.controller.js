@@ -51,7 +51,7 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
         else {
             // create user document using the MongoDB schema
             const newUser = yield userModel_1.userModel.create({
-                email: payload.email,
+                email: payload.email.toLowerCase(),
                 password: payload.password,
                 firstName: payload.firstName,
                 lastName: payload.lastName,
@@ -125,9 +125,14 @@ const fetchUsers = (res, _req) => __awaiter(void 0, void 0, void 0, function* ()
     return res.json(users.map((user) => user.toJSON()));
 });
 exports.fetchUsers = fetchUsers;
+/**
+ * This function updates the role of the user based on the role given
+ */
 const updateRole = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;
+        // data,userId = userId
+        // data.role = desired role
         const newUser = yield user.updateRoleByUserId(data.userId, data.role);
         res.status(200).send({
             message: "User is updated!",

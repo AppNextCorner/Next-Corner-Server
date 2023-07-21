@@ -1,14 +1,12 @@
-import mongoose from "mongoose";
-
-const categorySchema = new mongoose.Schema({
-  category: { type: String },
-});
+import mongoose, { CallbackError, Document } from "mongoose";
+import { IBusiness } from "../interfaces/store.interface";
+import { Iitem } from "../interfaces/item.interface";
 
 const announcementsSchema = new mongoose.Schema({
   color: { type: String },
   header: { type: String },
   description: { type: String },
-  image: [{ type: String }],
+  image: { type: String },
 });
 
 const optionlabelSchema = new mongoose.Schema({
@@ -17,48 +15,131 @@ const optionlabelSchema = new mongoose.Schema({
   optionId: { type: String },
 });
 
-const optionsSchema = new mongoose.Schema({
+export const optionsSchema = new mongoose.Schema({
   name: { type: String },
   type: { type: String },
   optionCustomizations: [optionlabelSchema],
 });
 
-const itemSchema = new mongoose.Schema({
-  name: { type: String },
-  time: { type: Number },
-  image: [{ type: String }],
-  price: { type: Number },
+export const itemSchema = new mongoose.Schema<Iitem>({
+  name: { type: String, required: true },
+  time: { type: Object, required: true },
+  image: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+    validate: {
+      validator: function (value: string | null) {
+        return value !== null && value.length > 0;
+      },
+      message: "Image is required",
+    },
+  },
+  price: { type: Number, required: true },
   description: { type: String },
   customizations: [optionsSchema],
-  category: { type: String },
-  featured: { type: Boolean },
-  amountInCart: { type: Number },
-  rating: { type: Number },
+  category: { type: String, default: "" },
+  featured: { type: Boolean, required: true },
+  amountInCart: { type: Number, default: 0 },
+  rating: { type: Number, default: 0 },
+  storeInfo: { type: Object, required: true },
 });
 
-const statusSchema = new mongoose.Schema({
-  text: { type: String },
-  color: { type: String },
+
+
+
+// Hook to see if there are any values
+itemSchema.pre<Iitem>("save", async function (next) {
+  try {
+    const requiredFields: string[] = [
+      "name",
+      "time",
+      "image",
+      "price",
+      // "category", 
+      //"featured",
+      "storeInfo",
+    ];
+    for (const field of requiredFields) {
+      if (
+        !this[field] ||
+        (typeof this[field] === "string" && this[field].trim() === "")
+      ) {
+        next(new Error(`${field} is required`));
+        return;
+      }
+    }
+    console.log(' no errors')
+    next();
+  } catch (err: any) {
+    console.log('error: ', err)
+    next(err);
+  }
 });
+
 // BUSINESS
 const vendorSchema = new mongoose.Schema(
   {
-    name: { type: String },
-    image: [{ type: String || null }],
-    announcements: [announcementsSchema],
+    name: { type: String, required: true },
+    image: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+      validate: {
+        validator: function (value: string | null) {
+          return value !== null && value.length > 0;
+        },
+        message: "Image is required",
+      },
+    },
+    announcements: {
+      cards: [announcementsSchema],
+      toggle: { type: Boolean },
+    },
     location: { type: Object },
-    open: { type: String },
-    close: { type: String },
-    categories: [categorySchema],
+    times: [{ type: Object }],
+    itemCategories: [{ type: String }],
+    category: {
+      name: { type: String, required: true },
+      id: { type: Number, required: true },
+    },
     menu: [itemSchema],
-    userId: { type: String },
-    categoryId: { type: Number },
-    rating: { type: Number },
+    uid: { type: String, required: true },
+    rating: { type: Number, default: 0 },
     trending: { type: String },
-    status: statusSchema,
+    storeStatus: { type: String, required: true, default: "Not Approved" },
+    status: {
+      text: { type: String },
+      color: { type: String },
+    },
   },
   { timestamps: true }
 );
+
+// Define a pre-save hook to perform the validation
+vendorSchema.pre<IBusiness>("save", function (next) {
+  const requiredFields: string[] = [
+    "name",
+    "image",
+    "category",
+    "uid",
+    "storeStatus",
+  ];
+
+  try {
+    for (const field of requiredFields) {
+      if (
+        !this[field] ||
+        (typeof this[field] === "string" && this[field].trim() === "")
+      ) {
+        next(new Error(`${field} is required`));
+        return;
+      }
+    }
+    next();
+  } catch (err: any) {
+    next(err);
+  }
+});
+
 vendorSchema.set("toJSON", {
   virtuals: true,
   transform: (_doc: any, ret: any, _options: any) => {
@@ -68,16 +149,17 @@ vendorSchema.set("toJSON", {
   },
 });
 
-const vendorModel = mongoose.model("business", vendorSchema);
-const categoryModel = mongoose.model("Category", categorySchema);
+const vendorModel = mongoose.model<IBusiness & Document>(
+  "business",
+  vendorSchema
+);
 const announcementModel = mongoose.model("Announcement", announcementsSchema);
 const optionLabelModel = mongoose.model("OptionLabel", optionlabelSchema);
 const optionModel = mongoose.model("Option", optionsSchema);
-const itemModel = mongoose.model("Item", itemSchema);
+const itemModel = mongoose.model<Iitem & Document>("Item", itemSchema);
 
 export {
   vendorModel,
-  categoryModel,
   announcementModel,
   optionLabelModel,
   optionModel,

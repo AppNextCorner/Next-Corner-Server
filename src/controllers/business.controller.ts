@@ -1,5 +1,19 @@
-import { NextFunction, Response } from "express";
-import { findVendorByName } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
+import { NextFunction, Response, Request } from "express";
+import {
+  findVendorByName,
+  findVendorByUid,
+  findVendorById, 
+  createVendor,
+  updateProperty,
+  updateMenu,
+} from "../helpers/modelHelpers/businessModelHelpers/business.helper";
+import { extractPublicId } from 'cloudinary-build-url'
+import { removeFile } from "../helpers/remove";
+import { cloudinary } from "../helpers/cloudinary";
+import { IBusiness } from "../interfaces/store.interface";
+import { checkForRequiredFields } from "../helpers/ErrorHelpers/invalidFields.helper";
+import { Iitem } from "../interfaces/item.interface";
+
 const createCard = async (
   req: any,
   res: Response,
@@ -44,4 +58,166 @@ const getVendorByName = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export { createCard, getVendorByName };
+const getVendorByuid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const uid = req.params.uid;
+    const stores = await findVendorByUid(uid);
+    res.status(200).send({
+      stores,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const uploadStore = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const storeData = JSON.parse(req.body.payload);
+    // Replace the previous file with the new one uploaded from the user
+
+    const data: IBusiness = {
+      name: storeData.name,
+      image: storeData.image,
+      announcements: storeData.announcements,
+      location: storeData.location,
+      times: storeData.times,
+      itemCategories: storeData.itemCategories,
+      category: storeData.category,
+      menu: storeData.menu,
+      uid: storeData.uid,
+      rating: storeData.rating,
+      trending: storeData.trending,
+      storeStatus: storeData.storeStatus,
+      status: storeData.status,
+    };
+    console.log('store data', data)
+    const business: IBusiness = await createVendor(data);
+
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${req.file.path}_banner`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+      folder: "NextCornerApp",
+    });
+
+    const updatedBusiness = await updateProperty(
+      business._id?.toString(),
+      "image",
+      result.url
+    );
+
+    // After uploading to cloudinary
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    res.status(201).send({
+      newStore: updatedBusiness,
+      message: "New store created successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(401).send(err);
+    next(err);
+  }
+};
+
+const uploadItems = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    console.log(
+      'req body: ', JSON.parse(req.body.payload)
+    )
+    const data = JSON.parse(req.body.payload)
+    //console.log('data: ', JSON.parse(JSON.stringify(data)));
+    //console.log(JSON.parse(data));
+    const incomingData = data;
+    const vendorId = incomingData.store.id;
+    const incomingItem : Iitem[] = incomingData.newMenu;
+    console.log('incoming data: ', incomingData)
+    // Check if the fields are valid before uploading to model
+    const requiredFields = ["name", "time", "price", "image", "storeInfo"];
+    const isAllFieldsPresent = checkForRequiredFields(
+      requiredFields,
+      incomingItem[0]
+    );
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    if (isAllFieldsPresent != null) {
+      res.status(400).json({ payload: isAllFieldsPresent });
+      return;
+    }
+
+    // Test if the menu works
+    await updateMenu(vendorId, incomingItem, true);
+
+    // upload to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${req.file.path}_banner`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+      folder: "NextCornerApp",
+    });
+    incomingItem[0].image = result.url;
+
+    const updatedStore = await updateMenu(vendorId, incomingItem, false);
+
+    // After uploading to cloudinary
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
+    res.status(200).send({
+      updatedStore,
+    });
+  } catch (err) {
+    res.status(400).send(err);
+    next(err);
+  }
+};
+
+const deleteItemById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body;
+    const vendorId = data.vendorId;
+    const itemId = data.itemId;
+    const vendor = await findVendorById(vendorId);
+
+    if (vendor) {
+      const isItem = (element: any) => element.id == itemId;
+
+      // Delete the image from cloudinary first
+      const findItem = vendor.menu.findIndex(isItem);
+      const publicId = extractPublicId(vendor.menu[findItem].image!);
+
+      await cloudinary.uploader.destroy(publicId + '.png_banner', function (error: any, result: any) {
+        if (error) {
+          return res.status(500).send("Image deletion failed. Please try again later."); // Return error response to the client
+        }
+      });
+
+
+      // Delete the menu item after deleting the image from the cloud service
+      const newMenu = await Promise.all(
+        vendor.menu.filter((currentItem: Iitem) => currentItem.id !== itemId)
+      );
+
+      const newVendor = await updateProperty(vendorId, "menu", newMenu);
+      res.status(200).send({
+        newVendor,
+        message: "Menu updated successfully"
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+export {
+  createCard,
+  deleteItemById,
+  getVendorByName,
+  getVendorByuid,
+  uploadStore,
+  uploadItems,
+};

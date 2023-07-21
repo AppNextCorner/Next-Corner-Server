@@ -12,5 +12,8 @@ declare const signUp: (res: Response, req: Request, next: NextFunction) => Promi
  */
 declare const getSingleUser: (req: Request & userInterface, res: Response, next: NextFunction) => Promise<void>;
 declare const fetchUsers: (res: Response, _req: Request) => Promise<Response<any, Record<string, any>>>;
+/**
+ * This function updates the role of the user based on the role given
+ */
 declare const updateRole: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export { signUp, fetchUsers, getSingleUser, updateRole };

@@ -3,11 +3,8 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
-import rateLimit from "express-rate-limit";
-
 // grabbing the routes for the Stripe API
 import stripe from "./routes/stripeRoute";
-import cartRouter from "./routes/cartRoute";
 import authRouter from "./routes/authRoute";
 import bearerToken from "express-bearer-token";
 import orderRouter from "./routes/ordersRoute";
@@ -43,8 +40,6 @@ app.use(bearerToken()); // Be able to access the token in our backend
 //
 // setting routes for stripe
 app.use("/", stripe);
-// routes for cart
-app.use("/api", cartRouter);
 // routes fo auth
 app.use("/auth", authRouter);
 // routes for orders

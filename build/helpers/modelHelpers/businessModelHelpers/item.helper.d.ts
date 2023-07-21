@@ -23,151 +23,26 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
+import { IBusiness } from "../../../interfaces/store.interface";
 /**
  * This function returns all items
  * @param selections Any selections
  * @returns
  */
-declare const findAllItems: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    image: string[];
-    customizations: import("mongoose").Types.DocumentArray<{
-        optionCustomizations: import("mongoose").Types.DocumentArray<{
-            label?: string | undefined;
-            selected?: boolean | undefined;
-            optionId?: string | undefined;
-        }>;
-        type?: string | undefined;
-        name?: string | undefined;
-    }>;
-    name?: string | undefined;
-    time?: number | undefined;
-    price?: number | undefined;
-    description?: string | undefined;
-    amountInCart?: number | undefined;
-    category?: string | undefined;
-    rating?: number | undefined;
-    featured?: boolean | undefined;
-}> & Omit<{
-    image: string[];
-    customizations: import("mongoose").Types.DocumentArray<{
-        optionCustomizations: import("mongoose").Types.DocumentArray<{
-            label?: string | undefined;
-            selected?: boolean | undefined;
-            optionId?: string | undefined;
-        }>;
-        type?: string | undefined;
-        name?: string | undefined;
-    }>;
-    name?: string | undefined;
-    time?: number | undefined;
-    price?: number | undefined;
-    description?: string | undefined;
-    amountInCart?: number | undefined;
-    category?: string | undefined;
-    rating?: number | undefined;
-    featured?: boolean | undefined;
-} & {
+declare const findAllItems: (selections?: any) => Promise<(import("../../../interfaces/item.interface").Iitem & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>)[]>;
+})[]>;
+declare const findItemById: (itemId: string, selections?: any) => Promise<(import("../../../interfaces/item.interface").Iitem & import("mongoose").Document<any, any, any> & {
+    _id: import("mongoose").Types.ObjectId;
+}) | null>;
+declare const findItemsByVendorId: (vendorId: any, selections?: any) => Promise<import("../../../interfaces/item.interface").Iitem[] | null>;
 /**
  * This function updates the rating of an item by using the itemId and vendorId
  * @param vendorId the id of the vendor
  * @param itemId  the id of the menu item
  * @returns
  */
-declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => Promise<(import("mongoose").Document<unknown, any, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-}> & Omit<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-} & {
+declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => Promise<(IBusiness & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>) | null>;
-export { findAllItems, updateItemRatingByVendorId };
+}) | null>;
+export { findAllItems, findItemById, findItemsByVendorId, updateItemRatingByVendorId };

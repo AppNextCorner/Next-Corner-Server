@@ -66,6 +66,7 @@ exports.createReview = createReview;
 const getReviews = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const reviews = yield helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+        console.log(reviews);
         yield helper.updateItemRating(req.params.id);
         // Incase comments are over flooding, delete all
         // await new Promise(() =>

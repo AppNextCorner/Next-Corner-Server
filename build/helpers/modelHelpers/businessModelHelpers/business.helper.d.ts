@@ -21,109 +21,20 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
-/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
+import { Document, ObjectId } from "mongoose";
+import { IBusiness } from "../../../interfaces/store.interface";
+import { Iitem } from "../../../interfaces/item.interface";
+declare const createVendor: (storeData: IBusiness) => Promise<IBusiness>;
 /**
  *
  * This helper functions return all vendors
  * @param selections Any selections
  * @returns
  */
-declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-}> & Omit<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-} & {
+declare const findAllVendors: (selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>)[]>;
+})[]>;
 /**
  *
  * This helper function returns vendor (as an array for some reason) with just the name
@@ -132,200 +43,33 @@ declare const findAllVendors: (selections?: any) => Promise<(import("mongoose").
  * @param selections Any selections
  * @returns
  */
-declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-}> & Omit<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-} & {
+declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>)[]>;
+})[]>;
+declare const findVendorByMenuItemId: (itemId: string) => Promise<void>;
+declare const findVendorByUid: (uid: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: import("mongoose").Types.ObjectId;
+})[]>;
+declare const findVendorById: (vendorId: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}) | null>;
 /**
- * This function finds a vendor with the id of the item the vender offers
- * @param id menuItemid
- * @param selections Any selections
- * @returns vendor as an array for some reason?
+ *
+ * @param id menu item id / vendor id / announcement id ...
+ * @param property what property we want to add to
+ * @param newData the data we want to replace with the property
+ * @returns
  */
-declare const findVendorByMenuItemId: (id: string, selections?: any) => Promise<(import("mongoose").Document<unknown, any, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-}> & Omit<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    image: string[];
-    announcements: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        description?: string | undefined;
-        color?: string | undefined;
-        header?: string | undefined;
-    }>;
-    categories: import("mongoose").Types.DocumentArray<{
-        category?: string | undefined;
-    }>;
-    menu: import("mongoose").Types.DocumentArray<{
-        image: string[];
-        customizations: import("mongoose").Types.DocumentArray<{
-            optionCustomizations: import("mongoose").Types.DocumentArray<{
-                label?: string | undefined;
-                selected?: boolean | undefined;
-                optionId?: string | undefined;
-            }>;
-            type?: string | undefined;
-            name?: string | undefined;
-        }>;
-        name?: string | undefined;
-        time?: number | undefined;
-        price?: number | undefined;
-        description?: string | undefined;
-        amountInCart?: number | undefined;
-        category?: string | undefined;
-        rating?: number | undefined;
-        featured?: boolean | undefined;
-    }>;
-    close?: string | undefined;
-    name?: string | undefined;
-    userId?: string | undefined;
-    location?: any;
-    rating?: number | undefined;
-    status?: {
-        text?: string | undefined;
-        color?: string | undefined;
-    } | undefined;
-    open?: string | undefined;
-    categoryId?: number | undefined;
-    trending?: string | undefined;
-} & {
+declare const updateProperty: (id: string | undefined, property: string, newData: any) => Promise<(IBusiness & Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
-}, never>)[]>;
-export { findAllVendors, findVendorByName, findVendorByMenuItemId };
+}) | null>;
+/**
+ *
+ * @param id Store ID
+ * @param newMenu The menu item we want to add to the menu list
+ * @returns the store object
+ */
+declare const updateMenu: (id: string, newMenu: Iitem[], test?: boolean) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}) | null>;
+export { createVendor, findAllVendors, findVendorByName, findVendorByUid, findVendorById, findVendorByMenuItemId, updateProperty, updateMenu, };

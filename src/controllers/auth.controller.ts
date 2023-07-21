@@ -18,7 +18,7 @@ const signUp = async (res: Response, req: Request, next: NextFunction) => {
     } else {
       // create user document using the MongoDB schema
       const newUser = await userModel.create({
-        email: payload.email,
+        email: payload.email.toLowerCase(),
         password: payload.password,
         firstName: payload.firstName,
         lastName: payload.lastName,
@@ -100,9 +100,17 @@ const fetchUsers = async (res: Response, _req: Request) => {
   return res.json(users.map((user: any) => user.toJSON()));
 };
 
+
+
+
+/**
+ * This function updates the role of the user based on the role given
+ */
 const updateRole = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
+    // data,userId = userId
+    // data.role = desired role
 
     const newUser = await user.updateRoleByUserId(data.userId, data.role);
 

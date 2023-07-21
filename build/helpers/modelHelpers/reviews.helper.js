@@ -59,17 +59,17 @@ exports.findReviewByItemId = findReviewByItemId;
  * This function updates the rating of an item
  * @param id menuItemId
  */
-const updateItemRating = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const updateItemRating = (itemId) => __awaiter(void 0, void 0, void 0, function* () {
     // Get vendor by menuItemId
-    const vendor = yield (0, business_helper_1.findVendorByMenuItemId)(id); // returns vendor as an array for some reason
+    const vendor = yield (0, business_helper_1.findVendorByMenuItemId)(itemId); // returns vendor as an array for some reason
     // This helper function updates item rating using the vendor id
     const updatedInfo = yield (0, item_helper_1.updateItemRatingByVendorId)(vendor[0]._id.toString(), // get the vendor id
-    id // put in the menuItemId
+    itemId // put in the menuItemId
     );
     return updatedInfo;
 });
 exports.updateItemRating = updateItemRating;
 const deleteReviewByItemId = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield model.findByIdAndDelete(id).exec();
+    return yield model.findByIdAndDelete({ id: id }).exec();
 });
 exports.deleteReviewByItemId = deleteReviewByItemId;

@@ -3,11 +3,13 @@
  * @module upload
  */
 
-import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
-let path = require("path");
-import fs from "fs";
 import { Request } from "express";
+
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+let path = require("path");
+const fs = require("fs");
+const { Request } = require("express");
 
 /**
  * Disk storage configuration for multer.
@@ -24,7 +26,7 @@ const storage = multer.diskStorage({
    * @param {any} _file - Uploaded file (unused).
    * @param {function} cb - Callback function.
    */
-  destination: function (_req: Request, _file: any, cb: any) {
+  destination: function (_req: typeof Request, _file: any, cb: any) {
     let destinationPath = path.join(__dirname, "../../build/images");
 
     if (process.env.NODE_ENV !== "production") {
@@ -47,7 +49,8 @@ const storage = multer.diskStorage({
    * @param {function} cb - Callback function.
    */
   filename: function (_req: Request, file: any, cb: any) {
-    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
+    const { ext } = path.parse(file.originalname);
+    cb(null, `${uuidv4()}-${Date.now()}${ext}`);
   },
 });
 
@@ -58,7 +61,7 @@ const storage = multer.diskStorage({
  * @param {any} file - Uploaded file.
  * @param {function} cb - Callback function.
  */
-const fileFilter = (_req: Request, file: any, cb: any) => {
+const fileFilter = (req: typeof Request, file: any, cb: any) => {
   const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
   if (allowedFileTypes.includes(file.mimetype)) {
     cb(null, true);
@@ -79,4 +82,4 @@ const upload = multer({
   fileFilter,
 });
 
-export { upload };
+export {upload}

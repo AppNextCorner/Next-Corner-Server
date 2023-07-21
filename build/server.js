@@ -19,7 +19,6 @@ const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 // grabbing the routes for the Stripe API
 const stripeRoute_1 = __importDefault(require("./routes/stripeRoute"));
-const cartRoute_1 = __importDefault(require("./routes/cartRoute"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const express_bearer_token_1 = __importDefault(require("express-bearer-token"));
 const ordersRoute_1 = __importDefault(require("./routes/ordersRoute"));
@@ -55,8 +54,6 @@ app.use((0, express_bearer_token_1.default)()); // Be able to access the token i
 //
 // setting routes for stripe
 app.use("/", stripeRoute_1.default);
-// routes for cart
-app.use("/api", cartRoute_1.default);
 // routes fo auth
 app.use("/auth", authRoute_1.default);
 // routes for orders

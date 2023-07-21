@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,6 +41,7 @@ const orderRouter = express_1.default.Router();
 // const decodeIDToken = require('../authenticateToken')
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const firebase_util_1 = require("../util/firebase.util");
+const controller = __importStar(require("../controllers/orders.controller"));
 function decodeIDToken(req, _res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("Token Request", req.token);
@@ -33,53 +57,35 @@ function decodeIDToken(req, _res, next) {
         }
     });
 }
-orderRouter.post("/", decodeIDToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+orderRouter.post("/place-order", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = req.currentUser;
-    // console.log("current user: ", req.currentUser);
     if (auth) {
-        try {
-            const order = new orderModel_1.default(req.body);
-            const saveOrder = yield order.save();
-            // console.log(saveOrder);
-            return res.status(201).json(saveOrder);
-        }
-        catch (error) {
-            console.log(error);
-        }
-    }
-    else {
-        return res.status(403).send("Not authorized");
+        controller.postOrder(req, res, next);
     }
 }));
-orderRouter.get("/", decodeIDToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+orderRouter.get("/get-orders-by-store-name/:name", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = req.currentUser;
-    //console.log("Auth: ", req)
     if (auth) {
-        const orders = yield orderModel_1.default.find({});
-        // console.log(orders);
-        return res.json(orders.map((order) => order.toJSON()));
+        controller.getOrdersByStoreName(req, res, next);
     }
-    else {
-        return res.status(403).send("Not authorized");
+}));
+orderRouter.get("/get-orders-by-uid/:uid", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const auth = req.currentUser;
+    if (auth) {
+        controller.getOrdersByUid(req, res, next);
     }
 }));
 orderRouter.patch("/order-status/:id", (req, res) => {
     // grab the new score info
     const data = req.body;
     const auth = req.currentUser;
-    //const id = parseInt(req.query.id)
-    //const mapScore = Cart.map(val => val.cartData)
     // create a new score in the database
     function updateStatus() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // console.log(req.currentUser);
-                // console.log(req.params.id);
-                // console.log(req.body);
                 const newStatus = yield orderModel_1.default.findOneAndUpdate({ _id: req.params.id }, {
                     orderStatus: data.status,
                 });
-                // console.log(newStatus);
                 // grab _id from body -> then add what data to update
                 return res.status(201).send(newStatus);
             }
@@ -88,10 +94,6 @@ orderRouter.patch("/order-status/:id", (req, res) => {
             }
         });
     }
-    // if (auth) {
     updateStatus();
-    // } else {
-    //   return res.status(403).send('Not authorized')
-    // }
 });
 exports.default = orderRouter;

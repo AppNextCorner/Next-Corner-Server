@@ -51,20 +51,20 @@ const findReviewByItemId = async (id: string, selections: any = {}) => {
  * This function updates the rating of an item
  * @param id menuItemId
  */
-const updateItemRating = async (id: string) => {
+const updateItemRating = async (itemId: string) => {
   // Get vendor by menuItemId
-  const vendor: any = await findVendorByMenuItemId(id); // returns vendor as an array for some reason
+  const vendor: any = await findVendorByMenuItemId(itemId); // returns vendor as an array for some reason
 
   // This helper function updates item rating using the vendor id
   const updatedInfo = await updateItemRatingByVendorId(
     vendor[0]._id.toString(), // get the vendor id
-    id // put in the menuItemId
+    itemId// put in the menuItemId
   );
   return updatedInfo;
 };
 
 const deleteReviewByItemId = async (id: string) => {
-  return await model.findByIdAndDelete(id).exec();
+  return await model.findByIdAndDelete({id: id}).exec();
 };
 
 export { createReview, findAll, findReviewByItemId, updateItemRating, deleteReviewByItemId };
