@@ -16,7 +16,7 @@ const postOrder = async (req: Request, res: Response, next: NextFunction) => {
     console.log(err);
   }
 };
-
+// TODO: 
 // Get orders by name of the store and status of the order and get the uid here
 const getOrdersByStoreName = async (
   req: Request,
