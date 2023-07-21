@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from "express";
 // const decodeIDToken = require('../authenticateToken')
 import Orders from "../models/orderModel";
 import { verifyToken } from "../util/firebase.util";
-import { getOrdersByStoreName } from "../controllers/orders.controller";
+import * as controller from "../controllers/orders.controller";
 
 async function decodeIDToken(req: any, _res: Response, next: NextFunction) {
   console.log("Token Request", req.token);
@@ -20,21 +20,12 @@ async function decodeIDToken(req: any, _res: Response, next: NextFunction) {
   }
 }
 
-orderRouter.post("/", decodeIDToken, async (req: any, res: Response) => {
+
+orderRouter.post("/place-order", decodeIDToken, async(req: any, res: Response, next: NextFunction) => {
   const auth = req.currentUser;
-  // console.log("current user: ", req.currentUser);
-  if (auth) {
-    try {
-      const order = new Orders(req.body);
-      const saveOrder = await order.save();
-      // console.log(saveOrder);
-      return res.status(201).json(saveOrder);
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    return res.status(403).send("Not authorized");
-  }
+  if(auth){
+    controller.postOrder(req, res, next);
+ } 
 });
 
 orderRouter.get(
@@ -43,7 +34,7 @@ orderRouter.get(
   async (req: any, res: Response, next: NextFunction) => {
     const auth = req.currentUser;
     if (auth) {
-      getOrdersByStoreName(req, res, next);
+      controller.getOrdersByStoreName(req, res, next);
     }
   }
 );
@@ -54,7 +45,7 @@ orderRouter.get(
   async (req: any, res: Response, next: NextFunction) => {
     const auth = req.currentUser;
     if (auth) {
-      getOrdersByStoreName(req, res, next);
+      controller.getOrdersByUid(req, res, next);
     }
   }
 );

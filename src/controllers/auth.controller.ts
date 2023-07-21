@@ -18,7 +18,7 @@ const signUp = async (res: Response, req: Request, next: NextFunction) => {
     } else {
       // create user document using the MongoDB schema
       const newUser = await userModel.create({
-        email: payload.email,
+        email: payload.email.toLowerCase(),
         password: payload.password,
         firstName: payload.firstName,
         lastName: payload.lastName,

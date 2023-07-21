@@ -95,6 +95,7 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       storeStatus: storeData.storeStatus,
       status: storeData.status,
     };
+    console.log('store data', data)
     const business: IBusiness = await createVendor(data);
 
     const result = await cloudinary.uploader.upload(req.file.path, {
@@ -118,25 +119,31 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       message: "New store created successfully",
     });
   } catch (err) {
-    res.status(401).send({
-      message: "Missing: " + err,
-    });
+    console.log(err);
+    res.status(401).send(err);
     next(err);
   }
 };
 
 const uploadItems = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const data = req.body;
-    const incomingData = JSON.parse(data.payload);
+    console.log(
+      'req body: ', JSON.parse(req.body.payload)
+    )
+    const data = JSON.parse(req.body.payload)
+    //console.log('data: ', JSON.parse(JSON.stringify(data)));
+    //console.log(JSON.parse(data));
+    const incomingData = data;
     const vendorId = incomingData.store.id;
     const incomingItem : Iitem[] = incomingData.newMenu;
+    console.log('incoming data: ', incomingData)
     // Check if the fields are valid before uploading to model
     const requiredFields = ["name", "time", "price", "image", "storeInfo"];
     const isAllFieldsPresent = checkForRequiredFields(
       requiredFields,
       incomingItem[0]
     );
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
     if (isAllFieldsPresent != null) {
       res.status(400).json({ payload: isAllFieldsPresent });
       return;
@@ -163,7 +170,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
       updatedStore,
     });
   } catch (err) {
-    res.status(400).send({ payload: err });
+    res.status(400).send(err);
     next(err);
   }
 };

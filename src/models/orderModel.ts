@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
-import { cartSchema } from "./cartModel";
+import mongoose, { Document } from "mongoose";
+import { Iorder } from "../interfaces/order.interface";
 
 const orderSchema = new mongoose.Schema(
   {
-    orders: [cartSchema],
+    orders: [],
     minutesToDone: { type: Number, required: true },
     status: { type: String, required: true },
     accepted: { type: String, required: true, default: "pending"},
@@ -12,6 +12,6 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const orderModel = mongoose.model("order", orderSchema);
+const orderModel = mongoose.model<Iorder & Document>("order", orderSchema);
 
 export default orderModel;

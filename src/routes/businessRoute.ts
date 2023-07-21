@@ -68,6 +68,7 @@ businessRouter.post("/createStore", upload.single('image'), async(req: any, res:
 
 
 businessRouter.put("/updateMenu", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
+  console.log("is running")
   uploadItems(req,res,next);
 })
 

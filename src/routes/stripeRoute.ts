@@ -3,6 +3,7 @@ import express from "express";
 const router = express.Router();
 import Stripe from "stripe";
 import { Request, Response } from "express";
+import { raw } from "body-parser";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
 const stripeSecretWebhook = process.env.STRIPE_WEBHOOK__SECRET!;
@@ -21,9 +22,10 @@ router.post("/payment", async (req: Request, res: Response) => {
   //
   try {
     const merchantDisplayName = req.headers["merchantdisplayname"];
-    console.log(merchantDisplayName);
+    console.log(req.headers);
     // Getting data from client
     const { amount, name }: IClientData = req.body;
+    console.log('req body: ', amount, name)
     // Simple validation
     if (!amount || !name || !merchantDisplayName)
       return res.status(400).json({ message: "All fields are required" });
@@ -57,7 +59,7 @@ router.post("/payment", async (req: Request, res: Response) => {
     const clientSecret = paymentIntent.client_secret;
     console.log(clientSecret);
     // Sending the client secret as response
-    res.json({
+    res.status(200).json({
       message: "payment in progress",
       client_secret: clientSecret,
       customer: customer.id,

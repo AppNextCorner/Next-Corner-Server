@@ -1,8 +1,9 @@
-import { clockFormat } from "./vendorTime.interface";
+import { ICart } from "./cart.interface";
 
 export interface Iorder {
-    singleOrderList: any[];
-    timer: clockFormat;
-    orderStatus: string;
-    uid: string;
+  orders: ICart[];
+  minutesToDone: number;
+  status: string;
+  accepted: string
+  uid: string;
 }
