@@ -15,9 +15,7 @@ import {
   deleteItemById,
 } from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
-import {
-  vendorModel,
-} from "../models/businessModel";
+import { vendorModel } from "../models/businessModel";
 import { verifyToken } from "../util/firebase.util";
 
 async function decodeIDToken(req: any, res: any, next: any) {
@@ -58,22 +56,38 @@ businessRouter.post(
   }
 );
 
-businessRouter.get("/get-stores-by-uid/:uid", decodeIDToken, async(req: Request, res: Response, next: NextFunction) => {
-  getVendorByuid(req, res, next)
-})
+businessRouter.get(
+  "/get-stores-by-uid/:uid",
+  decodeIDToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    getVendorByuid(req, res, next);
+  }
+);
 
-businessRouter.post("/createStore", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
-  uploadStore(req, res, next);
-})
+businessRouter.post(
+  "/createStore",
+  upload.single("image"),
+  async (req: any, res: Response, next: NextFunction) => {
+    console.log("is running");
+    uploadStore(req, res, next);
+  }
+);
 
+businessRouter.post(
+  "/updateMenu",
+  upload.single("image"),
+  async (req: any, res: Response, next: NextFunction) => {
+    console.log("is running");
+    uploadItems(req, res, next);
+  }
+);
 
-businessRouter.put("/updateMenu", upload.single('image'), async(req: any, res: Response, next: NextFunction) => {
-  console.log("is running")
-  uploadItems(req,res,next);
-})
-
-businessRouter.put("/items/deleteItem", decodeIDToken, async(req: any, res:Response, next: NextFunction) => {
-  deleteItemById(req, res, next);
-})
+businessRouter.put(
+  "/items/deleteItem",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    deleteItemById(req, res, next);
+  }
+);
 
 export default businessRouter;
