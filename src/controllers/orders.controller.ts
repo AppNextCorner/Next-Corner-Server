@@ -4,23 +4,23 @@ import * as userHelper from "../helpers/modelHelpers/user.helper";
 import { userInterface } from "../interfaces/user.interface";
 
 const postOrder = async (req: Request, res: Response, next: NextFunction) => {
-  try{
+  try {
     const data = req.body;
     console.log(data);
     const placedOrder = await helpers.createOrder(data);
-    console.log(placedOrder)
+    console.log(placedOrder);
     res.status(200).send({
       placedOrder,
-    })  
-  }catch(err){
+    });
+  } catch (err) {
     console.log(err);
   }
 };
-// TODO: 
+// TODO:
 // Get orders by name of the store and status of the order and get the uid here
 const getOrdersByStoreName = async (
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction
 ) => {
   // Response is Iorder[]
@@ -29,9 +29,9 @@ const getOrdersByStoreName = async (
     req.params.name
   );
   console.log(response);
-  //   const user: userInterface | null = await userHelper.findById(
-  //     response[0]._id
-  //   );
+  res.status(200).send({
+    orders: response,
+  });
 };
 
 // Ths is for the user's past order
@@ -40,12 +40,30 @@ const getOrdersByUid = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const response: any = await helpers.findOrdersByProperty("uid", req.params.uid);
-  
+  const response: any = await helpers.findOrdersByProperty(
+    "uid",
+    req.params.uid
+  );
+
   const user: userInterface | null = await userHelper.findById(req.params.uid);
   res.status(200).send({
     userOrders: response,
     user,
-  })
+  });
 };
-export { postOrder, getOrdersByStoreName, getOrdersByUid };
+
+const updateAcceptedStatus = async (
+  req: any,
+  res: Response,
+  _next: NextFunction
+) => {
+  try{
+    const data = req.body;
+    const updatedOrder = await helpers.updateOrderProperty(data.orderId, "accepted", data.newStatus);
+    console.log(updatedOrder);
+  }
+  catch(err){
+    console.log(err);
+  }
+};
+export { postOrder, getOrdersByStoreName, getOrdersByUid, updateAcceptedStatus};

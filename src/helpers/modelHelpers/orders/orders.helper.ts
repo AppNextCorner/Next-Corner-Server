@@ -15,6 +15,24 @@ const findOrdersByProperty = async (
     .exec();
 };
 
+// add comments
+const updateOrderProperty = async (
+  orderId: string,
+  property: string,
+  newValue: any
+) => {
+  return await model.findByIdAndUpdate(
+    orderId,
+    {
+      [property]: newValue,
+    },
+    {
+      new: true,
+    }
+  );
+};
+
+// add comments
 const createOrder = async (order: Iorder) => {
   return await model.create({
     orders: order.orders,
@@ -25,4 +43,4 @@ const createOrder = async (order: Iorder) => {
   });
 };
 
-export { createOrder, findOrdersByProperty };
+export { createOrder, findOrdersByProperty, updateOrderProperty};

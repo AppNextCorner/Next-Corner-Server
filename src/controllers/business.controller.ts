@@ -127,6 +127,7 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
 
 const uploadItems = async (req: any, res: Response, next: NextFunction) => {
   try {
+    console.log('here is req.body: ', req.body)
     const data = JSON.parse(req.body.payload);
     const incomingData = data;
     const storeId = incomingData.store.id;

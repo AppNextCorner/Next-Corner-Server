@@ -1,18 +1,18 @@
-// Accessing the file system to delte the file that contains the duplicated user
 import fs from "fs";
 
 const removeFile = function (filePath: any) {
-  try {
+  return new Promise<void>((resolve, reject) => {
     // get the file path and remove it from the filesystem
-    fs.unlink(filePath, (err: any) => {
+    fs.unlink(filePath, (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(err);
+        reject(err);
         return;
       }
+      console.log('File "' + filePath + '" removed!');
+      resolve();
     });
-    console.log('File"' + filePath + '" removed!');
-  } catch (err) {
-    throw err;
-  }
+  });
 };
+
 export { removeFile };

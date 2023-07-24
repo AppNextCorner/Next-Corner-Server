@@ -20,16 +20,30 @@ async function decodeIDToken(req: any, _res: Response, next: NextFunction) {
   }
 }
 
+orderRouter.post(
+  "/place-order",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    const auth = req.currentUser;
+    if (auth) {
+      controller.postOrder(req, res, next);
+    }
+  }
+);
 
-orderRouter.post("/place-order", decodeIDToken, async(req: any, res: Response, next: NextFunction) => {
-  const auth = req.currentUser;
-  if(auth){
-    controller.postOrder(req, res, next);
- } 
-});
+orderRouter.put(
+  "/update-accept-status",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    const auth = req.currentUser;
+    if (auth) {
+      controller.updateAcceptedStatus(req, res, next);
+    }
+  }
+);
 
 orderRouter.get(
-  "/get-orders-by-store-name/:name",
+  "/get-orders-by-store-name/:name/",
   decodeIDToken,
   async (req: any, res: Response, next: NextFunction) => {
     const auth = req.currentUser;
@@ -40,7 +54,7 @@ orderRouter.get(
 );
 
 orderRouter.get(
-  "/get-orders-by-uid/:uid",
+  "/get-orders-by-uid/:uid/",
   decodeIDToken,
   async (req: any, res: Response, next: NextFunction) => {
     const auth = req.currentUser;
