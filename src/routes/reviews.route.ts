@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
-import * as controller from "../controllers/reviews.controller"
+import ReviewsController from "../controllers/reviews.controller";
 
 const reviewsRouter = Router();
-
+const controller = new ReviewsController();
 reviewsRouter.post(
   "/create",
   async (req: Request, res: Response, next: NextFunction) => {

@@ -1,44 +1,46 @@
 import { Request, Response, NextFunction } from "express";
-import * as helper from "../helpers/modelHelpers/reviews.helper";
+import ReviewsService from "../helpers/modelHelpers/reviews/reviews.service";
 import * as userHelper from "../helpers/modelHelpers/user.helper";
 
-/**
+export default class ReviewsController{
+  private reviewsService = new ReviewsService();
+  /**
  *
- * This function creates the review using the review interface
+ * This method creates the review using the review interface
  *
  * @param req Incoming request
  * @param res Sent Response
  * @param next Next function
  */
-const createReview = async (
+public  createReview = async (
   req: Request,
   _res: Response,
   next: NextFunction
 ) => {
   try {
-    // Let the helper function handle the create review
-    helper.createReview(req.body);
+    // Let the reviewsService function handle the create review
+    this.reviewsService.createReview(req.body);
 
     // Update the item Rating
-    helper.updateItemRating(req.body.idOfItem.toString());
+    this.reviewsService.updateItemRating(req.body.idOfItem.toString());
   } catch (err) {
     next(err);
   }
 };
 
 /**
- * This function gets the reviews and sends them back to the front end in arrays of reviewInterface[] and UserInterface[]
+ * This method gets the reviews and sends them back to the front end in arrays of reviewInterface[] and UserInterface[]
  * @param req Incoming Request
  * @param res Sent response
  * @param next  Next function
  *
  * req.params.id = idOfTheItem
  */
-const getReviews = async (req: Request, res: Response, next: NextFunction) => {
+public getReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const reviews: any = await helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+    const reviews: any = await this.reviewsService.findReviewsByItemId(req.params.id); // Use the helper function to find the reviews with itemId
     console.log(reviews);
-    await helper.updateItemRating(req.params.id);
+    await this.reviewsService.updateItemRating(req.params.id);
 
     // Incase comments are over flooding, delete all
     // await new Promise(() =>
@@ -63,4 +65,6 @@ const getReviews = async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 };
-export { createReview, getReviews };
+}
+
+

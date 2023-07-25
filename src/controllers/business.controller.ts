@@ -6,6 +6,7 @@ import {
   createVendor,
   updateProperty,
   updateMenu,
+  updateMenuItem,
 } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
 import { extractPublicId } from "cloudinary-build-url";
 import { removeFile } from "../helpers/remove";
@@ -13,7 +14,8 @@ import { cloudinary } from "../helpers/cloudinary";
 import { IBusiness } from "../interfaces/store.interface";
 import { checkForRequiredFields } from "../helpers/ErrorHelpers/invalidFields.helper";
 import { Iitem } from "../interfaces/item.interface";
-
+import ItemService from "../helpers/modelHelpers/businessModelHelpers/item.service";
+const itemHelper = new ItemService();
 const createCard = async (
   req: any,
   res: Response,
@@ -125,9 +127,41 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+const updateItem = async (req: any, res: Response, next: NextFunction) => {
+  // Getting the item from the request -> sent as an array
+  const incomingData = JSON.parse(req.body.payload)!;
+  const updatedItem: Iitem[] = incomingData.newMenu;
+  try {
+    // Update the menu with the updated item / Checking for any errors with data before uploading to cloud
+    await updateMenuItem(updatedItem);
+    // upload to cloudinary
+
+    // Update the menu item with the update image
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${req.file.path}_banner`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+      folder: "NextCornerApp",
+    });
+    updatedItem[0].image = result.url;
+    const updatedStore = await updateMenuItem(updatedItem);
+    removeFile(req.file.path); // Remove the file from storage to prevent overflow
+
+    // Send a notification message to the app
+    res.status(200).send({
+      message: "Item updated successfully",
+    });
+  } catch (err: any) {
+    res.status(400).send(err);
+    next(err);
+  }
+};
+
+// TODO: use updateMenuitem function instead of updateMenu itself to add an item
 const uploadItems = async (req: any, res: Response, next: NextFunction) => {
   try {
-    console.log('here is req.body: ', req.body)
+    console.log("here is req.body: ", req.body);
     const data = JSON.parse(req.body.payload);
     const incomingData = data;
     const storeId = incomingData.store.id;
@@ -144,9 +178,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
     //   res.status(400).json({ payload: isAllFieldsPresent });
     //   return;
     // }
-
-    // // Test if the menu works
-    await updateMenu(storeId, incomingItem, true);
+    await updateMenu(storeId, incomingItem);
 
     // // upload to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
@@ -158,7 +190,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
     });
     incomingItem[0].image = result.url;
 
-    const updatedStore = await updateMenu(storeId, incomingItem, false);
+    const updatedStore = await updateMenu(storeId, incomingItem);
 
     // After uploading to cloudinary
     removeFile(req.file.path); // Remove the file from storage to prevent overflow

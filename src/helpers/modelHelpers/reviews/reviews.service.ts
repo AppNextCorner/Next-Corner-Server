@@ -1,18 +1,26 @@
-import { reviewInterface } from "../../interfaces/reviews.interface";
-import { reviewsModel } from "../../models/reviews.model";
+import { reviewInterface } from "../../../interfaces/reviews.interface";
+import { reviewsModel } from "../../../models/reviews.model";
+import { findVendorByMenuItemId } from "../businessModelHelpers/business.helper";
+import { vendorModel } from "../../../models/businessModel";
+import ItemService from "../businessModelHelpers/item.service";
 
-/**
- * Other helper methods
- */
-import { findVendorByMenuItemId } from "./businessModelHelpers/business.helper";
-import { updateItemRatingByVendorId } from "./businessModelHelpers/item.helper";
-/**
- * end of Other helper methods
- */
 
-const model = reviewsModel;
+class ReviewsService {
+  public model = reviewsModel;
+  private businessModel = vendorModel;
+  private itemService = new ItemService();
 
-class ReviewsHelper {
+
+  public async updateRating(vendorId: string, itemId: string, newRating: number){
+    return await this.businessModel.findByIdAndUpdate(
+      vendorId,
+      {
+        $set: { "menu.$[item].rating": newRating },
+      },
+      { arrayFilters: [{ "item._id": itemId }], new: true }
+    );
+  }
+
   /**
    *
    * This method creates a review in the reviews schema
@@ -21,7 +29,7 @@ class ReviewsHelper {
    * @returns
    */
   public async createReview(incomingReview: reviewInterface) {
-    return await model.create({
+    return await this.model.create({
       review: incomingReview.review,
       rating: incomingReview.rating,
       user: incomingReview.user,
@@ -35,7 +43,7 @@ class ReviewsHelper {
    * @returns
    */
   public async findAll(selections: any = {}) {
-    return await model.find().select(selections);
+    return await this.model.find().select(selections);
   }
 
   /**
@@ -44,8 +52,8 @@ class ReviewsHelper {
    * @param selections any selections
    * @returns
    */
-  public async findReviewByItemId(id: string, selections: any = {}) {
-    return await model.find({ idOfItem: id }).select(selections);
+  public async findReviewsByItemId(id: string, selections: any = {}) {
+    return await this.model.find({ idOfItem: id }).select(selections);
   }
 
   /**
@@ -57,7 +65,7 @@ class ReviewsHelper {
     const vendor: any = await findVendorByMenuItemId(itemId); // returns vendor as an array for some reason
 
     // This helper method updates item rating using the vendor id
-    const updatedInfo = await updateItemRatingByVendorId(
+    const updatedInfo = await this.itemService.updateItemRating(
       vendor[0]._id.toString(), // get the vendor id
       itemId // put in the menuItemId
     );
@@ -65,8 +73,8 @@ class ReviewsHelper {
   }
 
   public async deleteReviewByItemId(id: string) {
-    return await model.findByIdAndDelete({ id: id }).exec();
+    return await this.model.findByIdAndDelete({ id: id }).exec();
   }
 }
 
-export default ReviewsHelper;
+export default ReviewsService;

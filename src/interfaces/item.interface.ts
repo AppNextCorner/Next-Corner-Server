@@ -14,7 +14,7 @@ export interface Iitem extends Document {
   amountInCart?: number;
   rating?: number;
   storeInfo: any;
+  _id?: string; // Optional for the uploading item
 
-  // Allowing more properties of any type to enter
   [key: string]: any;
 }
