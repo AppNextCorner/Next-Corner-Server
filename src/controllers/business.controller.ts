@@ -15,6 +15,7 @@ import { IBusiness } from "../interfaces/store.interface";
 import { checkForRequiredFields } from "../helpers/ErrorHelpers/invalidFields.helper";
 import { Iitem } from "../interfaces/item.interface";
 import ItemService from "../helpers/modelHelpers/businessModelHelpers/item.service";
+import { Document, Types } from "mongoose";
 const itemHelper = new ItemService();
 const createCard = async (
   req: any,
@@ -130,13 +131,28 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
 const updateItem = async (req: any, res: Response, next: NextFunction) => {
   // Getting the item from the request -> sent as an array
   const incomingData = JSON.parse(req.body.payload)!;
-  const updatedItem: Iitem[] = incomingData.newMenu;
+  let updatedItem: Iitem[] = incomingData.newMenu;
+  const prevItem: Iitem[] = await itemHelper.findItemById(updatedItem[0]._id!);
   try {
     // Update the menu with the updated item / Checking for any errors with data before uploading to cloud
     await updateMenuItem(updatedItem);
-    // upload to cloudinary
 
-    // Update the menu item with the update image
+    // remove old image
+    const publicId = extractPublicId(prevItem[0].image!);
+    if (publicId) {
+      await cloudinary.uploader.destroy(
+        publicId + ".png_banner",
+        function (error: any, _result: any) {
+          if (error) {
+            return res
+              .status(500)
+              .send("Image deletion failed. Please try again later."); // Return error response to the client
+          }
+        }
+      );
+    }
+
+    // upload to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${req.file.path}_banner`,
       width: 500,
@@ -144,8 +160,12 @@ const updateItem = async (req: any, res: Response, next: NextFunction) => {
       crop: "fill",
       folder: "NextCornerApp",
     });
+
+    // Update the updated item with the new image
     updatedItem[0].image = result.url;
-    const updatedStore = await updateMenuItem(updatedItem);
+
+    // Place the updated item in the menu
+    await updateMenuItem(updatedItem);
     removeFile(req.file.path); // Remove the file from storage to prevent overflow
 
     // Send a notification message to the app
