@@ -12,14 +12,10 @@ import * as storeHelpers from "./business.helper";
 /**
  * Mathematical average function
  */
-import mathSummationService from "../../../math/sums.math.service";
 import { IBusiness } from "../../../interfaces/store.interface";
-import ReviewsService from "../reviews/reviews.service";
 import { Iitem } from "../../../interfaces/item.interface";
 
 export default class ItemService {
-  private sum = new mathSummationService();
-  private reviewsService = new ReviewsService();
   public model = itemModel;
   private businessModel = vendorModel;
 
@@ -69,21 +65,5 @@ export default class ItemService {
     if (vendor) {
       return vendor.menu;
     }
-  }
-  public async updateItemRating(vendorId: string, itemId: string) {
-    // Find the reviwes of the item
-    const reviewsList = await this.reviewsService.findReviewsByItemId(itemId);
-
-    // Create a new array of just the rating
-    const ratingList = await Promise.all(
-      reviewsList.map((currentReview) => currentReview.rating)
-    );
-
-    const newRating = await this.sum.average(ratingList, ratingList.length);
-
-    if (isNaN(newRating)) {
-      return this.reviewsService.updateRating(vendorId, itemId, 0);
-    }
-    return this.reviewsService.updateRating(vendorId, itemId, newRating);
   }
 }

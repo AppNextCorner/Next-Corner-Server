@@ -22,6 +22,7 @@ const signUp = async (res: Response, req: Request, next: NextFunction) => {
         password: payload.password,
         firstName: payload.firstName,
         lastName: payload.lastName,
+        role: payload.role,
         phoneNumber: payload.phoneNumber,
       });
       try {

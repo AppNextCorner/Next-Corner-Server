@@ -15,6 +15,7 @@ const createUser = async (email: string, password: string, uid: string) => {
     const user = await app.auth().createUser({
       email,
       password,
+
       uid,
     });
     return user;

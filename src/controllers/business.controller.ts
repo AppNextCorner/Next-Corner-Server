@@ -223,6 +223,15 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+const getItemById = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const data = req.params;
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const deleteItemById = async (
   req: Request,
   res: Response,
@@ -271,6 +280,7 @@ const deleteItemById = async (
 export {
   createCard,
   deleteItemById,
+  getItemById,
   getVendorByName,
   getVendorByuid,
   uploadStore,

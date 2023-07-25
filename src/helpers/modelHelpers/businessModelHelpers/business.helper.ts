@@ -24,6 +24,16 @@ const createVendor = async (storeData: IBusiness): Promise<IBusiness> => {
   });
 };
 
+const findVendorById = async (
+  vendorId: string,
+  selections: any = {}
+): Promise<
+  (IBusiness & Document<any, any, any> & { _id: ObjectId }) | null
+> => {
+  const vendor = await model.findById(vendorId).select(selections).exec();
+  return vendor;
+};
+
 /**
  *
  * This helper functions return all vendors
@@ -65,23 +75,13 @@ const findVendorByName = async (
 // add comments
 const findVendorByMenuItemId = async (itemId: string) => {
   const item: any = await itemHelpers.findItemById(itemId);
-  const vendor = await findVendorById(item.storeInfo.storeId);
+  const vendor = await findVendorById(item[0].storeInfo.storeId);
   return vendor;
 };
 
 // add comments
 const findVendorByUid = async (uid: string, selections: any = {}) => {
   const vendor = await model.find({ uid: uid }).select(selections).exec();
-  return vendor;
-};
-
-const findVendorById = async (
-  vendorId: string,
-  selections: any = {}
-): Promise<
-  (IBusiness & Document<any, any, any> & { _id: ObjectId }) | null
-> => {
-  const vendor = await model.findById(vendorId).select(selections).exec();
   return vendor;
 };
 
@@ -172,7 +172,7 @@ const updateMenuItem = async (updatedItem: Iitem[]) => {
 
   // Update the menu with updated data
   const uploadedMenu = await updateMenu(storeId, updatedItem);
-  return uploadedMenu!
+  return uploadedMenu!;
 };
 
 export {

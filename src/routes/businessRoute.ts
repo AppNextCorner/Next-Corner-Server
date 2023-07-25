@@ -13,6 +13,7 @@ import {
   uploadStore,
   uploadItems,
   deleteItemById,
+  getItemById,
 } from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import { vendorModel } from "../models/businessModel";
@@ -90,4 +91,11 @@ businessRouter.put(
   }
 );
 
+businessRouter.get(
+  "/items/get-item-by-id/:itemId",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    getItemById(req, res, next);
+  }
+);
 export default businessRouter;

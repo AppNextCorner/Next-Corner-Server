@@ -22,7 +22,7 @@ public  createReview = async (
     this.reviewsService.createReview(req.body);
 
     // Update the item Rating
-    this.reviewsService.updateItemRating(req.body.idOfItem.toString());
+    this.reviewsService.updateItemRatingByItemId(req.body.idOfItem.toString());
   } catch (err) {
     next(err);
   }
@@ -40,7 +40,7 @@ public getReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reviews: any = await this.reviewsService.findReviewsByItemId(req.params.id); // Use the helper function to find the reviews with itemId
     console.log(reviews);
-    await this.reviewsService.updateItemRating(req.params.id);
+    await this.reviewsService.updateItemRatingByItemId(req.params.id);
 
     // Incase comments are over flooding, delete all
     // await new Promise(() =>
