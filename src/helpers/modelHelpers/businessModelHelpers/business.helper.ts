@@ -139,6 +139,7 @@ const updateMenu = async (
   newMenu: Iitem[]
 ): Promise<
   (IBusiness & Document<any, any, any> & { _id: ObjectId }) | null
+  
 > => {
   if (newMenu.length > 1) {
     console.log("Updating more than one item");
@@ -152,14 +153,14 @@ const updateMenu = async (
     // get previous items excluding the one we're trying to upload
     // this is so that we don't get duplicates -> Could be used for updating by removing previous old item
     const previousItems = vendor?.menu!.filter(
-      (item) => item._id !== newMenu[0]._id
+      (item) => item._id?.toString() !== newMenu[0]._id
     );
     // concat previous items(without old menu) and new menu item
     const payload = [...previousItems!, ...newMenu];
     const updatedVendor = updateProperty(storeId, "menu", payload);
     return updatedVendor;
   }
-  console.log("vendor not found");
+  console.log("vendor not found");                                             
   return null;
 };
 
@@ -183,6 +184,7 @@ export {
   findVendorById,
   findVendorByMenuItemId,
   updateProperty,
+  uploadMenu,
   updateMenu,
   updateMenuItem,
 };

@@ -7,6 +7,7 @@ import {
   updateProperty,
   updateMenu,
   updateMenuItem,
+  uploadMenu,
 } from "../helpers/modelHelpers/businessModelHelpers/business.helper";
 import { extractPublicId } from "cloudinary-build-url";
 import { removeFile } from "../helpers/remove";
@@ -134,8 +135,6 @@ const updateItem = async (req: any, res: Response, next: NextFunction) => {
   let updatedItem: Iitem[] = incomingData.newMenu;
   const prevItem: Iitem[] = await itemHelper.findItemById(updatedItem[0]._id!);
   try {
-    // Update the menu with the updated item / Checking for any errors with data before uploading to cloud
-    await updateMenuItem(updatedItem);
 
     // remove old image
     const publicId = extractPublicId(prevItem[0].image!);
@@ -198,7 +197,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
     //   res.status(400).json({ payload: isAllFieldsPresent });
     //   return;
     // }
-    await updateMenu(storeId, incomingItem);
+    await uploadMenu(storeId, incomingItem, true);
 
     // // upload to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
@@ -210,7 +209,7 @@ const uploadItems = async (req: any, res: Response, next: NextFunction) => {
     });
     incomingItem[0].image = result.url;
 
-    const updatedStore = await updateMenu(storeId, incomingItem);
+    const updatedStore = await uploadMenu(storeId, incomingItem, false);
 
     // After uploading to cloudinary
     removeFile(req.file.path); // Remove the file from storage to prevent overflow
@@ -285,4 +284,5 @@ export {
   getVendorByuid,
   uploadStore,
   uploadItems,
+  updateItem
 };

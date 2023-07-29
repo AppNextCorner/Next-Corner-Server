@@ -4,6 +4,8 @@ import { userModel } from "../models/userModel";
 import * as user from "../helpers/modelHelpers/user.helper";
 import { userInterface } from "../interfaces/user.interface";
 
+
+
 const signUp = async (res: Response, req: Request, next: NextFunction) => {
   try {
     // get user data (1.email 2.password)

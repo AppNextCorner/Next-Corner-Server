@@ -14,6 +14,7 @@ import {
   uploadItems,
   deleteItemById,
   getItemById,
+  updateItem,
 } from "../controllers/business.controller";
 import { imageHelper } from "../helpers/uploadImages";
 import { vendorModel } from "../models/businessModel";
@@ -80,6 +81,14 @@ businessRouter.post(
   async (req: any, res: Response, next: NextFunction) => {
     console.log("is running");
     uploadItems(req, res, next);
+  }
+);
+
+businessRouter.post(
+  "/update-item",
+  upload.single("image"),
+  async (req: any, res: Response, next: NextFunction) => {
+    updateItem(req, res, next);
   }
 );
 
