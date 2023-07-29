@@ -16,16 +16,26 @@ const postOrder = async (req: Request, res: Response, next: NextFunction) => {
     console.log(err);
   }
 };
+
+const getOrdersByStoreId = async (req: Request, res: Response) => {
+  // Response returned as Iorder[]
+  const response: any = await helpers.findOrdersByProperty(
+    "orders.storeId",
+    req.params.id
+  );
+  console.log('orders by store id')
+};
+
 // TODO:
 // Get orders by name of the store and status of the order and get the uid here
-const getOrdersByStoreName = async (
+const getOrdersById = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   // Response is Iorder[]
   const response: any = await helpers.findOrdersByProperty(
-    "orders.storeName",
+    "orders.storeId",
     req.params.name
   );
   console.log(response);
@@ -57,13 +67,21 @@ const updateAcceptedStatus = async (
   res: Response,
   _next: NextFunction
 ) => {
-  try{
+  try {
     const data = req.body;
-    const updatedOrder = await helpers.updateOrderProperty(data.orderId, "accepted", data.newStatus);
+    const updatedOrder = await helpers.updateOrderProperty(
+      data.orderId,
+      "accepted",
+      data.newStatus
+    );
     console.log(updatedOrder);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
   }
 };
-export { postOrder, getOrdersByStoreName, getOrdersByUid, updateAcceptedStatus};
+export {
+  postOrder,
+  getOrdersById,
+  getOrdersByUid,
+  updateAcceptedStatus,
+};

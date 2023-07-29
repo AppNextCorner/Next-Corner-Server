@@ -43,12 +43,12 @@ orderRouter.put(
 );
 
 orderRouter.get(
-  "/get-orders-by-store-name/:name/",
+  "/get-orders-by-store-id/:id",
   decodeIDToken,
   async (req: any, res: Response, next: NextFunction) => {
     const auth = req.currentUser;
     if (auth) {
-      controller.getOrdersByStoreName(req, res, next);
+      controller.getOrdersById(req, res, next);
     }
   }
 );

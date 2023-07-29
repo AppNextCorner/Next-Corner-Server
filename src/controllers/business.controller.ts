@@ -238,11 +238,13 @@ const deleteItemById = async (
 ) => {
   try {
     const data = req.body;
+    console.log('data in delete: ', data)
     const vendorId = data.vendorId;
     const itemId = data.itemId;
     const vendor = await findVendorById(vendorId);
-
+    console.log('item: ', itemId, vendor)
     if (vendor) {
+      console.log('deleting item: ', itemId)
       const isItem = (element: any) => element.id == itemId;
 
       // Delete the image from cloudinary first

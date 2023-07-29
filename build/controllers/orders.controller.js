@@ -54,7 +54,7 @@ exports.postOrder = postOrder;
 // Get orders by name of the store and status of the order and get the uid here
 const getOrdersByStoreName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Response is Iorder[]
-    const response = yield helpers.findOrdersByProperty("orders.storeName", req.params.name);
+    const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.name);
     console.log(response);
     res.status(200).send({
         orders: response,
