@@ -26,6 +26,9 @@ import { Document, ObjectId } from "mongoose";
 import { IBusiness } from "../../../interfaces/store.interface";
 import { Iitem } from "../../../interfaces/item.interface";
 declare const createVendor: (storeData: IBusiness) => Promise<IBusiness>;
+declare const findVendorById: (vendorId: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}) | null>;
 /**
  *
  * This helper functions return all vendors
@@ -46,13 +49,12 @@ declare const findAllVendors: (selections?: any) => Promise<(IBusiness & Documen
 declare const findVendorByName: (nameOfBusiness: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
 })[]>;
-declare const findVendorByMenuItemId: (itemId: string) => Promise<void>;
+declare const findVendorByMenuItemId: (itemId: string) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}) | null>;
 declare const findVendorByUid: (uid: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
 })[]>;
-declare const findVendorById: (vendorId: string, selections?: any) => Promise<(IBusiness & Document<any, any, any> & {
-    _id: ObjectId;
-}) | null>;
 /**
  *
  * @param id menu item id / vendor id / announcement id ...
@@ -64,12 +66,26 @@ declare const updateProperty: (id: string | undefined, property: string, newData
     _id: import("mongoose").Types.ObjectId;
 }) | null>;
 /**
- *
+ *  Adds a new menu item to the menu list
  * @param id Store ID
  * @param newMenu The menu item we want to add to the menu list
  * @returns the store object
+
  */
-declare const updateMenu: (id: string, newMenu: Iitem[], test?: boolean) => Promise<(IBusiness & Document<any, any, any> & {
+declare const uploadMenu: (storeId: string, newMenu: Iitem[], test?: boolean) => Promise<(IBusiness & Document<any, any, any> & {
     _id: ObjectId;
 }) | null>;
-export { createVendor, findAllVendors, findVendorByName, findVendorByUid, findVendorById, findVendorByMenuItemId, updateProperty, updateMenu, };
+/**
+ *
+ */
+declare const updateMenu: (storeId: string, newMenu: Iitem[]) => Promise<(IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}) | null>;
+/**
+ * @param itemId
+ * @param updatedItem - Item Object to replace the old item with
+ */
+declare const updateMenuItem: (updatedItem: Iitem[]) => Promise<IBusiness & Document<any, any, any> & {
+    _id: ObjectId;
+}>;
+export { createVendor, findAllVendors, findVendorByName, findVendorByUid, findVendorById, findVendorByMenuItemId, updateProperty, uploadMenu, updateMenu, updateMenuItem, };

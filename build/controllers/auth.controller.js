@@ -55,6 +55,7 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
                 password: payload.password,
                 firstName: payload.firstName,
                 lastName: payload.lastName,
+                role: payload.role,
                 phoneNumber: payload.phoneNumber,
             });
             try {

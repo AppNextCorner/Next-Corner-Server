@@ -13,5 +13,6 @@ export interface Iitem extends Document {
     amountInCart?: number;
     rating?: number;
     storeInfo: any;
+    _id?: string;
     [key: string]: any;
 }

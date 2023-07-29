@@ -31,63 +31,73 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReviews = exports.createReview = void 0;
-const helper = __importStar(require("../helpers/modelHelpers/reviews.helper"));
+const reviews_service_1 = __importDefault(require("../helpers/modelHelpers/reviews/reviews.service"));
 const userHelper = __importStar(require("../helpers/modelHelpers/user.helper"));
-/**
- *
- * This function creates the review using the review interface
- *
- * @param req Incoming request
- * @param res Sent Response
- * @param next Next function
- */
-const createReview = (req, _res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // Let the helper function handle the create review
-        helper.createReview(req.body);
-        // Update the item Rating
-        helper.updateItemRating(req.body.idOfItem.toString());
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.createReview = createReview;
-/**
- * This function gets the reviews and sends them back to the front end in arrays of reviewInterface[] and UserInterface[]
- * @param req Incoming Request
- * @param res Sent response
- * @param next  Next function
- *
- * req.params.id = idOfTheItem
- */
-const getReviews = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const reviews = yield helper.findReviewByItemId(req.params.id); // Use the helper function to find the reviews with itemId
-        console.log(reviews);
-        yield helper.updateItemRating(req.params.id);
-        // Incase comments are over flooding, delete all
-        // await new Promise(() =>
-        //   reviews.array.forEach((element: any) => {
-        //     helper.deleteReviewByItemId(element._id.toString());
-        //   })
-        // );
-        const usersList = yield Promise.all(
-        // Map through the reviews and get the userId,
-        reviews.map((review) => __awaiter(void 0, void 0, void 0, function* () {
-            const user = yield userHelper.findById(review.user.toString()); // use that userId to find a user with that Id
-            return user; // Return the user
-        })));
-        res.status(200).send({
-            payload: reviews,
-            users: usersList,
-            message: "Reviews found!",
+const trending_service_1 = __importDefault(require("../helpers/modelHelpers/businessModelHelpers/trending.service"));
+class ReviewsController {
+    constructor() {
+        this.reviewsService = new reviews_service_1.default();
+        this.trendingService = new trending_service_1.default();
+        /**
+         *
+         * This method creates the review using the review interface
+         *
+         * @param req Incoming request
+         * @param res Sent Response
+         * @param next Next function
+         */
+        this.createReview = (req, _res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Let the reviewsService function handle the create review
+                this.reviewsService.createReview(req.body);
+                // Update the item Rating
+                this.reviewsService.updateItemRatingByItemId(req.body.idOfItem.toString());
+                yield this.trendingService.updateVendorRating(req.body.idOfItem);
+                yield this.trendingService.setBestReviews();
+            }
+            catch (err) {
+                next(err);
+            }
+        });
+        /**
+         * This method gets the reviews and sends them back to the front end in arrays of reviewInterface[] and UserInterface[]
+         * @param req Incoming Request
+         * @param res Sent response
+         * @param next  Next function
+         *
+         * req.params.id = idOfTheItem
+         */
+        this.getReviews = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reviews = yield this.reviewsService.findReviewsByItemId(req.params.id); // Use the helper function to find the reviews with itemId
+                console.log(reviews);
+                yield this.reviewsService.updateItemRatingByItemId(req.params.id);
+                // Incase comments are over flooding, delete all
+                // await new Promise(() =>
+                //   reviews.array.forEach((element: any) => {
+                //     helper.deleteReviewByItemId(element._id.toString());
+                //   })
+                // );
+                const usersList = yield Promise.all(
+                // Map through the reviews and get the userId,
+                reviews.map((review) => __awaiter(this, void 0, void 0, function* () {
+                    const user = yield userHelper.findById(review.user.toString()); // use that userId to find a user with that Id
+                    return user; // Return the user
+                })));
+                res.status(200).send({
+                    payload: reviews,
+                    users: usersList,
+                    message: "Reviews found!",
+                });
+            }
+            catch (err) {
+                next(err);
+            }
         });
     }
-    catch (err) {
-        next(err);
-    }
-});
-exports.getReviews = getReviews;
+}
+exports.default = ReviewsController;

@@ -23,26 +23,13 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-import { IBusiness } from "../../../interfaces/store.interface";
-/**
- * This function returns all items
- * @param selections Any selections
- * @returns
- */
-declare const findAllItems: (selections?: any) => Promise<(import("../../../interfaces/item.interface").Iitem & import("mongoose").Document<any, any, any> & {
-    _id: import("mongoose").Types.ObjectId;
-})[]>;
-declare const findItemById: (itemId: string, selections?: any) => Promise<(import("../../../interfaces/item.interface").Iitem & import("mongoose").Document<any, any, any> & {
-    _id: import("mongoose").Types.ObjectId;
-}) | null>;
-declare const findItemsByVendorId: (vendorId: any, selections?: any) => Promise<import("../../../interfaces/item.interface").Iitem[] | null>;
-/**
- * This function updates the rating of an item by using the itemId and vendorId
- * @param vendorId the id of the vendor
- * @param itemId  the id of the menu item
- * @returns
- */
-declare const updateItemRatingByVendorId: (vendorId: string, itemId: string) => Promise<(IBusiness & import("mongoose").Document<any, any, any> & {
-    _id: import("mongoose").Types.ObjectId;
-}) | null>;
-export { findAllItems, findItemById, findItemsByVendorId, updateItemRatingByVendorId };
+export default class TrendingService {
+    private businessModel;
+    private sum;
+    updateVendorRating(idOfItem: string): Promise<(import("../../../interfaces/store.interface").IBusiness & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }) | null | undefined>;
+    setBestReviews(): Promise<(import("../../../interfaces/store.interface").IBusiness & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }) | null>;
+}

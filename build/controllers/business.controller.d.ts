@@ -13,6 +13,8 @@ declare const createCard: (req: any, res: Response, Model: any, savedData: any) 
 declare const getVendorByName: (req: any, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 declare const getVendorByuid: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 declare const uploadStore: (req: any, res: Response, next: NextFunction) => Promise<void>;
+declare const updateItem: (req: any, res: Response, next: NextFunction) => Promise<void>;
 declare const uploadItems: (req: any, res: Response, next: NextFunction) => Promise<void>;
+declare const getItemById: (req: any, res: Response, next: NextFunction) => Promise<void>;
 declare const deleteItemById: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-export { createCard, deleteItemById, getVendorByName, getVendorByuid, uploadStore, uploadItems, };
+export { createCard, deleteItemById, getItemById, getVendorByName, getVendorByuid, uploadStore, uploadItems, updateItem };

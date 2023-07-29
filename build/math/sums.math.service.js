@@ -8,18 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const reviews_controller_1 = __importDefault(require("../controllers/reviews.controller"));
-const reviewsRouter = (0, express_1.Router)();
-const controller = new reviews_controller_1.default();
-reviewsRouter.post("/create", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    controller.createReview(req, res, next);
-}));
-reviewsRouter.get("/getReviews/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    controller.getReviews(req, res, next);
-}));
-exports.default = reviewsRouter;
+class mathSummationService {
+    Σ(arr) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const λ = yield arr.reduce((n, currentValue) => n + currentValue, 0);
+            return λ;
+        });
+    }
+    average(arr, listLength) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const sum = yield this.Σ(arr);
+            return sum / listLength;
+        });
+    }
+}
+exports.default = mathSummationService;

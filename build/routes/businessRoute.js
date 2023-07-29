@@ -65,7 +65,13 @@ businessRouter.post("/updateMenu", multer_1.upload.single("image"), (req, res, n
     console.log("is running");
     (0, business_controller_1.uploadItems)(req, res, next);
 }));
+businessRouter.post("/update-item", multer_1.upload.single("image"), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, business_controller_1.updateItem)(req, res, next);
+}));
 businessRouter.put("/items/deleteItem", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     (0, business_controller_1.deleteItemById)(req, res, next);
+}));
+businessRouter.get("/items/get-item-by-id/:itemId", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, business_controller_1.getItemById)(req, res, next);
 }));
 exports.default = businessRouter;

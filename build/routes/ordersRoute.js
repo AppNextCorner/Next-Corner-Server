@@ -69,10 +69,10 @@ orderRouter.put("/update-accept-status", decodeIDToken, (req, res, next) => __aw
         controller.updateAcceptedStatus(req, res, next);
     }
 }));
-orderRouter.get("/get-orders-by-store-name/:name/", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+orderRouter.get("/get-orders-by-store-id/:id", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = req.currentUser;
     if (auth) {
-        controller.getOrdersByStoreName(req, res, next);
+        controller.getOrdersById(req, res, next);
     }
 }));
 orderRouter.get("/get-orders-by-uid/:uid/", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAcceptedStatus = exports.getOrdersByUid = exports.getOrdersByStoreName = exports.postOrder = void 0;
+exports.updateAcceptedStatus = exports.getOrdersByUid = exports.getOrdersById = exports.postOrder = void 0;
 const helpers = __importStar(require("../helpers/modelHelpers/orders/orders.helper"));
 const userHelper = __importStar(require("../helpers/modelHelpers/user.helper"));
 const postOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,9 +50,14 @@ const postOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.postOrder = postOrder;
+const getOrdersByStoreId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Response returned as Iorder[]
+    const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.id);
+    console.log('orders by store id');
+});
 // TODO:
 // Get orders by name of the store and status of the order and get the uid here
-const getOrdersByStoreName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getOrdersById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Response is Iorder[]
     const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.name);
     console.log(response);
@@ -60,7 +65,7 @@ const getOrdersByStoreName = (req, res, next) => __awaiter(void 0, void 0, void 
         orders: response,
     });
 });
-exports.getOrdersByStoreName = getOrdersByStoreName;
+exports.getOrdersById = getOrdersById;
 // Ths is for the user's past order
 const getOrdersByUid = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield helpers.findOrdersByProperty("uid", req.params.uid);
