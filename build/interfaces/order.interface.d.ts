@@ -4,6 +4,7 @@ export interface Iorder {
     storeInfo: {
         storeName: string;
         storeId: string;
+        storeOwner: string;
     };
     minutesToDone: number;
     status: string;
