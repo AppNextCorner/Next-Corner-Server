@@ -3,6 +3,10 @@ import orderModel from "../../../models/orderModel";
 
 const model = orderModel;
 
+const deleteOrderById = async (orderId: string) => {
+  return await model.findByIdAndDelete(orderId).exec();
+};
+
 // Add comments
 const findOrdersByProperty = async (
   property: string,
@@ -43,4 +47,9 @@ const createOrder = async (order: Iorder) => {
   });
 };
 
-export { createOrder, findOrdersByProperty, updateOrderProperty};
+export {
+  createOrder,
+  findOrdersByProperty,
+  updateOrderProperty,
+  deleteOrderById,
+};

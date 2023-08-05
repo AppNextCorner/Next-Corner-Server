@@ -23,7 +23,7 @@ const getOrdersByStoreId = async (req: Request, res: Response) => {
     "orders.storeId",
     req.params.id
   );
-  console.log('orders by store id')
+  console.log("orders by store id");
 };
 
 // TODO:
@@ -69,19 +69,23 @@ const updateAcceptedStatus = async (
 ) => {
   try {
     const data = req.body;
-    const updatedOrder = await helpers.updateOrderProperty(
-      data.orderId,
-      "accepted",
-      data.newStatus
-    );
-    console.log(updatedOrder);
+    if (data.newStatus === "accepted") {
+      const updatedOrder = await helpers.updateOrderProperty(
+        data.orderId,
+        "accepted",
+        data.newStatus
+      );
+      res.status(200).send({
+        updatedOrder,
+      });
+    } else {
+      await helpers.deleteOrderById(data.orderId);
+      res.status(200).send({
+        message: "Rejected Order",
+      });
+    }
   } catch (err) {
     console.log(err);
   }
 };
-export {
-  postOrder,
-  getOrdersById,
-  getOrdersByUid,
-  updateAcceptedStatus,
-};
+export { postOrder, getOrdersById, getOrdersByUid, updateAcceptedStatus };
