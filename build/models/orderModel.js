@@ -11,6 +11,8 @@ const orderSchema = new mongoose_1.default.Schema({
     status: { type: String, required: true },
     accepted: { type: String, required: true, default: "pending" },
     uid: { type: String, required: true },
+    userName: { type: String },
+    location: { type: Object, }
 }, { timestamps: true });
 const orderModel = mongoose_1.default.model("order", orderSchema);
 exports.default = orderModel;

@@ -9,4 +9,5 @@ export interface Iorder {
     status: string;
     accepted: string;
     uid: string;
+    userName: string;
 }

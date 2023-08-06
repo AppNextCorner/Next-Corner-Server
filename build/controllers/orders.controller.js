@@ -73,8 +73,19 @@ exports.getOrdersByUid = getOrdersByUid;
 const updateAcceptedStatus = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;
-        const updatedOrder = yield helpers.updateOrderProperty(data.orderId, "accepted", data.newStatus);
-        console.log(updatedOrder);
+        if (data.newStatus === "accepted") {
+            const updatedOrder = yield helpers.updateOrderProperty(data.orderId, "accepted", data.newStatus);
+            res.status(200).send({
+                updated: updatedOrder,
+            });
+        }
+        else {
+            yield helpers.deleteOrderById(data.orderId);
+            res.status(200).send({
+                payload: data.orderId,
+                message: "Rejected Order",
+            });
+        }
     }
     catch (err) {
         console.log(err);

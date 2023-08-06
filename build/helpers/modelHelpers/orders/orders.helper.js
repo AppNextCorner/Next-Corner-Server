@@ -12,9 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrderProperty = exports.findOrdersByProperty = exports.createOrder = void 0;
+exports.deleteOrderById = exports.updateOrderProperty = exports.findOrdersByProperty = exports.createOrder = void 0;
 const orderModel_1 = __importDefault(require("../../../models/orderModel"));
 const model = orderModel_1.default;
+const deleteOrderById = (orderId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield model.findByIdAndDelete(orderId).exec();
+});
+exports.deleteOrderById = deleteOrderById;
 // Add comments
 const findOrdersByProperty = (property, select, selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
     return yield model

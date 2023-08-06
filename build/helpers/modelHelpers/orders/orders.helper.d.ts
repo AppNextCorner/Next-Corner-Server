@@ -24,6 +24,9 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Iorder } from "../../../interfaces/order.interface";
+declare const deleteOrderById: (orderId: string) => Promise<(Iorder & import("mongoose").Document<any, any, any> & {
+    _id: import("mongoose").Types.ObjectId;
+}) | null>;
 declare const findOrdersByProperty: (property: string, select: any, selections?: any) => Promise<(Iorder & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
 })[]>;
@@ -33,4 +36,4 @@ declare const updateOrderProperty: (orderId: string, property: string, newValue:
 declare const createOrder: (order: Iorder) => Promise<Iorder & import("mongoose").Document<any, any, any> & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export { createOrder, findOrdersByProperty, updateOrderProperty };
+export { createOrder, findOrdersByProperty, updateOrderProperty, deleteOrderById, };
