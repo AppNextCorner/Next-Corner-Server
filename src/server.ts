@@ -14,7 +14,7 @@ import bodyParser from "body-parser";
 
 import { error } from "console";
 
-const PORT = process.env.PORT || 4020;
+const PORT = 4020;
 
 async function connectToDb() {
   try {

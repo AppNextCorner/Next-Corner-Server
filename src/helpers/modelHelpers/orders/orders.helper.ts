@@ -40,6 +40,7 @@ const updateOrderProperty = async (
 const createOrder = async (order: Iorder) => {
   return await model.create({
     orders: order.orders,
+    storeInfo: order.storeInfo,
     minutesToDone: order.minutesToDone,
     status: order.status,
     accepted: order.accepted,

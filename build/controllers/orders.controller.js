@@ -50,17 +50,11 @@ const postOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.postOrder = postOrder;
-const getOrdersByStoreId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Response returned as Iorder[]
-    const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.id);
-    console.log('orders by store id');
-});
 // TODO:
 // Get orders by name of the store and status of the order and get the uid here
 const getOrdersById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Response is Iorder[]
-    const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.name);
-    console.log(response);
+    const response = yield helpers.findOrdersByProperty("orders.storeId", req.params.id);
     res.status(200).send({
         orders: response,
     });

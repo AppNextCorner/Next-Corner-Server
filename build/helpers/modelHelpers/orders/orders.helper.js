@@ -36,6 +36,7 @@ exports.updateOrderProperty = updateOrderProperty;
 const createOrder = (order) => __awaiter(void 0, void 0, void 0, function* () {
     return yield model.create({
         orders: order.orders,
+        storeInfo: order.storeInfo,
         minutesToDone: order.minutesToDone,
         status: order.status,
         accepted: order.accepted,

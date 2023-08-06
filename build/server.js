@@ -26,7 +26,7 @@ const businessRoute_1 = __importDefault(require("./routes/businessRoute"));
 const reviews_route_1 = __importDefault(require("./routes/reviews.route"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const console_1 = require("console");
-const PORT = process.env.PORT || 4020;
+const PORT = 4020;
 function connectToDb() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
