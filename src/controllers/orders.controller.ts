@@ -83,13 +83,12 @@ const updateAcceptedStatus = async (
 const updateStatus = async (req: any, res: Response, _next: NextFunction) => {
   try {
     const data = req.body;
-    if (data.newStatus === "complete") {
+    if (data.newStatus === "completed") {
       const updatedOrder = await helpers.updateOrderProperty(
         data.orderId,
         "status",
         data.newStatus
       );
-
       res.status(200).send({
         updated: updatedOrder,
       });
@@ -103,4 +102,10 @@ const updateStatus = async (req: any, res: Response, _next: NextFunction) => {
     console.log(e);
   }
 };
-export { postOrder, getOrdersById, getOrdersByUid, updateAcceptedStatus, updateStatus};
+export {
+  postOrder,
+  getOrdersById,
+  getOrdersByUid,
+  updateAcceptedStatus,
+  updateStatus,
+};
