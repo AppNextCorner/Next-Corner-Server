@@ -69,6 +69,12 @@ orderRouter.put("/update-accept-status", decodeIDToken, (req, res, next) => __aw
         controller.updateAcceptedStatus(req, res, next);
     }
 }));
+orderRouter.put("/update-status", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const auth = req.currentUser;
+    if (auth) {
+        controller.updateStatus(req, res, next);
+    }
+}));
 orderRouter.get("/get-orders-by-store-id/:id", decodeIDToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = req.currentUser;
     if (auth) {

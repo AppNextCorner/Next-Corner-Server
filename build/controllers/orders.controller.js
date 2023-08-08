@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAcceptedStatus = exports.getOrdersByUid = exports.getOrdersById = exports.postOrder = void 0;
+exports.updateStatus = exports.updateAcceptedStatus = exports.getOrdersByUid = exports.getOrdersById = exports.postOrder = void 0;
 const helpers = __importStar(require("../helpers/modelHelpers/orders/orders.helper"));
 const userHelper = __importStar(require("../helpers/modelHelpers/user.helper"));
 const postOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -92,3 +92,24 @@ const updateAcceptedStatus = (req, res, _next) => __awaiter(void 0, void 0, void
     }
 });
 exports.updateAcceptedStatus = updateAcceptedStatus;
+const updateStatus = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = req.body;
+        if (data.newStatus === "complete") {
+            const updatedOrder = yield helpers.updateOrderProperty(data.orderId, "status", data.newStatus);
+            res.status(200).send({
+                updated: updatedOrder,
+            });
+        }
+        else {
+            res.status(200).send({
+                payload: data.orderId,
+                message: "Rejected Status",
+            });
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
+exports.updateStatus = updateStatus;
