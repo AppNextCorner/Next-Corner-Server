@@ -79,4 +79,28 @@ const updateAcceptedStatus = async (
     console.log(err);
   }
 };
-export { postOrder, getOrdersById, getOrdersByUid, updateAcceptedStatus };
+
+const updateStatus = async (req: any, res: Response, _next: NextFunction) => {
+  try {
+    const data = req.body;
+    if (data.newStatus === "complete") {
+      const updatedOrder = await helpers.updateOrderProperty(
+        data.orderId,
+        "status",
+        data.newStatus
+      );
+
+      res.status(200).send({
+        updated: updatedOrder,
+      });
+    } else {
+      res.status(200).send({
+        payload: data.orderId,
+        message: "Rejected Status",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+export { postOrder, getOrdersById, getOrdersByUid, updateAcceptedStatus, updateStatus};

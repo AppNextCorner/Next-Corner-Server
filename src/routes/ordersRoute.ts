@@ -42,6 +42,17 @@ orderRouter.put(
   }
 );
 
+orderRouter.put(
+  "/update-status",
+  decodeIDToken,
+  async (req: any, res: Response, next: NextFunction) => {
+    const auth = req.currentUser;
+    if (auth) {
+      controller.updateStatus(req, res, next);
+    }
+  }
+);
+
 orderRouter.get(
   "/get-orders-by-store-id/:id",
   decodeIDToken,
