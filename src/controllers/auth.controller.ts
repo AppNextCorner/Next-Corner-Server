@@ -13,7 +13,6 @@ const signUp = async (res: Response, req: Request, next: NextFunction) => {
     // check if another user already has the same email
     const check = await userModel.findOne({ email: payload.email });
     if (check !== null) {
-      // return error: 'user with email already exists'
       res.status(400).send({
         message: "User with email already exists",
       });
@@ -83,7 +82,6 @@ const getSingleUser = async (
   try {
     // deconstruct the req.body
     const data = req.body;
-
     // findByEmail is given the data.email param
     const payload = await user.findByEmail(data.email);
 

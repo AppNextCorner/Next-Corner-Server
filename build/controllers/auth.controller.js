@@ -43,7 +43,6 @@ const signUp = (res, req, next) => __awaiter(void 0, void 0, void 0, function* (
         // check if another user already has the same email
         const check = yield userModel_1.userModel.findOne({ email: payload.email });
         if (check !== null) {
-            // return error: 'user with email already exists'
             res.status(400).send({
                 message: "User with email already exists",
             });

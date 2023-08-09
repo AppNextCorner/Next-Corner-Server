@@ -7,6 +7,7 @@ const findById = async (id: string, selections: any = {}) => {
 };
 
 const findByEmail = async (email: string, selections: any = {}) => {
+  console.log('returning: ', await model.findOne({ email: email }).select(selections).exec())
   return await model.findOne({ email: email }).select(selections).exec();
 };
 

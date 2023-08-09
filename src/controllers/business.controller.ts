@@ -99,7 +99,6 @@ const uploadStore = async (req: any, res: Response, next: NextFunction) => {
       storeStatus: storeData.storeStatus,
       status: storeData.status,
     };
-    console.log("store data", data);
     const business: IBusiness = await createVendor(data);
 
     const result = await cloudinary.uploader.upload(req.file.path, {

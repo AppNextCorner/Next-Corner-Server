@@ -63,4 +63,4 @@ app.use("/business", businessRoute_1.default);
 // routes for the reviews
 app.use("/reviews", reviews_route_1.default);
 // const hostname = '192.168.1.24'
-app.listen(PORT, () => console.log(`Server running at PORT`));
+app.listen(PORT, () => console.log(`Server running at PORT`, PORT));

@@ -17,6 +17,7 @@ const findById = (id, selections = {}) => __awaiter(void 0, void 0, void 0, func
 });
 exports.findById = findById;
 const findByEmail = (email, selections = {}) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('returning: ', yield model.findOne({ email: email }).select(selections).exec());
     return yield model.findOne({ email: email }).select(selections).exec();
 });
 exports.findByEmail = findByEmail;

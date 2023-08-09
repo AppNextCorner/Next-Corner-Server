@@ -95,7 +95,7 @@ exports.updateAcceptedStatus = updateAcceptedStatus;
 const updateStatus = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;
-        if (data.newStatus === "complete") {
+        if (data.newStatus === "completed") {
             const updatedOrder = yield helpers.updateOrderProperty(data.orderId, "status", data.newStatus);
             res.status(200).send({
                 updated: updatedOrder,

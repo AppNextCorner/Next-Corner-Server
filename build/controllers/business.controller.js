@@ -93,7 +93,6 @@ const uploadStore = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             storeStatus: storeData.storeStatus,
             status: storeData.status,
         };
-        console.log("store data", data);
         const business = yield (0, business_helper_1.createVendor)(data);
         const result = yield cloudinary_1.cloudinary.uploader.upload(req.file.path, {
             public_id: `${req.file.path}_banner`,

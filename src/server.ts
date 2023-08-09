@@ -49,4 +49,4 @@ app.use("/business", businessRouter);
 // routes for the reviews
 app.use("/reviews", reviewsRouter);
 // const hostname = '192.168.1.24'
-app.listen(PORT, () => console.log(`Server running at PORT`));
+app.listen(PORT, () => console.log(`Server running at PORT`, PORT));
