@@ -82,6 +82,7 @@ const updateAcceptedStatus = async (
 
 const updateStatus = async (req: any, res: Response, _next: NextFunction) => {
   try {
+    console.log("UPDATE STATUS");
     const data = req.body;
     if (data.newStatus === "completed") {
       const updatedOrder = await helpers.updateOrderProperty(
@@ -89,6 +90,8 @@ const updateStatus = async (req: any, res: Response, _next: NextFunction) => {
         "status",
         data.newStatus
       );
+
+      console.log("NEW order:", updatedOrder);
       res.status(200).send({
         updated: updatedOrder,
       });
