@@ -21,8 +21,8 @@ export interface IBusiness {
   menu: Iitem[];
   uid: string;
   rating: number;
-  trending: string;
+  trending: string[];
   storeStatus: string;
   status: Istatus;
-  [key: string]: any
+  [key: string]: any;
 }

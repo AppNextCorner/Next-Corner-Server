@@ -44,9 +44,6 @@ export const itemSchema = new mongoose.Schema<Iitem>({
   storeInfo: { type: Object, required: true },
 });
 
-
-
-
 // Hook to see if there are any values
 itemSchema.pre<Iitem>("save", async function (next) {
   try {
@@ -55,7 +52,7 @@ itemSchema.pre<Iitem>("save", async function (next) {
       "time",
       "image",
       "price",
-      // "category", 
+      // "category",
       //"featured",
       "storeInfo",
     ];
@@ -68,10 +65,10 @@ itemSchema.pre<Iitem>("save", async function (next) {
         return;
       }
     }
-    console.log(' no errors')
+    console.log(" no errors");
     next();
   } catch (err: any) {
-    console.log('error: ', err)
+    console.log("error: ", err);
     next(err);
   }
 });
@@ -104,7 +101,7 @@ const vendorSchema = new mongoose.Schema(
     menu: [itemSchema],
     uid: { type: String, required: true },
     rating: { type: Number, default: 0 },
-    trending: { type: String },
+    trending: [{ type: String }],
     storeStatus: { type: String, required: true, default: "Not Approved" },
     status: {
       text: { type: String },

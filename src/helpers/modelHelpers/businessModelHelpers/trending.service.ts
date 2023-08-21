@@ -13,13 +13,13 @@ export default class TrendingService {
         vendor.menu.map((item) => item.rating)
       );
 
-      console.log("itemRatings: ", itemRatings)
+      console.log("itemRatings: ", itemRatings);
       const vendorRating: number = await this.sum.average(
         itemRatings as number[],
         itemRatings.length
       );
 
-      console.log("venodor rating:", vendorRating)
+      console.log("venodor rating:", vendorRating);
 
       if (isNaN(vendorRating)) {
         return await this.businessModel.findByIdAndUpdate(
@@ -57,12 +57,13 @@ export default class TrendingService {
         largest = currentRating;
       }
     }
-
+    console.log(largest);
     const highestRatedVendor = allVendors[allVendorRatings.indexOf(largest)];
+    console.log(highestRatedVendor);
 
     return this.businessModel.findByIdAndUpdate(
       highestRatedVendor._id,
-      { trending: "Best Reviews" },
+      { trending: ["Best Reviews"] },
       { new: true }
     );
   }
